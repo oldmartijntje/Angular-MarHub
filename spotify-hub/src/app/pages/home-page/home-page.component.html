@@ -1,1 +1,11 @@
-<p>home-page works!</p>
+<button (click)="addArticle()"></button>
+<div class="page" *ngFor="let item of Articles.reverse()">
+    <div class="Item {{item.class}}">
+        <h1 class="Title">{{item.title}}</h1>
+        <p class="subtext">{{item.text}}</p>
+        <div *ngIf="item.image.enabled" class="ExampleImage">
+            <img src="{{item.image.path}}" alt="{{item.image.altText}}">
+            <p>{{item.image.bottomText}}</p>
+        </div>
+    </div>
+</div>
