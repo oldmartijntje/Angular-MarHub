@@ -22,7 +22,7 @@
 
         #HeaderBarLeftTitle {
             h1#titleInHeader {
-                color: $text-color;
+                color: $secondary-text-color;
                 font-size: 18px;
                 font-weight: bold;
                 margin: 0;
@@ -42,7 +42,7 @@
                     margin-right: 10px;
 
                     a {
-                        color: $text-color;
+                        color: $secondary-text-color;
                         text-decoration: none;
                         font-size: 14px;
                         transition: color 0.2s;
