@@ -1,14 +1,13 @@
-<button (click)="addArticle()"></button>
+<button (click)="addArticle()">Test dynamic loading</button>
 <div class="page" *ngFor="let item of Articles.reverse()">
     <div class="Item {{item.class}}">
-        <h1 class="Title">{{item.title}}</h1>
-        <p class="subtext">{{item.text}}</p>
+        <h1 class="Title" [innerHTML]="item.title"></h1>
+        <p class="subtext" [innerHTML]="item.text"></p>
         <div *ngIf="item.image.enabled" class="ExampleImage">
             <img src="{{item.image.path}}" alt="{{item.image.altText}}">
-            <p>{{item.image.bottomText}}</p>
+            <p [innerHTML]="item.image.bottomText"></p>
         </div>
-        <span *ngIf="item.reference.enabled">{{item.reference.textInFront}} <a href="{{item.reference.linkTo}}">
-                {{item.reference.textWithLink}}</a>{{item.reference.textAfter}}
-        </span>
+        <p *ngIf="item.bottomText.enabled" [innerHTML]="item.bottomText.innerHTML">
+        </p>
     </div>
 </div>

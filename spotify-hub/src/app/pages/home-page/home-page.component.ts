@@ -1,25 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-home-page',
     templateUrl: './home-page.component.html',
     styleUrls: ['./home-page.component.scss']
 })
-export class HomePageComponent {
+export class HomePageComponent implements OnInit {
     Articles = [
         {
-            "title": "New feature!", "text": "You can now dye your hair purple.",
+            "title": "Welcome to Spotihub!", "text": "Welcome,\nWe'd like to thank you for visiting this new website.",
             "class": "highlight", "image": {
-                "enabled": true, "path": "assets/icons/OceanLogo.png", "altText": "An image to show the feature.",
-                "bottomText": "This is an example Image"
+                "enabled": false, "path": "", "altText": "",
+                "bottomText": ""
             },
-            "reference": {
-                "enabled": true, "textInFront": "Click ", "textWithLink": "Here", "textAfter": " to try it out!",
-                "linkTo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            }
+            "bottomText": { "enabled": true, "innerHTML": "To read the full info on this website, <a href='https://www.example.com'>Click here!</a>" }
         }
     ];
     length = 1;
+
+    ngOnInit(): void {
+        for (let i = 0; i < this.Articles.length; i++) {
+            this.Articles[i] = this.scanForBreak(this.Articles[i]);
+        }
+    }
+
+    scanForBreak(article: any) {
+        // Replace \n with <br> in the title
+        article.title = article.title.replace(/\n/g, '<br>');
+
+        // Replace \n with <br> in the text
+        article.text = article.text.replace(/\n/g, '<br>');
+
+        // Replace \n with <br> in the bottomText.innerHTML
+        article.bottomText.innerHTML = article.bottomText.innerHTML.replace(/\n/g, '<br>');
+        return article;
+    }
     addArticle() {
         var title = "message number " + this.length;
         var tex = "meow " + this.length + " times for me please OwO";
@@ -35,19 +50,20 @@ export class HomePageComponent {
             var img = false;
         }
         if (this.length % 5 == 0) {
-            var reference = true;
+            var bottomText = true;
         } else {
-            var reference = false;
+            var bottomText = false;
         }
-        this.Articles.push({
+        var article = {
             "title": title, "text": tex, "class": clas, "image": {
                 "enabled": img, "path": "assets/icons/OceanLogo.png", "altText": "An image to show the feature.",
                 "bottomText": "This is an example Image"
             },
-            "reference": {
-                "enabled": reference, "textInFront": "Click ", "textWithLink": "Here", "textAfter": " to try it out!",
-                "linkTo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-            }
-        });
+            "bottomText": { "enabled": bottomText, "innerHTML": "meow" }
+        }
+        article = this.scanForBreak(article);
+        this.Articles.push(article);
     }
+
+
 }
