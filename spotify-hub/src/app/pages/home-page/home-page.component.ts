@@ -7,7 +7,17 @@ import { Component } from '@angular/core';
 })
 export class HomePageComponent {
     Articles = [
-        { "title": "New feature!", "text": "You can now dye your hair purple.", "class": "highlight", "image": { "enabled": true, "path": "assets/icons/OceanLogo.png", "altText": "An image to show the feature.", "bottomText": "This is an example Image" } }
+        {
+            "title": "New feature!", "text": "You can now dye your hair purple.",
+            "class": "highlight", "image": {
+                "enabled": true, "path": "assets/icons/OceanLogo.png", "altText": "An image to show the feature.",
+                "bottomText": "This is an example Image"
+            },
+            "reference": {
+                "enabled": true, "textInFront": "Click ", "textWithLink": "Here", "textAfter": " to try it out!",
+                "linkTo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            }
+        }
     ];
     length = 1;
     addArticle() {
@@ -24,6 +34,20 @@ export class HomePageComponent {
         } else {
             var img = false;
         }
-        this.Articles.push({ "title": title, "text": tex, "class": clas, "image": { "enabled": img, "path": "assets/icons/OceanLogo.png", "altText": "An image to show the feature.", "bottomText": "This is an example Image" } });
+        if (this.length % 5 == 0) {
+            var reference = true;
+        } else {
+            var reference = false;
+        }
+        this.Articles.push({
+            "title": title, "text": tex, "class": clas, "image": {
+                "enabled": img, "path": "assets/icons/OceanLogo.png", "altText": "An image to show the feature.",
+                "bottomText": "This is an example Image"
+            },
+            "reference": {
+                "enabled": reference, "textInFront": "Click ", "textWithLink": "Here", "textAfter": " to try it out!",
+                "linkTo": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            }
+        });
     }
 }

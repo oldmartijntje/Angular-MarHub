@@ -7,5 +7,8 @@
             <img src="{{item.image.path}}" alt="{{item.image.altText}}">
             <p>{{item.image.bottomText}}</p>
         </div>
+        <span *ngIf="item.reference.enabled">{{item.reference.textInFront}} <a href="{{item.reference.linkTo}}">
+                {{item.reference.textWithLink}}</a>{{item.reference.textAfter}}
+        </span>
     </div>
 </div>
