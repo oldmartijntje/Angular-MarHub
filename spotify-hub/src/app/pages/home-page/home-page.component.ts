@@ -13,7 +13,7 @@ export class HomePageComponent implements OnInit {
                 "enabled": false, "path": "", "altText": "",
                 "bottomText": ""
             },
-            "bottomText": { "enabled": true, "innerHTML": "To read the full info on this website, <a href='https://www.example.com'>Click here!</a>" }
+            "bottomText": { "enabled": true, "innerHTML": "To read the full info on this website, <a href='/docs'>Click here!</a>" }
         }
     ];
     length = 1;

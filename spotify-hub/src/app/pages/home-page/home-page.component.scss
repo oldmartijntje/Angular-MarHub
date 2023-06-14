@@ -1,16 +1,18 @@
+@import '../../../styles.scss';
+
 .page {
-    background-color: #303030;
+    background-color: $grayshade1;
     padding: 20px;
-    color: #ffffff;
+    color: $text-color;
 
     .Item {
         margin-bottom: 20px;
         padding: 20px;
-        background-color: #333333;
+        background-color: $grayshade2;
         border-radius: 5px;
 
         &.highlight {
-            background-color: #1db954;
+            background-color: $primary-color;
         }
 
         .Title {

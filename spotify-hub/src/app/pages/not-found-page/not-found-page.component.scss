@@ -1,0 +1,36 @@
+@import '../../../styles.scss';
+
+.not-found {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
+    color: $text-color;
+
+    .wrapper {
+        text-align: center;
+
+        h1 {
+            font-size: 8rem;
+            margin-bottom: 1rem;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        a {
+            color: $primary-color;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: $primary-color;
+            }
+        }
+    }
+}
