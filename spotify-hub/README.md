@@ -1,5 +1,17 @@
 # SpotifyHub
 
+## keys
+
+check if there is a keys.ts in src/app/secrets/ with the following contents: 
+```ts
+export const environment = {
+    spotify: {
+        clientId: 'YOUR_CLIENT_ID',
+        clientSecret: 'YOUR_CLIENT_SECRET'
+    }
+};
+```
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.5.
 
 ## Development server
