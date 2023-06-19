@@ -9,7 +9,7 @@ import { environment } from '../secrets/keys';
 })
 export class SpotifyApiService {
     private clientId = environment.spotify.clientId;
-    private redirectUri = 'http://127.0.0.1:4200/callback';
+    private redirectUri = environment.spotify.redirectUri;
     private tokenEndpoint = 'https://accounts.spotify.com/api/token';
     private accessToken: string | null = null;
 
@@ -19,7 +19,8 @@ export class SpotifyApiService {
         this.accessToken = token;
     }
 
-    authorize(): void {
+    authorize(redirectURI: string = ''): void {
+        localStorage.setItem('redirectFromSpotifyTo', redirectURI)
         const scopes = ['user-read-private'];
         const state = this.generateRandomString(16);
         const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${this.clientId}&response_type=code&redirect_uri=${encodeURIComponent(this.redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&state=${state}`;
@@ -28,11 +29,24 @@ export class SpotifyApiService {
         window.location.href = authorizeUrl;
     }
 
+    checkIfLoggedIn(redirectURI: string = '', autoLogin: boolean = true): boolean {
+        this.accessToken = localStorage.getItem('spotifyAccessToken');
+        if (this.accessToken == null) {
+            if (autoLogin) {
+                this.authorize(redirectURI)
+            }
+            return false
+        } else {
+            this.setAccessToken(this.accessToken)
+            return true
+        }
+    }
+
     exchangeAuthorizationCode(code: string, state: string): Observable<string> {
         const tokenEndpoint = 'https://accounts.spotify.com/api/token';
         const clientId = environment.spotify.clientId;
         const clientSecret = environment.spotify.clientSecret;
-        const redirectUri = 'http://127.0.0.1:4200/callback';
+        const redirectUri = environment.spotify.redirectUri;
 
         const headers = new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded');
         const body = new HttpParams()

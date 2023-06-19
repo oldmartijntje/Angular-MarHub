@@ -7,7 +7,8 @@ check if there is a keys.ts in src/app/secrets/ with the following contents:
 export const environment = {
     spotify: {
         clientId: 'YOUR_CLIENT_ID',
-        clientSecret: 'YOUR_CLIENT_SECRET'
+        clientSecret: 'YOUR_CLIENT_SECRET',
+        redirectUri: 'http://yourURL'
     }
 };
 ```

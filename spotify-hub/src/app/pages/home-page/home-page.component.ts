@@ -9,7 +9,7 @@ import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 export class HomePageComponent implements OnInit {
     Articles = [
         {
-            "title": "Welcome to Spotihub!", "text": "Welcome,\nWe'd like to thank you for visiting this new website.",
+            "title": "Welcome to HenkHub!", "text": "Welcome,\nWe'd like to thank you for visiting this new website.",
             "class": "highlight", "image": {
                 "enabled": false, "path": "", "altText": "",
                 "bottomText": ""

@@ -12,12 +12,8 @@ export class UserPageComponent implements OnInit {
     constructor(private spotifyApiService: SpotifyApiService) { }
 
     ngOnInit(): void {
-        const urlParams = new URLSearchParams(window.location.search);
-        this.accessToken = urlParams.get('access_token');
-        if (this.accessToken == null) {
-            this.spotifyApiService.authorize()
-        } else {
-            this.spotifyApiService.setAccessToken(this.accessToken)
+        if (this.spotifyApiService.checkIfLoggedIn('/user')) {
+            console.log('piss')
             console.log(this.spotifyApiService.getMe())
         }
     }

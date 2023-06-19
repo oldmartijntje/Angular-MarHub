@@ -1,0 +1,25 @@
+<h1>Settings</h1>
+
+<form (ngSubmit)="saveSettings()">
+    <h2>Access Token</h2>
+    <div class="checkbox-wrapper">
+        <label for="spotifyAccessToken" class="noTopMargin">Save Spotify Access Token:</label>
+        <input type="checkbox" id="spotifyAccessToken" name="spotifyAccessToken" [ngModel]="spotifyAccessTokenStoring"
+            (ngModelChange)="onCheckboxChange($event)">
+    </div>
+    <button type="button" (click)="deleteToken()">Delete Access Token</button>
+    <br>
+    <button type="button" (click)="copyAcessKeyToClipboard()">Copy Access Token</button>
+
+    <h2>Color Theme</h2>
+    <label for="colorTheme">Color Theme:</label>
+    <select id="colorTheme" name="colorTheme" [(ngModel)]="colorTheme">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+    </select>
+
+    <h2>Local Storage</h2>
+    <button type="button" (click)="deleteLocalStorage()">Delete Local Storage</button>
+    <br>
+    <input type="submit" value="Save">
+</form>

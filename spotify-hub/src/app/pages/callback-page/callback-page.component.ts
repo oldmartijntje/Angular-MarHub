@@ -27,7 +27,13 @@ export class CallbackPageComponent implements OnInit {
 
         this.spotifyApiService.exchangeAuthorizationCode(code, state).subscribe(
             (accessToken: any) => {
-                this.router.navigate(['/ussr'], { queryParams: { access_token: accessToken['access_token'] } });
+                if (localStorage.getItem('keepSpotifyAccessToken') == 'true' || localStorage.getItem('keepSpotifyAccessToken') == null) {
+                    localStorage.setItem('spotifyAccessToken', accessToken['access_token']);
+                    this.router.navigate([localStorage.getItem('redirectFromSpotifyTo')]);
+                } else {
+                    this.router.navigate([localStorage.getItem('redirectFromSpotifyTo')], { queryParams: { "access_token": accessToken['access_token'] } });
+                }
+
             },
             (error) => {
                 console.error('Error', error);

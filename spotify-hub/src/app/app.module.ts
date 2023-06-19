@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SpotifyApiService } from './services/spotify-service.service';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,6 +13,7 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { CallbackPageComponent } from './pages/callback-page/callback-page.component';
 import { InfoPageComponent } from './pages/info-page/info-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
+import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
 
 
 @NgModule({
@@ -23,12 +25,14 @@ import { UserPageComponent } from './pages/user-page/user-page.component';
         NotFoundPageComponent,
         CallbackPageComponent,
         InfoPageComponent,
-        UserPageComponent
+        UserPageComponent,
+        SettingsPageComponent
     ],
     imports: [
         BrowserModule,
         AppRoutingModule,
-        HttpClientModule
+        HttpClientModule,
+        FormsModule
     ],
     providers: [SpotifyApiService],
     bootstrap: [AppComponent]

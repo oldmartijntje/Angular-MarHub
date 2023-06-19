@@ -6,6 +6,7 @@ import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.com
 import { CallbackPageComponent } from './pages/callback-page/callback-page.component';
 import { InfoPageComponent } from './pages/info-page/info-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
+import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
 
 const routes: Routes = [
     { path: 'home', component: HomePageComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
     { path: 'docs', component: DocumantationPageComponent },
     { path: 'callback', component: CallbackPageComponent },
     { path: 'info', component: InfoPageComponent },
-    { path: 'ussr', component: UserPageComponent },
+    { path: 'user', component: UserPageComponent },
+    { path: 'settings', component: SettingsPageComponent },
     { path: '**', component: NotFoundPageComponent }
 ];
 
