@@ -20,8 +20,6 @@ export class SettingsPageComponent implements OnInit {
         } else {
             this.spotifyAccessTokenStoring = localStorage.getItem('keepSpotifyAccessToken') == 'true';
         }
-        const urlParams = new URLSearchParams(window.location.search);
-        var accessTokenURL = urlParams.get('access_token');
         if (localStorage.getItem('copyKeyToClipboard') != null) {
             this.retrieveToken(false)
         }
@@ -52,16 +50,16 @@ export class SettingsPageComponent implements OnInit {
             const textToCopy = accessTokenURL;
             this.clipboard.copy(textToCopy);
             if (byClick == false) {
-                alert('click the copy button again.')
+                alert('click the copy button again.');
             }
         } else if (accessTokenStorage != null) {
             const textToCopy = accessTokenStorage;
             this.clipboard.copy(textToCopy);
             if (byClick == false) {
-                alert('click the copy button again.')
+                alert('click the copy button again.');
             }
         } else {
-            alert("No token found!")
+            alert("No token found!");
         }
     }
 

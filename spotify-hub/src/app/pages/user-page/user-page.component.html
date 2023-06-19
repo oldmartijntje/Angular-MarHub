@@ -1,1 +1,9 @@
-<p>user-page works!</p>
+<div *ngIf="loadedUser" class="profile">
+    <img class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
+    <h1 class="display-name">{{user.display_name}}</h1>
+    <p class="country">Country: {{user.country}}</p>
+    <p class="followers">Followers: {{user.followers.total}}</p>
+    <p class="product">Product: {{user.product}}</p>
+    <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
+        Profile</a>
+</div>
