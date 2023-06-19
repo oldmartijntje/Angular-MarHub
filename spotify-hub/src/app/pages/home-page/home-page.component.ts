@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 
 @Component({
     selector: 'app-home-page',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent implements OnInit {
+    constructor(private spotifyApiService: SpotifyApiService) { }
     Articles = [
         {
             "title": "Welcome to Spotihub!", "text": "Welcome,\nWe'd like to thank you for visiting this new website.",
@@ -22,6 +24,8 @@ export class HomePageComponent implements OnInit {
         for (let i = 0; i < this.Articles.length; i++) {
             this.Articles[i] = this.scanForBreak(this.Articles[i]);
         }
+        this.spotifyApiService.setAccessToken("6e8735cb884d49819b1f8e4ba42237bc")
+        this.getUserProfile()
     }
 
     scanForBreak(article: any) {
@@ -63,6 +67,14 @@ export class HomePageComponent implements OnInit {
         }
         article = this.scanForBreak(article);
         this.Articles.push(article);
+    }
+
+    getUserProfile(): void {
+        this.spotifyApiService.getMe().then((data) => {
+            console.log('User profile', data);
+        }).catch((error) => {
+            console.error('Error', error);
+        });
     }
 
 
