@@ -1,6 +1,14 @@
 <div *ngIf="loadedUser" class="page">
     <div class="profile">
-        <img class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
+        <div class="container">
+            <img class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
+            <div *ngIf="user.product == 'premium'" class="overlay premium">
+                <img src="assets/icons/crown.png" alt="Foreground Image">
+            </div>
+            <div *ngIf="user.product == 'free'" class="overlay free">
+                <img src="assets/icons/koter.png" alt="Foreground Image">
+            </div>
+        </div>
         <h1 class="display-name">{{user.display_name}}</h1>
         <p class="country">Country: {{user.country}}</p>
         <p class="followers">Followers: {{user.followers.total}}</p>
@@ -8,7 +16,12 @@
         <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
             Profile</a>
     </div>
-    <div class="itemBar overflow-x-scroll"></div>
+    <div class="itemBar">
+        <div class="item">
+            <img src="https://i.scdn.co/image/ab6761610000e5ebdffc3d0e6fc685b3cb032c65" alt="pfp"
+                class="profile-image-small">
+        </div>
+    </div>
 </div>
 <div *ngIf="!loadedUser" class="profile">
     <h1 class="display-name">You should probably connect to the spotify api</h1>
