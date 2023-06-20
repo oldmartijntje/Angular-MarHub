@@ -37,25 +37,34 @@ body {
 //     color: $background-text-color;
 // }
 
+$item-initial-width: 50px;
+$item-initial-height: 50px;
+$item-final-width: 200px;
+$item-final-height: 200px;
 $item-hover-transition-time: 0.3s;
 
 .item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     position: relative;
     border-radius: 5px;
     background-color: $backgroundShade2;
     margin: 0.5rem;
     overflow: hidden;
+    width: $item-initial-width;
+    height: $item-initial-height;
     transition: all $item-hover-transition-time ease-in-out;
 
     &:hover {
-        width: 200px;
-        height: auto;
+        width: $item-final-width;
+        height: $item-final-height;
 
         .item-display-name,
         .item-stats,
         .item-genres,
         .spotify-link {
-            display: block;
+            opacity: 1;
         }
     }
 
@@ -63,52 +72,45 @@ $item-hover-transition-time: 0.3s;
     .item-stats,
     .item-genres,
     .spotify-link {
-        display: none;
-        padding: 10px;
+        opacity: 0;
         text-align: center;
-        transition: opacity $item-hover-transition-time ease-in-out;
+        margin-top: 0;
     }
 
-    .item-display-name,
+    .item-display-name {
+        font-size: 18px;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
     .item-stats,
     .item-genres {
-        color: $background-text-color;
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .spotify-link {
+        background-color: transparent;
+        color: $primary-color;
+        padding: 0;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
     }
 }
 
-.item-display-name {
-    font-size: 18px;
-    margin-bottom: 5px;
-}
 
-.item-stats,
-.item-genres {
-    font-size: 14px;
-    margin-bottom: 5px;
-}
-
-.spotify-link {
-    background-color: transparent;
-    color: $primary-color;
-}
-
-@keyframes fadeIn {
+@keyframes expandItem {
     from {
-        opacity: 0;
+        width: $item-initial-width;
+        height: $item-initial-height;
     }
 
     to {
-        opacity: 1;
-    }
-}
-
-@keyframes scaleIn {
-    from {
-        transform: scale(0.9);
-    }
-
-    to {
-        transform: scale(1);
+        width: $item-final-width;
+        height: $item-final-height;
     }
 }
 
@@ -120,8 +122,10 @@ $item-hover-transition-time: 0.3s;
 }
 
 .item {
-    animation: scaleIn $item-hover-transition-time ease-in-out;
+    animation: expandItem $item-hover-transition-time ease-in-out;
 }
+
+
 
 
 
