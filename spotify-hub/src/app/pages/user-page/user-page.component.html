@@ -24,7 +24,7 @@
                     class="profile-image-small">
                 <p class="item-display-name">{{artist.name}}</p>
                 <p class="item-stats">Popularity: {{artist.popularity}}</p>
-                <p class="item-stats">Followers: {{artist.followers.total}}</p>
+                <p class="item-stats">Followers: {{globalFunctionsService.convertNumber(artist.followers.total)}}</p>
                 <p class="item-genres">{{artist.genres.join(', ')}}</p>
                 <a class="spotify-link" href="{{artist.external_urls.spotify}}" target="_blank">Visit Spotify
                     Profile</a>

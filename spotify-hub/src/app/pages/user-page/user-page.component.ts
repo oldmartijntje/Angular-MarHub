@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SpotifyApiService } from 'src/app/services/spotify-service.service';
+import { GlobalFunctionsService } from 'src/app/services/global-functions.service';
 
 @Component({
     selector: 'app-user-page',
@@ -13,7 +14,7 @@ export class UserPageComponent implements OnInit {
     followingArtists: Array<any> = [];
     show = false;
 
-    constructor(private spotifyApiService: SpotifyApiService) { }
+    constructor(private spotifyApiService: SpotifyApiService, public globalFunctionsService: GlobalFunctionsService) { }
 
     ngOnInit(): void {
         this.getNewToken()
