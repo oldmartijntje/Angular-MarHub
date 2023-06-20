@@ -29,19 +29,25 @@ body {
     background-color: $backgroundShade1;
     border-radius: 5px;
     box-shadow: 0 2px 4px $backgroundShade2;
+}
+
+.item-container {
     display: flex;
     flex-wrap: wrap;
 }
 
-// .itemBar * {
-//     color: $background-text-color;
-// }
+.itemBar-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: inline-block;
+}
 
 $item-initial-width: 50px;
 $item-initial-height: 50px;
 $item-final-width: 200px;
 $item-final-height: 200px;
-$item-hover-transition-time: 0.3s;
+$item-hover-transition-time: 0.6s;
 
 .item {
     display: flex;
@@ -54,7 +60,8 @@ $item-hover-transition-time: 0.3s;
     overflow: hidden;
     width: $item-initial-width;
     height: $item-initial-height;
-    transition: all $item-hover-transition-time ease-in-out;
+    transition: width $item-hover-transition-time ease-in-out,
+        height $item-hover-transition-time ease-in-out;
 
     &:hover {
         width: $item-final-width;

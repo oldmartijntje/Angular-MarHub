@@ -10,11 +10,14 @@ export class UserPageComponent implements OnInit {
     accessToken: string | null = null;
     loadedUser = false;
     user: any;
+    followingArtists: Array<any> = [];
+    show = false;
 
     constructor(private spotifyApiService: SpotifyApiService) { }
 
     ngOnInit(): void {
         this.getNewToken()
+        this.waitOneSecond();
     }
 
     getNewToken() {
@@ -29,7 +32,13 @@ export class UserPageComponent implements OnInit {
                 this.getFollowing();
             }).catch((error) => {
                 console.error(error);
-                this.getNewToken();
+                if (error.status == 403) {
+                    console.error(error.error)
+                } else if (error.status == 401) {
+                    // this.getNewToken();
+                    // outdated token
+                    // should also remove params before trying again
+                }
             });
         } else if (this.spotifyApiService.checkIfLoggedIn('/user')) {
             console.log('piss');
@@ -40,8 +49,13 @@ export class UserPageComponent implements OnInit {
                 this.getFollowing();
             }).catch((error) => {
                 console.error(error);
-                localStorage.removeItem('spotifyAccessToken')
-                this.getNewToken();
+                if (error.status == 403) {
+                    console.error(error.error)
+                } else if (error.status == 401) {
+                    localStorage.removeItem('spotifyAccessToken')
+                    // this.getNewToken();
+                    // outdated token
+                }
             });
         }
     }
@@ -52,10 +66,21 @@ export class UserPageComponent implements OnInit {
                 const followedArtists = response.artists.items;
                 console.log(followedArtists)
                 // Process the followed artists list
+                this.followingArtists = followedArtists;
             },
             (error) => {
                 console.error('Error retrieving followed artists:', error);
             }
         );
     }
+
+    waitOneSecond() {
+        setTimeout(() => {
+            // Code to be executed after one second
+            this.show = true;
+        }, 2000); // 1000 milliseconds = 1 second
+    }
+
+    // Call the function to wait for one second
+
 }
