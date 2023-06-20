@@ -21,6 +21,7 @@ body {
 //     color: $background-text-color;
 // }
 
+
 .itemBar {
     max-width: 90%;
     margin: 0 auto;
@@ -32,9 +33,97 @@ body {
     flex-wrap: wrap;
 }
 
-.itemBar * {
-    color: $background-text-color;
+// .itemBar * {
+//     color: $background-text-color;
+// }
+
+$item-hover-transition-time: 0.3s;
+
+.item {
+    position: relative;
+    border-radius: 5px;
+    background-color: $backgroundShade2;
+    margin: 0.5rem;
+    overflow: hidden;
+    transition: all $item-hover-transition-time ease-in-out;
+
+    &:hover {
+        width: 200px;
+        height: auto;
+
+        .item-display-name,
+        .item-stats,
+        .item-genres,
+        .spotify-link {
+            display: block;
+        }
+    }
+
+    .item-display-name,
+    .item-stats,
+    .item-genres,
+    .spotify-link {
+        display: none;
+        padding: 10px;
+        text-align: center;
+        transition: opacity $item-hover-transition-time ease-in-out;
+    }
+
+    .item-display-name,
+    .item-stats,
+    .item-genres {
+        color: $background-text-color;
+    }
 }
+
+.item-display-name {
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.item-stats,
+.item-genres {
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.spotify-link {
+    background-color: transparent;
+    color: $primary-color;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0.9);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}
+
+.item:hover .item-display-name,
+.item:hover .item-stats,
+.item:hover .item-genres,
+.item:hover .spotify-link {
+    animation: fadeIn $item-hover-transition-time ease-in-out;
+}
+
+.item {
+    animation: scaleIn $item-hover-transition-time ease-in-out;
+}
+
+
 
 .profile-image {
     width: 150px;
@@ -46,7 +135,6 @@ body {
         width: 50px;
         height: 50px;
         border-radius: 50%;
-        margin-bottom: 20px;
     }
 }
 
