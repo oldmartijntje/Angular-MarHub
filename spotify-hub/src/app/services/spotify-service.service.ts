@@ -12,6 +12,7 @@ export class SpotifyApiService {
     private redirectUri = environment.spotify.redirectUri;
     private tokenEndpoint = 'https://accounts.spotify.com/api/token';
     private accessToken: string | null = null;
+    apiUrl = 'https://api.spotify.com/v1'
 
     constructor(private http: HttpClient) { }
 
@@ -21,7 +22,7 @@ export class SpotifyApiService {
 
     authorize(redirectURI: string = ''): void {
         localStorage.setItem('redirectFromSpotifyTo', redirectURI)
-        const scopes = ['user-read-private', 'user-follow-read'];
+        const scopes = ['user-read-private', 'user-follow-read', 'user-library-read', 'user-top-read'];
         const state = this.generateRandomString(16);
         const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${this.clientId}&response_type=code&redirect_uri=${encodeURIComponent(this.redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&state=${state}`;
 
@@ -70,14 +71,38 @@ export class SpotifyApiService {
 
     getMe(): Promise<any> {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this.accessToken}`);
-        return this.http.get<any>('https://api.spotify.com/v1/me', { headers }).toPromise();
+        return this.http.get<any>(`${this.apiUrl}/me`, { headers }).toPromise();
     }
 
     getFollowedArtists(): Observable<any> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
 
-        return this.http.get<any>(`https://api.spotify.com/v1/me/following?type=artist`, { headers });
+        return this.http.get<any>(`${this.apiUrl}/me/following?type=artist`, { headers });
     }
+
+    getMyPlaylists(limit: number, offset: number): Observable<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        return this.http.get<any>(`${this.apiUrl}/me/playlists?limit=${String(limit)}&offset=${String(offset)}`, { headers });
+    }
+
+    getAvailableGenres(): Observable<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        return this.http.get<any>(`${this.apiUrl}/recommendations/available-genre-seeds`, { headers });
+    }
+
+    getTopTracks(): Observable<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        const queryParams = {
+            time_range: 'short_term',
+            limit: '25'
+        };
+
+        return this.http.get<any>(`${this.apiUrl}/me/top/tracks`, { headers, params: queryParams });
+    }
+
 
     // Other methods for interacting with the Spotify API
 }

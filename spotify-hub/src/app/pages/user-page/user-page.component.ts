@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 import { GlobalFunctionsService } from 'src/app/services/global-functions.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-user-page',
@@ -13,8 +14,10 @@ export class UserPageComponent implements OnInit {
     user: any;
     followingArtists: Array<any> = [];
     show = false;
+    createdPlaylists: Array<any> = [];
+    top25Songs: Array<any> = [];
 
-    constructor(private spotifyApiService: SpotifyApiService, public globalFunctionsService: GlobalFunctionsService) { }
+    constructor(private spotifyApiService: SpotifyApiService, public globalFunctionsService: GlobalFunctionsService, private router: Router) { }
 
     ngOnInit(): void {
         this.getNewToken()
@@ -31,12 +34,15 @@ export class UserPageComponent implements OnInit {
                 this.loadedUser = true;
                 console.log(this.user);
                 this.getFollowing();
+                this.getTopTracks();
             }).catch((error) => {
                 console.error(error);
                 if (error.status == 403) {
                     console.error(error.error)
+                    // User not registered in the Developer Dashboard
                 } else if (error.status == 401) {
-                    // this.getNewToken();
+                    console.log(error.error.error.message)
+                    this.router.navigate(['user']);
                     // outdated token
                     // should also remove params before trying again
                 }
@@ -48,13 +54,16 @@ export class UserPageComponent implements OnInit {
                 this.loadedUser = true;
                 console.log(this.user);
                 this.getFollowing();
+                this.getTopTracks();
             }).catch((error) => {
                 console.error(error);
                 if (error.status == 403) {
                     console.error(error.error)
+                    // User not registered in the Developer Dashboard
                 } else if (error.status == 401) {
                     localStorage.removeItem('spotifyAccessToken')
-                    // this.getNewToken();
+                    console.log(error.error.error.message)
+                    this.getNewToken();
                     // outdated token
                 }
             });
@@ -73,6 +82,30 @@ export class UserPageComponent implements OnInit {
                 console.error('Error retrieving followed artists:', error);
             }
         );
+        // this.getPlaylists()
+    }
+
+    getTopTracks() {
+        this.spotifyApiService.getTopTracks().subscribe(
+            (response) => {
+                const topTracks = response.items;
+                this.top25Songs = topTracks
+                this.top25Songs.forEach(element => {
+                    element['clicked'] = false;
+                });
+                console.log(this.top25Songs)
+            },
+            (error) => {
+                console.error('Error retrieving followed artists:', error);
+            }
+        );
+    }
+
+    addItemstoTargetList(target: Array<any>, source: Array<any>) {
+        source.forEach(item => {
+            target.push(item);
+        });
+        return target
     }
 
     waitOneSecond() {
@@ -83,5 +116,25 @@ export class UserPageComponent implements OnInit {
     }
 
     // Call the function to wait for one second
+
+    getPlaylists(index: number = 0) {
+        const amount = 1;
+        const maxNumber = 1000;
+        this.spotifyApiService.getMyPlaylists(amount, index * amount).subscribe(
+            (response) => {
+                var playlists = response.items;
+                if (playlists.length == amount) {
+                    this.getPlaylists(index + 1)
+                }
+                this.createdPlaylists = this.addItemstoTargetList(this.createdPlaylists, playlists);
+                // Process the followed artists list
+                console.log(this.createdPlaylists)
+
+            },
+            (error) => {
+                console.error('Error retrieving playlists:', error);
+            }
+        );
+    }
 
 }

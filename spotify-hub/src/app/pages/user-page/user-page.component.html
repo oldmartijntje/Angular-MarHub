@@ -19,7 +19,7 @@
     <div class="itemBar">
         <h1 class="itemBar-title">Artists followed.</h1>
         <div class="item-container">
-            <div class="item" *ngFor="let artist of followingArtists">
+            <div class="hoverItem" *ngFor="let artist of followingArtists">
                 <img src="{{artist.images[0].url}}" alt="{{artist.name}} their profile picture"
                     class="profile-image-small">
                 <p class="item-display-name">{{artist.name}}</p>
@@ -27,6 +27,22 @@
                 <p class="item-stats">Followers: {{globalFunctionsService.convertNumber(artist.followers.total)}}</p>
                 <p class="item-genres">{{artist.genres.join(', ')}}</p>
                 <a class="spotify-link" href="{{artist.external_urls.spotify}}" target="_blank">Visit Spotify
+                    Profile</a>
+            </div>
+        </div>
+    </div>
+    <div class="itemBar">
+        <h1 class="itemBar-title">Top 25 songs last 30 days.</h1>
+        <div class="item-container">
+            <div class="item" *ngFor="let song of top25Songs">
+                <img src="{{song.album.images[0].url}}" alt="{{song.name}} it's album cover"
+                    class="profile-image-small">
+                <p class="item-display-name">{{song.name}}</p>
+                <p class="item-stats">Popularity: {{song.popularity}}</p>
+                <p class="item-stats" *ngFor="let artist of song.artists">
+                    <a class="spotify-link" target="_blank" href="{{artist.external_urls.spotify}}">{{artist.name}}</a>
+                </p>
+                <a class="spotify-link" href="{{song.external_urls.spotify}}" target="_blank">Visit Spotify
                     Profile</a>
             </div>
         </div>
