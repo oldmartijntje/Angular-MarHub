@@ -21,7 +21,7 @@ export class SpotifyApiService {
 
     authorize(redirectURI: string = ''): void {
         localStorage.setItem('redirectFromSpotifyTo', redirectURI)
-        const scopes = ['user-read-private'];
+        const scopes = ['user-read-private', 'user-follow-read'];
         const state = this.generateRandomString(16);
         const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${this.clientId}&response_type=code&redirect_uri=${encodeURIComponent(this.redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&state=${state}`;
 
@@ -71,6 +71,12 @@ export class SpotifyApiService {
     getMe(): Promise<any> {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${this.accessToken}`);
         return this.http.get<any>('https://api.spotify.com/v1/me', { headers }).toPromise();
+    }
+
+    getFollowedArtists(): Observable<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        return this.http.get<any>(`https://api.spotify.com/v1/me/following?type=artist`, { headers });
     }
 
     // Other methods for interacting with the Spotify API

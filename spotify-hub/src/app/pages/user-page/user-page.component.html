@@ -1,9 +1,15 @@
-<div *ngIf="loadedUser" class="profile">
-    <img class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
-    <h1 class="display-name">{{user.display_name}}</h1>
-    <p class="country">Country: {{user.country}}</p>
-    <p class="followers">Followers: {{user.followers.total}}</p>
-    <p class="product">Product: {{user.product}}</p>
-    <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
-        Profile</a>
+<div *ngIf="loadedUser" class="page">
+    <div class="profile">
+        <img class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
+        <h1 class="display-name">{{user.display_name}}</h1>
+        <p class="country">Country: {{user.country}}</p>
+        <p class="followers">Followers: {{user.followers.total}}</p>
+        <p class="product">Product: {{user.product}}</p>
+        <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
+            Profile</a>
+    </div>
+    <div class="itemBar overflow-x-scroll"></div>
+</div>
+<div *ngIf="!loadedUser" class="profile">
+    <h1 class="display-name">You should probably connect to the spotify api</h1>
 </div>

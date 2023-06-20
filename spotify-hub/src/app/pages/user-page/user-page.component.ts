@@ -14,6 +14,10 @@ export class UserPageComponent implements OnInit {
     constructor(private spotifyApiService: SpotifyApiService) { }
 
     ngOnInit(): void {
+        this.getNewToken()
+    }
+
+    getNewToken() {
         const urlParams = new URLSearchParams(window.location.search);
         var accessTokenURL = urlParams.get('access_token');
         if (accessTokenURL != null) {
@@ -22,8 +26,10 @@ export class UserPageComponent implements OnInit {
                 this.user = result;
                 this.loadedUser = true;
                 console.log(this.user);
+                this.getFollowing();
             }).catch((error) => {
                 console.error(error);
+                this.getNewToken();
             });
         } else if (this.spotifyApiService.checkIfLoggedIn('/user')) {
             console.log('piss');
@@ -31,9 +37,25 @@ export class UserPageComponent implements OnInit {
                 this.user = result;
                 this.loadedUser = true;
                 console.log(this.user);
+                this.getFollowing();
             }).catch((error) => {
                 console.error(error);
+                localStorage.removeItem('spotifyAccessToken')
+                this.getNewToken();
             });
         }
+    }
+
+    getFollowing() {
+        this.spotifyApiService.getFollowedArtists().subscribe(
+            (response) => {
+                const followedArtists = response.artists.items;
+                console.log(followedArtists)
+                // Process the followed artists list
+            },
+            (error) => {
+                console.error('Error retrieving followed artists:', error);
+            }
+        );
     }
 }

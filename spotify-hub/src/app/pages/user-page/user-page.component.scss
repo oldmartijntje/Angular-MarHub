@@ -1,15 +1,38 @@
 @import '../../../styles.scss';
 
+body {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    /* Adjust as needed */
+}
+
 .profile {
-    max-width: 500px;
+    max-width: 90%;
     margin: 0 auto;
     padding: 20px;
     background-color: #282828;
     border-radius: 5px;
     box-shadow: 0 2px 4px $backgroundShade2;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
 .profile * {
+    color: $background-text-color;
+}
+
+.itemBar {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #282828;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px $backgroundShade2;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.itemBar * {
     color: $background-text-color;
 }
 
