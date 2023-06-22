@@ -14,6 +14,7 @@ import { CallbackPageComponent } from './pages/callback-page/callback-page.compo
 import { InfoPageComponent } from './pages/info-page/info-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
+import { MenuPopupComponent } from './components/menu-popup/menu-popup.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { SettingsPageComponent } from './pages/settings-page/settings-page.compo
         CallbackPageComponent,
         InfoPageComponent,
         UserPageComponent,
-        SettingsPageComponent
+        SettingsPageComponent,
+        MenuPopupComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,7 @@
+<div class="menu-overlay" *ngIf="showMenu" (click)="showMenu = false"></div>
+<div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="showMenu">
+    <button (click)="handleButtonClick(dataValue)" *ngIf="dataValue" class="menu-popup-element">{{ dataValue }}</button>
+    <button class="menu-popup-element" (click)="handleButtonClick('Button 1')">Button 1</button>
+    <button class="menu-popup-element" (click)="handleButtonClick('Button 2')">Button 2</button>
+    <button class="menu-popup-element" (click)="handleButtonClick('Button 3')">Button 3</button>
+</div>
