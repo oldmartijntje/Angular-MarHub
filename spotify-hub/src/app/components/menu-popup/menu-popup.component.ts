@@ -1,4 +1,6 @@
 import { Component, HostListener, Input } from '@angular/core';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { ToastQueueService } from 'src/app/services/toast-queue.service';
 
 @Component({
     selector: 'app-menu-popup',
@@ -10,6 +12,9 @@ export class MenuPopupComponent {
     showMenu: boolean = false;
     menuStyle: any = {};
     dataValue: string | null = null;
+    mode = 'Default'
+
+    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService) { }
 
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent) {
@@ -17,6 +22,11 @@ export class MenuPopupComponent {
         const menuItemElement = clickedElement.closest('.menu-item');
         if (menuItemElement && clickedElement.nodeName != "A") {
             const dataValue = menuItemElement.getAttribute('data-value');
+            if (menuItemElement.classList.contains('menu-type-song')) {
+                this.mode = 'SongElement'
+            } else {
+                this.mode = 'Default'
+            }
             this.showMenu = true;
             this.calculateMenuPosition(event);
             if (dataValue) {
@@ -46,10 +56,31 @@ export class MenuPopupComponent {
         };
     }
 
+    generateLink(id: string, type: string): string {
+        return `https://open.spotify.com/${type}/${id}`
+    }
+
+    copyLink(id: string, type: string): void {
+        this.clipboard.copy(this.generateLink(id, type));
+        this.showToast("Copied Link to clipboard!");
+    }
+
+    generateEmbed(id: string, type: string): string {
+        return `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/${type}/${id}?utm_source=generator" width="69%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`
+    }
+
+    copyEmbed(id: string, type: string): void {
+        this.clipboard.copy(this.generateEmbed(id, type));
+        this.showToast("Copied Embed to clipboard!");
+    }
 
 
     handleButtonClick(buttonLabel: string) {
         console.log('Button clicked:', buttonLabel);
         // Add your button click logic here
+    }
+
+    showToast(toastMessage: string = 'Default Toast: "Hello World!"') {
+        this.toastQueueService.enqueueToast(toastMessage);
     }
 }

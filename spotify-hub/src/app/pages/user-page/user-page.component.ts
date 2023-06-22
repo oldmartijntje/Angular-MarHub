@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 import { GlobalFunctionsService } from 'src/app/services/global-functions.service';
 import { Router } from '@angular/router';
+import { ToastQueueService } from 'src/app/services/toast-queue.service';
 
 @Component({
     selector: 'app-user-page',
@@ -16,8 +17,9 @@ export class UserPageComponent implements OnInit {
     show = false;
     createdPlaylists: Array<any> = [];
     top25Songs: Array<any> = [];
+    toastMessage: string = '';
 
-    constructor(private spotifyApiService: SpotifyApiService, public globalFunctionsService: GlobalFunctionsService, private router: Router) { }
+    constructor(private toastQueueService: ToastQueueService, private spotifyApiService: SpotifyApiService, public globalFunctionsService: GlobalFunctionsService, private router: Router) { }
 
     ngOnInit(): void {
         this.getNewToken()
@@ -135,6 +137,10 @@ export class UserPageComponent implements OnInit {
                 console.error('Error retrieving playlists:', error);
             }
         );
+    }
+
+    showToast(toastMessage: string = 'Default Toast: "Hello World!"') {
+        this.toastQueueService.enqueueToast(toastMessage);
     }
 
 }

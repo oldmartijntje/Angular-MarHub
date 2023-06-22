@@ -1,0 +1,28 @@
+@import '../../../styles.scss';
+
+.toast-container {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.toast {
+    background-color: $toast-background-color;
+    color: $toast-text-color;
+    padding: 16px;
+    margin-bottom: 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px $toast-secondary-color;
+    display: flex;
+    align-items: center;
+}
+
+.dismiss-button {
+    border: none;
+    background: none;
+    color: $toast-secondary-color;
+    font-size: 12px;
+    margin-left: auto;
+    cursor: pointer;
+}

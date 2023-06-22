@@ -9,18 +9,18 @@
                 <img src="assets/icons/koter.png" alt="Foreground Image">
             </div>
         </div>
-        <h1 class="display-name menu-item">{{user.display_name}}</h1>
-        <p class="country menu-item">Country: {{user.country}}</p>
-        <p class="followers menu-item">Followers: {{user.followers.total}}</p>
-        <p class="product menu-item">Product: {{user.product}}</p>
-        <p class="product menu-item">User Id: {{user.id}}</p>
-        <a class="spotify-link menu-item" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
+        <h1 class="display-name">{{user.display_name}}</h1>
+        <p class="country">Country: {{user.country}}</p>
+        <p class="followers">Followers: {{user.followers.total}}</p>
+        <p class="product">Product: {{user.product}}</p>
+        <p class="product">User Id: {{user.id}}</p>
+        <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
             Profile</a>
     </div>
-    <div class="itemBar menu-item" data-value="a">
+    <div class="itemBar">
         <h1 class="itemBar-title">Artists followed.</h1>
         <div class="item-container">
-            <div class="hoverItem menu-item" *ngFor="let artist of followingArtists" [attr.data-value]="artist.id">
+            <div class="hoverItem" *ngFor="let artist of followingArtists">
                 <img src="{{artist.images[0].url}}" alt="{{artist.name}} their profile picture"
                     class="profile-image-small">
                 <p class="item-display-name">{{artist.name}}</p>
@@ -35,7 +35,7 @@
     <div class="itemBar">
         <h1 class="itemBar-title">Top 25 songs last 30 days.</h1>
         <div class="item-container">
-            <div class="item" *ngFor="let song of top25Songs">
+            <div class="item menu-item menu-type-song" *ngFor="let song of top25Songs" [attr.data-value]="song.id">
                 <img src="{{song.album.images[0].url}}" alt="{{song.name}} it's album cover"
                     class="profile-image-small">
                 <p class="item-display-name">{{song.name}}</p>
