@@ -12,7 +12,7 @@ export class SpotifyApiService {
     private redirectUri = environment.spotify.redirectUri;
     private tokenEndpoint = 'https://accounts.spotify.com/api/token';
     private accessToken: string | null = null;
-    apiUrl = 'https://api.spotify.com/v1'
+    private apiUrl = 'https://api.spotify.com/v1'
 
     constructor(private http: HttpClient) { }
 
@@ -32,14 +32,20 @@ export class SpotifyApiService {
 
     checkIfLoggedIn(redirectURI: string = '', autoLogin: boolean = true): boolean {
         this.accessToken = localStorage.getItem('spotifyAccessToken');
-        if (this.accessToken == null) {
+        const urlParams = new URLSearchParams(window.location.search);
+        var accessTokenURL = urlParams.get('access_token');
+        if (this.accessToken != null) {
+            this.setAccessToken(this.accessToken)
+            return true
+        } else if (accessTokenURL != null) {
+            this.setAccessToken(accessTokenURL)
+            return true
+        }
+        else {
             if (autoLogin) {
                 this.authorize(redirectURI)
             }
             return false
-        } else {
-            this.setAccessToken(this.accessToken)
-            return true
         }
     }
 

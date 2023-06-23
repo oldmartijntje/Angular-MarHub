@@ -1,4 +1,4 @@
-<div *ngIf="loadedUser" class="page">
+<div *ngIf="!isOwnUserProfileEmpty()" class="page">
     <div class="profile">
         <div class="container">
             <img class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
@@ -49,6 +49,6 @@
         </div>
     </div>
 </div>
-<div *ngIf="!loadedUser" class="profile">
+<div *ngIf="isOwnUserProfileEmpty()" class="profile">
     <h1 class="display-name">You should probably connect to the spotify api</h1>
 </div>
