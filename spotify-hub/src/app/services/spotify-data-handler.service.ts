@@ -27,25 +27,29 @@ export class SpotifyDataHandlerService {
         console.log("forgor")
     }
 
-    private getPlaylists(index: number = 0) {
-        const amount = 50;
-        const maxNumber = 1000;
-        this.spotifyApiService.getMyPlaylists(amount, index * amount).subscribe(
-            (response) => {
-                var playlists = response.items;
-                if (playlists.length == amount) {
-                    this.getPlaylists(index + 1)
-                }
-                this.ownPlaylists = this.addItemstoTargetList(this.ownPlaylists, playlists);
-                // Process the followed artists list
-                console.log(this.ownPlaylists)
+    // private getPlaylists(index: number = 0): boolean {
+    //     const amount = 50;
+    //     const maxNumber = 1000;
+    //     this.spotifyApiService.getMyPlaylists(amount, index * amount).subscribe(
+    //         (response) => {
+    //             var playlists = response.items;
+    //             if (playlists.length == amount) {
+    //                 this.getPlaylists(index + 1)
+    //             }
+    //             this.ownPlaylists = this.addItemstoTargetList(this.ownPlaylists, playlists);
+    //             // Process the followed artists list
+    //             console.log(this.ownPlaylists)
+    //             return true;
 
-            },
-            (error) => {
-                console.error('Error retrieving playlists:', error);
-            }
-        );
-    }
+    //         },
+    //         (error) => {
+    //             console.error('Error retrieving playlists:', error);
+    //             return false;
+    //         }
+    //     );
+    //     // need to make this a subscription
+    //     // and then subscribe to it later
+    // }
 
     private addItemstoTargetList(target: Array<any>, source: Array<any>) {
         source.forEach(item => {
@@ -206,4 +210,18 @@ export class SpotifyDataHandlerService {
             return of(this.ownTop25);
         }
     }
+
+    // getMyOwnPlaylists(path: string = 'home'): Observable<any> {
+    //     this.loginIfNotAlready(path);
+    //     if (Object.keys(this.ownPlaylists).length === 0) {
+    //         var value = this.getPlaylists()
+    //         if (value == true) {
+    //             return of(this.ownPlaylists);
+    //         } else {
+    //             throw value;
+    //         }
+    //     } else {
+    //         return of(this.ownPlaylists);
+    //     }
+    // }
 }

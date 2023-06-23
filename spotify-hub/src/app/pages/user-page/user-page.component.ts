@@ -17,6 +17,7 @@ export class UserPageComponent implements OnInit {
     createdPlaylists: Array<any> = [];
     top25Songs: Array<any> = [];
     toastMessage: string = '';
+    myPlaylists: Array<any> = [];
 
     constructor(private spotifyDataHandlerService: SpotifyDataHandlerService, public globalFunctionsService: GlobalFunctionsService) { }
 
@@ -40,15 +41,25 @@ export class UserPageComponent implements OnInit {
             (response) => {
                 const topTracks = response.items;
                 this.top25Songs = topTracks
-                this.top25Songs.forEach(element => {
-                    element['clicked'] = false;
-                });
+                // this.top25Songs.forEach(element => {
+                //     element['clicked'] = false;
+                // });
                 console.log(this.top25Songs)
             },
             (error) => {
                 console.error('Error retrieving followed artists:', error);
             }
         );
+        // this.spotifyDataHandlerService.getMyOwnPlaylists('user').subscribe(
+        //     (response) => {
+        //         const topTracks = response.items;
+        //         this.myPlaylists = topTracks
+        //         console.log(this.myPlaylists)
+        //     },
+        //     (error) => {
+        //         console.error('Error retrieving followed artists:', error);
+        //     }
+        // );
     }
 
     isOwnUserProfileEmpty(): boolean {
