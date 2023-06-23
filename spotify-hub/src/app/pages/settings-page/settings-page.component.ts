@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { SpotifyApiService } from 'src/app/services/spotify-service.service';
+import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
+import { ToastQueueService } from 'src/app/services/toast-queue.service';
 
 
 @Component({
@@ -12,7 +14,7 @@ export class SettingsPageComponent implements OnInit {
     spotifyAccessTokenStoring: boolean = true;
     colorTheme: string = 'light';
 
-    constructor(private clipboard: Clipboard, private spotifyApiService: SpotifyApiService) { }
+    constructor(private toastQueueService: ToastQueueService, private clipboard: Clipboard, private spotifyApiService: SpotifyApiService, private spotifyDataHandlerService: SpotifyDataHandlerService) { }
 
     ngOnInit(): void {
         if (localStorage.getItem('keepSpotifyAccessToken') == null) {
@@ -28,6 +30,7 @@ export class SettingsPageComponent implements OnInit {
     saveSettings() {
         // Code to save the settings goes here
         console.log('Settings saved');
+        this.showToast('Settings saved!')
     }
 
     copyAcessKeyToClipboard() {
@@ -50,24 +53,32 @@ export class SettingsPageComponent implements OnInit {
             const textToCopy = accessTokenURL;
             this.clipboard.copy(textToCopy);
             if (byClick == false) {
-                alert('click the copy button again.');
+                this.showToast('Didn\'t copy, Click the copy button again to copy.', "warning", 69420);
+            } else {
+                this.showToast('Copied Access \ntoken.')
             }
         } else if (accessTokenStorage != null) {
             const textToCopy = accessTokenStorage;
             this.clipboard.copy(textToCopy);
             if (byClick == false) {
-                alert('click the copy button again.');
+                this.showToast('Didn\'t copy, Click the copy button again to copy.', "warning", 69420);
+            } else {
+                this.showToast('Copied Access \ntoken.')
             }
         } else {
-            alert("No token found!");
+            this.showToast("No token found!", "error");
         }
     }
 
-    deleteToken() {
+    deleteToken(ignoreToast: boolean = false) {
+        if (ignoreToast == false) {
+            this.showToast('Token deleted from localStorage.')
+        }
         localStorage.removeItem('spotifyAccessToken');
     }
 
     deleteLocalStorage() {
+        this.showToast('Cleared localStorage!')
         localStorage.clear();
     }
 
@@ -75,6 +86,16 @@ export class SettingsPageComponent implements OnInit {
         this.spotifyAccessTokenStoring = newValue;
         localStorage.setItem('keepSpotifyAccessToken', this.spotifyAccessTokenStoring.toString());
         console.log(this.spotifyAccessTokenStoring);
+    }
+
+    logout() {
+        this.showToast('Logged out succesfully!', "info")
+        this.spotifyDataHandlerService.forgetEverything()
+        this.deleteToken(true)
+    }
+
+    private showToast(toastMessage: string = 'Default Toast: "Hello World!"', type: string = 'info', timeModifier: number = 0) {
+        this.toastQueueService.enqueueToast(toastMessage, type, timeModifier);
     }
 
 }

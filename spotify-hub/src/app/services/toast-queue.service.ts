@@ -14,8 +14,8 @@ export class ToastQueueService {
         return this.queue;
     }
 
-    enqueueToast(message: string): void {
-        const toast: Toast = { id: this.currentId++, message, timeoutId: null };
+    enqueueToast(message: string, typeOfToast: string = 'info', timeModifier: number = 0): void {
+        const toast: Toast = { id: this.currentId++, message, timeoutId: null, type: typeOfToast, timeModifier: timeModifier };
         this.queue.push(toast);
 
         const baseDuration = this.messageSeconds * 1000; // Base duration for each toast
@@ -27,9 +27,13 @@ export class ToastQueueService {
             displayDuration += additionalDelay;
         }
 
-        toast.timeoutId = setTimeout(() => {
-            this.dequeueToast(toast);
-        }, displayDuration) as any;
+        if (timeModifier != 69420) {
+            displayDuration += (timeModifier * 1000)
+            toast.timeoutId = setTimeout(() => {
+                this.dequeueToast(toast);
+            }, displayDuration) as any;
+        }
+
     }
 
     dequeueToast(toast: Toast): void {

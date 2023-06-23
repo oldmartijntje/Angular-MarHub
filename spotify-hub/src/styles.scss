@@ -6,8 +6,15 @@ $backgroundShade2: #333333;
 $primary-text-color: #000000;
 $secondary-text-color: #ffffff;
 $background-text-color: #ffffff;
-$toast-background-color: #282828;
-$toast-text-color: #ffffff;
+$toast-info-background-color: #434343;
+$toast-info-text-color: #ffffff;
+$toast-info-close-color: #f60000;
+$toast-warning-background-color: #543c00;
+$toast-warning-text-color: #f1b900;
+$toast-warning-close-color: #ff0000;
+$toast-error-background-color: #470000;
+$toast-error-text-color: #828282;
+$toast-error-close-color: #ff0000;
 $toast-secondary-color: rgba(0, 0, 0, 0.295);
 
 body {

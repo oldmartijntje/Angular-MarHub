@@ -23,8 +23,32 @@ export class UserPageComponent implements OnInit {
     ngOnInit(): void {
         this.spotifyDataHandlerService.getUserProfile('user').then((result) => {
             console.log(result)
-            this.user = result
-        })
+            this.user = result;
+        });
+        this.spotifyDataHandlerService.getArtistsYouFollow('user').subscribe(
+            (response) => {
+                const followedArtists = response.artists.items;
+                console.log(followedArtists);
+                // Process the followed artists list
+                this.followingArtists = followedArtists;
+            },
+            (error) => {
+                console.error('Error retrieving followed artists:', error);
+            }
+        );
+        this.spotifyDataHandlerService.getTop25SongsFromLast30Days('user').subscribe(
+            (response) => {
+                const topTracks = response.items;
+                this.top25Songs = topTracks
+                this.top25Songs.forEach(element => {
+                    element['clicked'] = false;
+                });
+                console.log(this.top25Songs)
+            },
+            (error) => {
+                console.error('Error retrieving followed artists:', error);
+            }
+        );
     }
 
     isOwnUserProfileEmpty(): boolean {

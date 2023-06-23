@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { SpotifyApiService } from './spotify-service.service';
 import { Router } from '@angular/router';
 import { ToastQueueService } from './toast-queue.service';
+import { Observable, catchError, of, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,15 @@ export class SpotifyDataHandlerService {
     temporaryData: Record<string, any> = {};
 
     constructor(private toastQueueService: ToastQueueService, private spotifyApiService: SpotifyApiService, private router: Router) { }
+
+    forgetEverything() {
+        this.ownUserProfile = {};
+        this.ownPlaylists = [];
+        this.ownTop25 = [];
+        this.ownFollowingArtists = [];
+        this.loggedIn = false;
+        console.log("forgor")
+    }
 
     private getPlaylists(index: number = 0) {
         const amount = 50;
@@ -59,7 +69,6 @@ export class SpotifyDataHandlerService {
                     // User not registered in the Developer Dashboard
                 } else if (error.status == 401) {
                     console.log(error.error.error.message)
-                    this.getNewToken();
                     this.router.navigate([path]);
                     // outdated token
                     // should also remove params before trying again
@@ -78,7 +87,6 @@ export class SpotifyDataHandlerService {
                 } else if (error.status == 401) {
                     localStorage.removeItem('spotifyAccessToken')
                     console.log(error.error.error.message)
-                    this.getNewToken();
                     // outdated token
                 }
             });
@@ -116,8 +124,8 @@ export class SpotifyDataHandlerService {
         );
     }
 
-    private showToast(toastMessage: string = 'Default Toast: "Hello World!"') {
-        this.toastQueueService.enqueueToast(toastMessage);
+    private showToast(toastMessage: string = 'Default Toast: "Hello World!"', type: string = 'info', timeModifier: number = 0) {
+        this.toastQueueService.enqueueToast(toastMessage, type, timeModifier);
     }
 
     private loginIfNotAlready(path: string = 'home') {
@@ -137,7 +145,6 @@ export class SpotifyDataHandlerService {
             localStorage.removeItem('spotifyAccessToken')
             this.router.navigate([path]);
             console.log(error.error.error.message)
-            this.getNewToken();
             // outdated token
         }
     }
@@ -161,6 +168,42 @@ export class SpotifyDataHandlerService {
                     reject(new Error('Own user profile not available.'));
                 }
             });
+        }
+    }
+
+    getArtistsYouFollow(path: string = 'home'): Observable<any> {
+        this.loginIfNotAlready(path);
+        if (Object.keys(this.ownFollowingArtists).length === 0) {
+            return this.spotifyApiService.getFollowedArtists().pipe(
+                tap((result) => {
+                    this.ownFollowingArtists = result;
+                    console.log(this.ownFollowingArtists);
+                }),
+                catchError((error) => {
+                    this.returnedErrorHandler(path, error);
+                    throw error; // Throw the error to propagate it in the observable chain
+                })
+            );
+        } else {
+            return of(this.ownFollowingArtists);
+        }
+    }
+
+    getTop25SongsFromLast30Days(path: string = 'home'): Observable<any> {
+        this.loginIfNotAlready(path);
+        if (Object.keys(this.ownTop25).length === 0) {
+            return this.spotifyApiService.getTopTracks().pipe(
+                tap((result) => {
+                    this.ownTop25 = result;
+                    console.log(this.ownTop25);
+                }),
+                catchError((error) => {
+                    this.returnedErrorHandler(path, error);
+                    throw error; // Throw the error to propagate it in the observable chain
+                })
+            );
+        } else {
+            return of(this.ownTop25);
         }
     }
 }

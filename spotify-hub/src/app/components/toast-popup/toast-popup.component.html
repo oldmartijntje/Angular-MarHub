@@ -1,8 +1,8 @@
 <div class="toast-container">
-    <div class="toast" *ngFor="let toast of toastQueue">
-      <span>{{ toast.message }}</span>
-      <button class="dismiss-button" (click)="dismissToast(toast.id)">
-        X
-      </button>
+    <div class="toast {{toast.type}}" *ngFor="let toast of toastQueue">
+        <span>{{ toast.message }}</span>
+        <button class="dismiss-button" (click)="dismissToast(toast.id)">
+            X
+        </button>
     </div>
-  </div>
+</div>

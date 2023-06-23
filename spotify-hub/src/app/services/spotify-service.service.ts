@@ -21,6 +21,7 @@ export class SpotifyApiService {
     }
 
     authorize(redirectURI: string = ''): void {
+        console.log(redirectURI)
         localStorage.setItem('redirectFromSpotifyTo', redirectURI)
         const scopes = ['user-read-private', 'user-follow-read', 'user-library-read', 'user-top-read'];
         const state = this.generateRandomString(16);

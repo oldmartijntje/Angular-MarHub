@@ -80,7 +80,7 @@ export class MenuPopupComponent {
         // Add your button click logic here
     }
 
-    showToast(toastMessage: string = 'Default Toast: "Hello World!"') {
-        this.toastQueueService.enqueueToast(toastMessage);
+    private showToast(toastMessage: string = 'Default Toast: "Hello World!"', type: string = 'info', timeModifier: number = 0) {
+        this.toastQueueService.enqueueToast(toastMessage, type, timeModifier);
     }
 }
