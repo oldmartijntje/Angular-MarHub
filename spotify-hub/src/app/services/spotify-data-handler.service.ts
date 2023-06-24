@@ -148,6 +148,7 @@ export class SpotifyDataHandlerService {
             localStorage.removeItem('spotifyAccessToken')
             this.router.navigate([path]);
             console.log(error.error.error.message)
+            this.spotifyApiService.authorize(path)
             // outdated token
         }
     }

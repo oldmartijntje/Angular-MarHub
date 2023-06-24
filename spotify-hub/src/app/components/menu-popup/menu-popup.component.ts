@@ -44,13 +44,22 @@ export class MenuPopupComponent {
     calculateMenuPosition(event: MouseEvent) {
         const menuWidth = 200; // Adjust as per your menu width
         const menuHeight = 150; // Adjust as per your menu height
+        const scrollbarWidth = 35;
 
         const menuX = event.clientX + window.scrollX;
         const menuY = event.clientY + window.scrollY;
 
+        const windowWidth = window.innerWidth;
+        var modifierX = 0;
+
+        if (menuWidth + menuX > windowWidth) {
+            modifierX = (menuWidth + menuX - windowWidth) * -1
+            modifierX -= scrollbarWidth
+        }
+
         this.menuStyle = {
             top: menuY + 'px',
-            left: menuX + 'px',
+            left: menuX + modifierX + 'px',
             width: menuWidth + 'px',
             // height: menuHeight + 'px'
         };

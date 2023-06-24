@@ -17,7 +17,7 @@
         <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
             Profile</a>
     </div>
-    <div class="itemBar">
+    <div class="itemBar" id="artistsFollowed">
         <h1 class="itemBar-title">Artists followed.</h1>
         <div class="item-container">
             <div class="hoverItem" *ngFor="let artist of followingArtists">
@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="itemBar">
+    <div class="itemBar" id="top25">
         <h1 class="itemBar-title">Top 25 songs last 30 days.</h1>
         <div class="item-container">
             <div class="item menu-item menu-type-song" *ngFor="let song of top25Songs" [attr.data-value]="song.id">
@@ -44,6 +44,22 @@
                     <a class="spotify-link" target="_blank" href="{{artist.external_urls.spotify}}">{{artist.name}}</a>
                 </p>
                 <a class="spotify-link" href="{{song.external_urls.spotify}}" target="_blank">Visit Spotify
+                    Profile</a>
+            </div>
+        </div>
+    </div>
+    <div class="itemBar" id="playlists">
+        <h1 class="itemBar-title">Self Made Playlists.</h1>
+        <div class="item-container">
+            <div class="item menu-item menu-type-playlist" *ngFor="let playlist of myPlaylists"
+                [attr.data-value]="playlist.id">
+                <img src="{{playlist.images[0].url}}" alt="{{playlist.name}} it's album cover"
+                    class="cover-image-small">
+                <p class="item-display-name">{{playlist.name}}</p>
+                <p class="item-stats">Public: {{playlist.public}}</p>
+                <p class="item-stats">Tracks: {{playlist.tracks.total}}</p>
+                <p class="item-stats">{{playlist.description}}</p>
+                <a class="spotify-link" href="{{playlist.external_urls.spotify}}" target="_blank">Visit Spotify
                     Profile</a>
             </div>
         </div>
