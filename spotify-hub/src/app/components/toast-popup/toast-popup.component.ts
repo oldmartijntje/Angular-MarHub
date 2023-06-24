@@ -19,4 +19,11 @@ export class ToastPopupComponent implements OnInit {
     dismissToast(toastId: number): void {
         this.toastQueueService.dequeueToastById(toastId);
     }
+
+    scanForBreak(article: any) {
+        // Replace \n with <br> in the text
+        article = article.replace(/\n/g, '<br>');
+
+        return article;
+    }
 }

@@ -52,7 +52,7 @@ export class MenuPopupComponent {
             top: menuY + 'px',
             left: menuX + 'px',
             width: menuWidth + 'px',
-            height: menuHeight + 'px'
+            // height: menuHeight + 'px'
         };
     }
 
@@ -82,5 +82,12 @@ export class MenuPopupComponent {
 
     private showToast(toastMessage: string = 'Default Toast: "Hello World!"', type: string = 'info', timeModifier: number = 0) {
         this.toastQueueService.enqueueToast(toastMessage, type, timeModifier);
+    }
+
+    scanForBreak(article: any) {
+        // Replace \n with <br> in the text
+        article = article.replace(/\n/g, '<br>');
+
+        return article;
     }
 }
