@@ -50,16 +50,17 @@ export class UserPageComponent implements OnInit {
                 console.error('Error retrieving followed artists:', error);
             }
         );
-        // this.spotifyDataHandlerService.getMyOwnPlaylists('user').subscribe(
-        //     (response) => {
-        //         const topTracks = response.items;
-        //         this.myPlaylists = topTracks
-        //         console.log(this.myPlaylists)
-        //     },
-        //     (error) => {
-        //         console.error('Error retrieving followed artists:', error);
-        //     }
-        // );
+        this.spotifyDataHandlerService.getMyOwnPlaylists('user').subscribe(
+            (response) => {
+                const playlists = response; // Assign the response directly
+                this.myPlaylists = playlists; // Assign to myPlaylists
+                console.log(this.myPlaylists);
+            },
+            (error) => {
+                console.error('Error retrieving playlists:', error);
+            }
+        );
+
     }
 
     isOwnUserProfileEmpty(): boolean {
