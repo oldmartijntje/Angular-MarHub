@@ -152,11 +152,28 @@ export class MenuPopupComponent {
     }
 
     addSongToPlaylist(id: string) {
+        this.spotifyDataHandlerService.addSongToPlaylist(this.getPage(), id, `spotify:track:${this.dataValue}`);
+    }
+
+    getPlaylistData() {
+        if (this.dataValue != null) {
+            this.spotifyDataHandlerService.getPlaylistData(this.getPage(), this.dataValue).subscribe(
+                (response) => {
+                    console.log(response);
+                },
+                (error) => {
+                    console.error('Error retrieving playlists:', error);
+                }
+            );
+        }
+    }
+
+    getPage() {
         var page = 'home';
         const currentPage = localStorage.getItem('currentPage');
         if (currentPage != null) {
             page = currentPage;
         }
-        this.spotifyDataHandlerService.addSongToPlaylist(page, id, `spotify:track:${this.dataValue}`);
+        return page
     }
 }

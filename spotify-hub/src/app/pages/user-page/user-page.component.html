@@ -14,8 +14,7 @@
         <p class="followers">Followers: {{user.followers.total}}</p>
         <p class="product">Product: {{user.product}}</p>
         <p class="product">User Id: {{user.id}}</p>
-        <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
-            Profile</a>
+        <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
     </div>
     <div class="itemBar" id="artistsFollowed" *ngIf="followingArtists.length != 0">
         <h1 class="itemBar-title">Artists followed.</h1>
@@ -27,8 +26,7 @@
                 <p class="item-stats">Popularity: {{artist.popularity}}</p>
                 <p class="item-stats">Followers: {{globalFunctionsService.convertNumber(artist.followers.total)}}</p>
                 <p class="item-genres">{{artist.genres.join(', ')}}</p>
-                <a class="spotify-link" href="{{artist.external_urls.spotify}}" target="_blank">Visit Spotify
-                    Profile</a>
+                <a class="spotify-link" href="{{artist.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
             </div>
         </div>
     </div>
@@ -43,8 +41,7 @@
                 <p class="item-stats" *ngFor="let artist of song.artists">
                     <a class="spotify-link" target="_blank" href="{{artist.external_urls.spotify}}">{{artist.name}}</a>
                 </p>
-                <a class="spotify-link" href="{{song.external_urls.spotify}}" target="_blank">Visit Spotify
-                    Profile</a>
+                <a class="spotify-link" href="{{song.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
             </div>
         </div>
     </div>
@@ -60,9 +57,9 @@
                 <p class="item-display-name">{{playlist.name}}</p>
                 <p class="item-stats">Public: {{playlist.public}}</p>
                 <p class="item-stats">Tracks: {{playlist.tracks.total}}</p>
-                <p class="item-stats">{{playlist.description}}</p>
-                <a class="spotify-link" href="{{playlist.external_urls.spotify}}" target="_blank">Visit Spotify
-                    Profile</a>
+                <p class="item-stats">{{replaceCharecterString(playlist.description)}}</p>
+                <a class="spotify-link" href="{{playlist.external_urls.spotify}}" target="_blank">Visit on
+                    Spotify.com</a>
             </div>
         </div>
     </div>

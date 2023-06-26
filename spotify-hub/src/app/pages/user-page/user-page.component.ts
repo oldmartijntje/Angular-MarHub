@@ -91,6 +91,11 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
     // Call the function to wait for one second
 
+    replaceCharecterString(input: string) {
+        input = input.replace("&#x27;", "'");
+        return input
+    }
+
 
 
 

@@ -242,11 +242,11 @@ export class SpotifyDataHandlerService {
     }
 
     addSongToPlaylist(path: string = 'home', playlistId: string, trackUri: string) {
-        console.log('a')
+        this.loginIfNotAlready(path);
         this.spotifyApiService.addTrackToPlaylist(playlistId, trackUri).subscribe(
             (result) => {
                 console.log(result);
-                this.spotifyApiService.getPlaylist(playlistId).subscribe(
+                this.spotifyApiService.getSinglePlaylist(playlistId).subscribe(
                     (result) => {
                         console.log(result);
                         this.addPlaylistToData(result);
@@ -292,6 +292,44 @@ export class SpotifyDataHandlerService {
             }
         });
         this.setOwnPlaylists(playlists);
+    }
+
+    getPlaylistData(path: string = 'home', playlistId: string): Observable<any> {
+        this.loginIfNotAlready(path);
+        console.log(1)
+        if (this.extraData.hasOwnProperty('playlist')) {
+            console.log(2)
+            if (this.extraData['playlist'].hasOwnProperty(playlistId)) {
+                console.log(3)
+                return of(this.extraData['playlist'][playlistId]);
+            } else {
+                return this.spotifyApiService.getSinglePlaylist(playlistId).pipe(
+                    tap((result) => {
+                        console.log(result);
+                        this.addPlaylistToData(result);
+                    }),
+                    map(() => this.extraData['playlist'][playlistId]),
+                    catchError((error) => {
+                        console.error(error);
+                        throw error;
+                    })
+                );
+            }
+        } else {
+            this.extraData['playlist'] = {};
+            return this.spotifyApiService.getSinglePlaylist(playlistId).pipe(
+                tap((result) => {
+                    console.log(result);
+                    this.addPlaylistToData(result);
+                }),
+                map(() => this.extraData['playlist'][playlistId]),
+                catchError((error) => {
+                    console.error(error);
+                    throw error;
+                })
+            );
+        }
+
     }
 
 

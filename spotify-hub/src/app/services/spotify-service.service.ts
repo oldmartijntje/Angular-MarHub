@@ -121,7 +121,7 @@ export class SpotifyApiService {
         return this.http.post<any>(`${this.apiUrl}/playlists/${playlistId}/tracks`, body, { headers });
     }
 
-    getPlaylist(playlistId: string): Observable<any> {
+    getSinglePlaylist(playlistId: string): Observable<any> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
 
         return this.http.get<any>(`${this.apiUrl}/playlists/${playlistId}`, { headers });

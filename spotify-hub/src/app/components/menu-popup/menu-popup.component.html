@@ -29,6 +29,8 @@
             [innerHTML]="scanForBreak('Copy Playlist URL')"></button>
         <button (click)="copyEmbed(dataValue, 'playlist')" *ngIf="dataValue" class="menu-popup-element"
             [innerHTML]="scanForBreak('Copy Playlist Embed')"></button>
+        <button (click)="getPlaylistData()" *ngIf="dataValue" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Get Data')"></button>
         <div *ngIf="extraMenu == 1" class="menu-popup menu-popup-element" [ngStyle]="extraMenuStyle">
             <button *ngFor="let playlist of myPlaylists" class=" menu-popup-element" (click)="addToPlaylistButton()"
                 [innerHTML]="scanForBreak(playlist.name)"></button>
