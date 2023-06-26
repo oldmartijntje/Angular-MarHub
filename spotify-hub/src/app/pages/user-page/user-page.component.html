@@ -17,7 +17,7 @@
         <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit Spotify
             Profile</a>
     </div>
-    <div class="itemBar" id="artistsFollowed">
+    <div class="itemBar" id="artistsFollowed" *ngIf="followingArtists.length != 0">
         <h1 class="itemBar-title">Artists followed.</h1>
         <div class="item-container">
             <div class="hoverItem" *ngFor="let artist of followingArtists">
@@ -32,7 +32,7 @@
             </div>
         </div>
     </div>
-    <div class="itemBar" id="top25">
+    <div class="itemBar" id="top25" *ngIf="top25Songs.length != 0">
         <h1 class="itemBar-title">Top 25 songs last 30 days.</h1>
         <div class="item-container">
             <div class="item menu-item menu-type-song" *ngFor="let song of top25Songs" [attr.data-value]="song.id">
@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    <div class="itemBar" id="playlists">
+    <div class="itemBar" id="playlists" *ngIf="myPlaylists.length != 0">
         <h1 class="itemBar-title">Self Made Playlists.</h1>
         <div class="item-container">
             <div class="item menu-item menu-type-playlist" *ngFor="let playlist of myPlaylists"
