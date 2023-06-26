@@ -20,6 +20,7 @@ export class HomePageComponent implements OnInit {
     length = 1;
 
     ngOnInit(): void {
+        localStorage.setItem('currentPage', 'home');
         for (let i = 0; i < this.Articles.length; i++) {
             this.Articles[i] = this.scanForBreak(this.Articles[i]);
         }

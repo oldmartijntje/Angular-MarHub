@@ -1,6 +1,8 @@
 import { Component, HostListener, Input } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ToastQueueService } from 'src/app/services/toast-queue.service';
+import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
+import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 
 @Component({
     selector: 'app-menu-popup',
@@ -11,10 +13,13 @@ export class MenuPopupComponent {
     // @Input() typeOfMenu: string = '';
     showMenu: boolean = false;
     menuStyle: any = {};
+    extraMenuStyle: any = {};
     dataValue: string | null = null;
-    mode = 'Default'
+    mode = 'Default';
+    extraMenu = 0;
+    myPlaylists: Array<any> = [];
 
-    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService) { }
+    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService, private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService) { }
 
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent) {
@@ -24,6 +29,10 @@ export class MenuPopupComponent {
             const dataValue = menuItemElement.getAttribute('data-value');
             if (menuItemElement.classList.contains('menu-type-song')) {
                 this.mode = 'SongElement'
+            } else if (menuItemElement.classList.contains('menu-type-artist')) {
+                this.mode = 'ArtistElement'
+            } else if (menuItemElement.classList.contains('menu-type-playlist')) {
+                this.mode = 'PlaylistElement'
             } else {
                 this.mode = 'Default'
             }
@@ -38,6 +47,7 @@ export class MenuPopupComponent {
             this.showMenu = true;
         } else {
             this.showMenu = false;
+            this.extraMenu = 0;
         }
     }
 
@@ -65,6 +75,25 @@ export class MenuPopupComponent {
         };
     }
 
+    calculateExtraMenuPosition(clickedButtonHeight: number = 0) {
+        const menuWidth = 200; // Adjust as per your menu width
+        const mainMenuWidth = 200; // Adjust as per your menu width
+        const menuHeight = 150; // Adjust as per your menu height
+        const scrollbarWidth = 35;
+
+        var modifier = -1;
+
+        if (parseFloat(this.menuStyle.left) < menuWidth) {
+            modifier = 1
+        }
+        this.extraMenuStyle = {
+            top: clickedButtonHeight + 'px',
+            left: (mainMenuWidth * modifier) + 'px',
+            width: menuWidth + 'px',
+            // height: menuHeight + 'px'
+        };
+    }
+
     generateLink(id: string, type: string): string {
         return `https://open.spotify.com/${type}/${id}`
     }
@@ -72,6 +101,7 @@ export class MenuPopupComponent {
     copyLink(id: string, type: string): void {
         this.clipboard.copy(this.generateLink(id, type));
         this.showToast("Copied Link to clipboard!");
+        this.extraMenu = 0;
     }
 
     generateEmbed(id: string, type: string): string {
@@ -81,6 +111,7 @@ export class MenuPopupComponent {
     copyEmbed(id: string, type: string): void {
         this.clipboard.copy(this.generateEmbed(id, type));
         this.showToast("Copied Embed to clipboard!");
+        this.extraMenu = 0;
     }
 
 
@@ -98,5 +129,34 @@ export class MenuPopupComponent {
         article = article.replace(/\n/g, '<br>');
 
         return article;
+    }
+
+    addToPlaylistButton() {
+        this.calculateExtraMenuPosition(90)
+        this.extraMenu = 1;
+        if (this.myPlaylists.length == 0) {
+            this.spotifyDataHandlerService.getMyOwnPlaylists('user').subscribe(
+                (response) => {
+                    const playlists = response; // Assign the response directly
+                    this.myPlaylists = playlists; // Assign to myPlaylists
+                    console.log(this.myPlaylists);
+                    this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
+                        this.myPlaylists = newPlaylists;
+                    });
+                },
+                (error) => {
+                    console.error('Error retrieving playlists:', error);
+                }
+            );
+        }
+    }
+
+    addSongToPlaylist(id: string) {
+        var page = 'home';
+        const currentPage = localStorage.getItem('currentPage');
+        if (currentPage != null) {
+            page = currentPage;
+        }
+        this.spotifyDataHandlerService.addSongToPlaylist(page, id, `spotify:track:${this.dataValue}`);
     }
 }

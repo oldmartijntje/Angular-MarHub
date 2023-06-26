@@ -17,6 +17,7 @@ export class SettingsPageComponent implements OnInit {
     constructor(private toastQueueService: ToastQueueService, private clipboard: Clipboard, private spotifyApiService: SpotifyApiService, private spotifyDataHandlerService: SpotifyDataHandlerService) { }
 
     ngOnInit(): void {
+        localStorage.setItem('currentPage', 'settings');
         if (localStorage.getItem('keepSpotifyAccessToken') == null) {
             localStorage.setItem('keepSpotifyAccessToken', 'true');
         } else {

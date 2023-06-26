@@ -53,8 +53,10 @@
         <div class="item-container">
             <div class="item menu-item menu-type-playlist" *ngFor="let playlist of myPlaylists"
                 [attr.data-value]="playlist.id">
-                <img src="{{playlist.images[0].url}}" alt="{{playlist.name}} it's album cover"
-                    class="cover-image-small">
+                <img *ngIf="playlist.images.length > 0" src="{{playlist.images[0].url}}"
+                    alt="{{playlist.name}} it's album cover" class="cover-image-small">
+                <img *ngIf="playlist.images.length == 0" src="../../../assets/images/defaultCover.png"
+                    alt="this is the default cover" class="cover-image-small">
                 <p class="item-display-name">{{playlist.name}}</p>
                 <p class="item-stats">Public: {{playlist.public}}</p>
                 <p class="item-stats">Tracks: {{playlist.tracks.total}}</p>
@@ -67,4 +69,5 @@
 </div>
 <div *ngIf="isOwnUserProfileEmpty()" class="profile">
     <h1 class="display-name">You should probably connect to the spotify api</h1>
+    <img *ngIf="showImage" src="../../../assets/images/no api connected.png" alt="megamind meme">
 </div>

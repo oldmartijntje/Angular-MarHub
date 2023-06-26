@@ -23,7 +23,7 @@ export class SpotifyApiService {
     authorize(redirectURI: string = ''): void {
         console.log(redirectURI)
         localStorage.setItem('redirectFromSpotifyTo', redirectURI)
-        const scopes = ['user-read-private', 'user-follow-read', 'user-library-read', 'user-top-read'];
+        const scopes = ['user-read-private', 'user-follow-read', 'user-library-read', 'user-top-read', 'playlist-modify-public', 'playlist-modify-private'];
         const state = this.generateRandomString(16);
         const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${this.clientId}&response_type=code&redirect_uri=${encodeURIComponent(this.redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&state=${state}`;
 
@@ -108,6 +108,23 @@ export class SpotifyApiService {
         };
 
         return this.http.get<any>(`${this.apiUrl}/me/top/tracks`, { headers, params: queryParams });
+    }
+
+    addTrackToPlaylist(playlistId: string, trackUri: string): Observable<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+        const body = {
+            uris: [trackUri]
+        };
+        console.log(playlistId)
+        console.log(trackUri)
+
+        return this.http.post<any>(`${this.apiUrl}/playlists/${playlistId}/tracks`, body, { headers });
+    }
+
+    getPlaylist(playlistId: string): Observable<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        return this.http.get<any>(`${this.apiUrl}/playlists/${playlistId}`, { headers });
     }
 
 

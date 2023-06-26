@@ -2,25 +2,35 @@ import { Injectable } from '@angular/core';
 import { SpotifyApiService } from './spotify-service.service';
 import { Router } from '@angular/router';
 import { ToastQueueService } from './toast-queue.service';
-import { Observable, catchError, map, mergeAll, of, switchMap, tap } from 'rxjs';
+import { Observable, Subject, catchError, map, mergeAll, of, switchMap, tap } from 'rxjs';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SpotifyDataHandlerService {
     private ownUserProfile: Record<string, any> = {};
+    private ownPlaylistsSubject!: Subject<any[]>;
+    ownPlaylists$!: Observable<any[]>;
     private ownPlaylists: Array<any> = [];
     private ownTop25: Array<any> = [];
     private ownFollowingArtists: Array<any> = [];
     private loggedIn: boolean = false;
 
-    temporaryData: Record<string, any> = {};
+    extraData: Record<string, any> = {};
 
-    constructor(private toastQueueService: ToastQueueService, private spotifyApiService: SpotifyApiService, private router: Router) { }
+    constructor(private toastQueueService: ToastQueueService, private spotifyApiService: SpotifyApiService, private router: Router) {
+        this.ownPlaylistsSubject = new Subject<any[]>();
+        this.ownPlaylists$ = this.ownPlaylistsSubject.asObservable();
+    }
+
+    setOwnPlaylists(newPlaylists: any[]) {
+        this.ownPlaylists = newPlaylists;
+        this.ownPlaylistsSubject.next(newPlaylists);
+    }
 
     forgetEverything() {
         this.ownUserProfile = {};
-        this.ownPlaylists = [];
+        this.setOwnPlaylists([]);
         this.ownTop25 = [];
         this.ownFollowingArtists = [];
         this.loggedIn = false;
@@ -33,7 +43,7 @@ export class SpotifyDataHandlerService {
         return this.spotifyApiService.getMyPlaylists(amount, index * amount).pipe(
             switchMap((response) => {
                 const playlists = response.items;
-                this.ownPlaylists = this.addItemstoTargetList(this.ownPlaylists, playlists);
+                this.setOwnPlaylists(this.addItemstoTargetList(this.ownPlaylists, playlists));
                 if (playlists.length === amount) {
                     return this.getPlaylists(index + 1);
                 } else {
@@ -148,6 +158,7 @@ export class SpotifyDataHandlerService {
             localStorage.removeItem('spotifyAccessToken')
             this.router.navigate([path]);
             console.log(error.error.error.message)
+            alert('outdated')
             this.spotifyApiService.authorize(path)
             // outdated token
         }
@@ -224,5 +235,64 @@ export class SpotifyDataHandlerService {
             return of(this.ownPlaylists);
         }
     }
+
+    dupe() {
+        this.setOwnPlaylists([...this.ownPlaylists, ...this.ownPlaylists])
+        console.log(this.ownPlaylists)
+    }
+
+    addSongToPlaylist(path: string = 'home', playlistId: string, trackUri: string) {
+        console.log('a')
+        this.spotifyApiService.addTrackToPlaylist(playlistId, trackUri).subscribe(
+            (result) => {
+                console.log(result);
+                this.spotifyApiService.getPlaylist(playlistId).subscribe(
+                    (result) => {
+                        console.log(result);
+                        this.addPlaylistToData(result);
+                        this.replaceDataFromPlaylist(result)
+                        // Handle the result here
+                    },
+                    (error) => {
+                        console.log(error);
+                        // Handle the error here
+                    }
+                );
+            },
+            (error) => {
+                console.log(error);
+                // Handle the error here
+            }
+        );
+    }
+
+    addPlaylistToData(playlist: Record<string, any>) {
+        if (this.extraData.hasOwnProperty('playlist')) {
+            this.extraData['playlist'][playlist['id']] = playlist;
+        } else {
+            this.extraData['playlist'] = {};
+            this.extraData['playlist'][playlist['id']] = playlist;
+        }
+    }
+
+    replaceDataFromPlaylist(playlist: Record<string, any>) {
+        var playlists = this.ownPlaylists;
+        playlists.forEach(element => {
+            if (element.id == playlist['id']) {
+                console.log('aaaaa')
+                for (const key in element) {
+                    if (playlist.hasOwnProperty(key)) {
+                        if (key == 'tracks') {
+                            console.log(key)
+                        }
+                        element[key] = playlist[key];
+                        //console.log({ ...element })
+                    }
+                }
+            }
+        });
+        this.setOwnPlaylists(playlists);
+    }
+
 
 }
