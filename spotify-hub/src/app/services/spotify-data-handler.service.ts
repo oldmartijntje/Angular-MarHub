@@ -236,11 +236,6 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    dupe() {
-        this.setOwnPlaylists([...this.ownPlaylists, ...this.ownPlaylists])
-        console.log(this.ownPlaylists)
-    }
-
     addSongToPlaylist(path: string = 'home', playlistId: string, trackUri: string) {
         this.loginIfNotAlready(path);
         this.spotifyApiService.addTrackToPlaylist(playlistId, trackUri).subscribe(
@@ -251,6 +246,7 @@ export class SpotifyDataHandlerService {
                         console.log(result);
                         this.addPlaylistToData(result);
                         this.replaceDataFromPlaylist(result)
+                        this.showToast('Added song to playlist!')
                         // Handle the result here
                     },
                     (error) => {

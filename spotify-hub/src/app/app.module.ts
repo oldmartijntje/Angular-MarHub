@@ -16,6 +16,7 @@ import { UserPageComponent } from './pages/user-page/user-page.component';
 import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
 import { MenuPopupComponent } from './components/menu-popup/menu-popup.component';
 import { ToastPopupComponent } from './components/toast-popup/toast-popup.component';
+import { PlaylistPageComponent } from './pages/playlist-page/playlist-page.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { ToastPopupComponent } from './components/toast-popup/toast-popup.compon
         UserPageComponent,
         SettingsPageComponent,
         MenuPopupComponent,
-        ToastPopupComponent
+        ToastPopupComponent,
+        PlaylistPageComponent
     ],
     imports: [
         BrowserModule,
