@@ -1,0 +1,180 @@
+@import '../../../styles.scss';
+
+.itemBar {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: $backgroundShade1;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px $backgroundShade2;
+    margin-bottom: 1rem;
+}
+
+$item-initial-width: 50px;
+$item-initial-height: 50px;
+$item-final-width: 200px;
+$item-final-height: 200px;
+$item-hover-transition-time: 0.6s;
+
+body {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+.profile {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: $backgroundShade1;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px $backgroundShade2;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+
+    .profile-image {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+    }
+
+    .profile-title {
+        font-size: 24px;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .profile-description {
+        margin-bottom: 10px;
+    }
+
+    .profile-owner {
+        margin-bottom: 10px;
+    }
+
+    .profile-link {
+        display: block;
+        text-align: center;
+        margin-top: 10px;
+    }
+}
+
+.itemBar {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: $backgroundShade1;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px $backgroundShade2;
+    margin-bottom: 1rem;
+
+    .itemBar-title {
+        font-size: 24px;
+        margin-bottom: 10px;
+        text-align: center;
+        display: inline-block;
+    }
+
+    .item-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .hoverItem {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        border-radius: 5px;
+        background-color: $backgroundShade2;
+        margin: 0.5rem;
+        overflow: hidden;
+        width: $item-initial-width;
+        height: $item-initial-height;
+        transition: width $item-hover-transition-time ease-in-out,
+            height $item-hover-transition-time ease-in-out;
+
+        &:hover {
+            width: $item-final-width;
+            height: $item-final-height;
+        }
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .item-title {
+            font-size: 16px;
+            margin-top: 10px;
+            text-align: center;
+            color: $primary-text-color;
+        }
+
+        .item-artist {
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: center;
+            color: $primary-text-color;
+        }
+    }
+
+    .playlist-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1rem;
+
+        .playlist-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+
+        .playlist-info {
+            .playlist-name {
+                font-size: 24px;
+                font-weight: bold;
+                color: $primary-text-color;
+                margin-bottom: 0.5rem;
+            }
+
+            .playlist-owner {
+                font-size: 16px;
+                color: $primary-text-color;
+            }
+        }
+    }
+
+    .playlist-tracks {
+        display: flex;
+        flex-direction: column;
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+
+            .track-image {
+                width: 50px;
+                height: 50px;
+                border-radius: 5px;
+                margin-right: 1rem;
+            }
+
+            .track-info {
+                .track-name {
+                    font-size: 16px;
+                    color: $primary-text-color;
+                    margin-bottom: 0.5rem;
+                }
+
+                .track-artist {
+                    font-size: 14px;
+                    color: $primary-text-color;
+                }
+            }
+        }
+    }
+}

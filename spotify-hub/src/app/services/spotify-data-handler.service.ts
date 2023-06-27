@@ -228,6 +228,7 @@ export class SpotifyDataHandlerService {
             return this.getPlaylists().pipe(
                 map(() => this.ownPlaylists), // Map to return this.ownPlaylists
                 catchError((error) => {
+                    this.returnedErrorHandler(path, error);
                     throw error;
                 })
             );
@@ -251,6 +252,7 @@ export class SpotifyDataHandlerService {
                     },
                     (error) => {
                         console.log(error);
+                        this.returnedErrorHandler(path, error);
                         // Handle the error here
                     }
                 );
@@ -307,6 +309,7 @@ export class SpotifyDataHandlerService {
                     map(() => this.extraData['playlist'][playlistId]),
                     catchError((error) => {
                         console.error(error);
+                        this.returnedErrorHandler(path, error);
                         throw error;
                     })
                 );
@@ -321,6 +324,7 @@ export class SpotifyDataHandlerService {
                 map(() => this.extraData['playlist'][playlistId]),
                 catchError((error) => {
                     console.error(error);
+                    this.returnedErrorHandler(path, error);
                     throw error;
                 })
             );

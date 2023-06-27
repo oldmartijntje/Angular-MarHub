@@ -3,6 +3,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { ToastQueueService } from 'src/app/services/toast-queue.service';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { SpotifyApiService } from 'src/app/services/spotify-service.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-menu-popup',
@@ -19,7 +20,7 @@ export class MenuPopupComponent {
     extraMenu = 0;
     myPlaylists: Array<any> = [];
 
-    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService, private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService) { }
+    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService, private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService, private router: Router) { }
 
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent) {
@@ -44,7 +45,7 @@ export class MenuPopupComponent {
                 this.dataValue = null;
             }
         } else if (clickedElement.classList.contains('menu-popup-element') && clickedElement.nodeName != "A") {
-            this.showMenu = true;
+            // this.showMenu = true;
         } else {
             this.showMenu = false;
             this.extraMenu = 0;
@@ -117,6 +118,8 @@ export class MenuPopupComponent {
 
     handleButtonClick(buttonLabel: string) {
         console.log('Button clicked:', buttonLabel);
+        console.log(this.showMenu);
+        console.log(this.extraMenu);
         // Add your button click logic here
     }
 
@@ -155,11 +158,16 @@ export class MenuPopupComponent {
         this.spotifyDataHandlerService.addSongToPlaylist(this.getPage(), id, `spotify:track:${this.dataValue}`);
     }
 
-    getPlaylistData() {
+    navigateToPlaylist() {
         if (this.dataValue != null) {
+            this.showMenu = false;
+            this.extraMenu = 0;
             this.spotifyDataHandlerService.getPlaylistData(this.getPage(), this.dataValue).subscribe(
                 (response) => {
+                    this.showMenu = false;
+                    this.extraMenu = 0;
                     console.log(response);
+                    this.router.navigate(['playlist'], { queryParams: { "playlistId": response.id } });
                 },
                 (error) => {
                     console.error('Error retrieving playlists:', error);

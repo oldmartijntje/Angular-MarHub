@@ -1,1 +1,38 @@
-<p>playlist-page works!</p>
+<div *ngIf="!isPlaylistDataEmpty()">
+    <div class="profile">
+        <div class="profile-image">
+            <img src="{{ playlistData['images'][0]['url'] }}" alt="{{ playlistData['name'] }}">
+        </div>
+        <h1 class="profile-title">{{ playlistData['name'] }}</h1>
+        <p class="profile-owner">Created by <a href="{{ playlistData['owner']['external_urls']['spotify'] }}">{{
+                playlistData['owner']['display_name'] }}</a></p>
+        <div class="profile-description">
+            <p>{{ playlistData['description'] }}</p>
+        </div>
+        <div class="profile-followers">
+            <p>{{ playlistData['followers']['total'] }} followers</p>
+        </div>
+        <div class="profile-link">
+            <a href="{{ playlistData['external_urls']['spotify'] }}" target="_blank">View on Spotify</a>
+        </div>
+    </div>
+
+    <div class="itemBar">
+        <h2 class="itemBar-title">Tracks</h2>
+        <div class="item-container">
+            <div class="item" *ngFor="let track of playlistData['tracks']['items']">
+                <img src="{{ track['track']['album']['images'][0]['url'] }}"
+                    alt="{{ track['track']['album']['name'] }}">
+                <h3 class="item-display-name">{{ track['track']['name'] }}</h3>
+                <p class="item-stats">{{ track['track']['artists'][0]['name'] }} • {{ track['track']['album']['name'] }}
+                </p>
+                <a class="spotify-link" href="{{ track['track']['external_urls']['spotify'] }}" target="_blank">Listen
+                    on Spotify</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div *ngIf="isPlaylistDataEmpty()" class="itemBar">
+    <h1>Welp, there is no data right now, that's akward.</h1>
+</div>

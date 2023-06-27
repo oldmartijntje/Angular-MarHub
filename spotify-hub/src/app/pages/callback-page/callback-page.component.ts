@@ -29,9 +29,17 @@ export class CallbackPageComponent implements OnInit {
             (accessToken: any) => {
                 if (localStorage.getItem('keepSpotifyAccessToken') == 'true' || localStorage.getItem('keepSpotifyAccessToken') == null) {
                     localStorage.setItem('spotifyAccessToken', accessToken['access_token']);
-                    this.router.navigate([localStorage.getItem('redirectFromSpotifyTo')]);
+                    if (localStorage.getItem('redirectFromSpotifyTo') == 'playlist') {
+                        this.router.navigate([localStorage.getItem('redirectFromSpotifyTo')], { queryParams: { "playlistId": localStorage.getItem('playlistId') } });
+                    } else {
+                        this.router.navigate([localStorage.getItem('redirectFromSpotifyTo')]);
+                    }
                 } else {
-                    this.router.navigate([localStorage.getItem('redirectFromSpotifyTo')], { queryParams: { "access_token": accessToken['access_token'] } });
+                    if (localStorage.getItem('redirectFromSpotifyTo') == 'playlist') {
+                        this.router.navigate([localStorage.getItem('redirectFromSpotifyTo')], { queryParams: { "playlistId": localStorage.getItem('playlistId'), "access_token": accessToken['access_token'] } });
+                    } else {
+                        this.router.navigate([localStorage.getItem('redirectFromSpotifyTo')], { queryParams: { "access_token": accessToken['access_token'] } });
+                    }
                 }
 
             },

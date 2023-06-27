@@ -17,6 +17,7 @@ import { SettingsPageComponent } from './pages/settings-page/settings-page.compo
 import { MenuPopupComponent } from './components/menu-popup/menu-popup.component';
 import { ToastPopupComponent } from './components/toast-popup/toast-popup.component';
 import { PlaylistPageComponent } from './pages/playlist-page/playlist-page.component';
+import { DurationPipe } from './pipes/duration.pipe';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { PlaylistPageComponent } from './pages/playlist-page/playlist-page.compo
         InfoPageComponent,
         UserPageComponent,
         SettingsPageComponent,
+        DurationPipe,
         MenuPopupComponent,
         ToastPopupComponent,
         PlaylistPageComponent
