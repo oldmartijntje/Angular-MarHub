@@ -1,10 +1,8 @@
 <div *ngIf="!isPlaylistDataEmpty()">
     <div class="profile">
-        <div class="profile-image">
-            <img src="{{ playlistData['images'][0]['url'] }}" alt="{{ playlistData['name'] }}">
-        </div>
+        <img src="{{ playlistData['images'][0]['url'] }}" alt="{{ playlistData['name'] }}" class="cover-image">
         <h1 class="profile-title">{{ playlistData['name'] }}</h1>
-        <p class="profile-owner">Created by <a href="{{ playlistData['owner']['external_urls']['spotify'] }}">{{
+        <p class="profile-owner">Created by <a href="user/{{ playlistData['owner']['id'] }}" class="spotify-link">{{
                 playlistData['owner']['display_name'] }}</a></p>
         <div class="profile-description">
             <p>{{ playlistData['description'] }}</p>
@@ -12,8 +10,9 @@
         <div class="profile-followers">
             <p>{{ playlistData['followers']['total'] }} followers</p>
         </div>
-        <div class="profile-link">
-            <a href="{{ playlistData['external_urls']['spotify'] }}" target="_blank">View on Spotify</a>
+        <div>
+            <a href="{{ playlistData['external_urls']['spotify'] }}" target="_blank" class="spotify-link">View on
+                Spotify</a>
         </div>
     </div>
 
@@ -21,13 +20,26 @@
         <h2 class="itemBar-title">Tracks</h2>
         <div class="item-container">
             <div class="item" *ngFor="let track of playlistData['tracks']['items']">
-                <img src="{{ track['track']['album']['images'][0]['url'] }}"
-                    alt="{{ track['track']['album']['name'] }}">
+                <img *ngIf="track['track']['album']['images'] != 0"
+                    src="{{ track['track']['album']['images'][0]['url'] }}" alt="{{ track['track']['album']['name'] }}"
+                    class="cover-image-small">
+                <img *ngIf="track['track']['album']['images'] == 0" src="../../../assets/images/defaultCover.png"
+                    alt="this is the default cover" class="cover-image-small">
                 <h3 class="item-display-name">{{ track['track']['name'] }}</h3>
-                <p class="item-stats">{{ track['track']['artists'][0]['name'] }} • {{ track['track']['album']['name'] }}
+                <span class="item-stats" *ngFor="let artist of track['track']['artists']">
+                    <a class="spotify-link" target="_blank" href="{{artist.external_urls.spotify}}"> {{artist.name}}
+                    </a>
+                </span>
+                <p class="item-stats">Album:
+                    <a class="spotify-link" target="_blank"
+                        href="{{track['track']['album']['external_urls']['spotify']}}">
+                        {{track['track']['album']['name']}}
+                    </a>
                 </p>
-                <a class="spotify-link" href="{{ track['track']['external_urls']['spotify'] }}" target="_blank">Listen
+                <a *ngIf="track['is_local'] == false" class="spotify-link"
+                    href="{{ track['track']['external_urls']['spotify'] }}" target="_blank">Listen
                     on Spotify</a>
+                <p *ngIf="track['is_local'] != false" class="item-stats">This is a local song.</p>
             </div>
         </div>
     </div>

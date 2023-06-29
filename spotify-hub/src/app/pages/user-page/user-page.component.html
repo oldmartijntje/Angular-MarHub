@@ -1,27 +1,37 @@
 <div *ngIf="!isOwnUserProfileEmpty()" class="page">
     <div class="profile">
         <div class="container">
-            <img class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
-            <div *ngIf="user.product == 'premium'" class="overlay premium">
+            <img *ngIf="user.images.length > 0" class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
+            <img *ngIf="user.images.length == 0" class="profile-image"
+                src="../../../assets/images/defaultProfileImage.png" alt="Profile Image">
+            <div *ngIf="user.product == 'premium' && skin == ''" class="overlay premium">
+                <img src="assets/icons/crown.png" alt="Foreground Image">
+            </div>
+            <div *ngIf="user.product == 'premium' && skin == 'heart'" class="overlay premiumFlip">
                 <img src="assets/icons/crown.png" alt="Foreground Image">
             </div>
             <div *ngIf="user.product == 'free'" class="overlay free">
                 <img src="assets/icons/koter.png" alt="Foreground Image">
             </div>
+            <div *ngIf="skin != ''" class="overlay skinItem">
+                <img src="assets/images/skins/{{skin}}.png" alt="Foreground Image">
+            </div>
         </div>
         <h1 class="display-name">{{user.display_name}}</h1>
-        <p class="country">Country: {{user.country}}</p>
+        <p class="country" *ngIf="user.country">Country: {{user.country}}</p>
         <p class="followers">Followers: {{user.followers.total}}</p>
-        <p class="product">Product: {{user.product}}</p>
-        <p class="product">User Id: {{user.id}}</p>
+        <p class="product" *ngIf="user.product">Product: {{user.product}}</p>
+        <p class="item-stats">User Id: {{user.id}}</p>
         <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
     </div>
     <div class="itemBar" id="artistsFollowed" *ngIf="followingArtists.length != 0">
         <h1 class="itemBar-title">Artists followed.</h1>
         <div class="item-container">
             <div class="hoverItem" *ngFor="let artist of followingArtists">
-                <img src="{{artist.images[0].url}}" alt="{{artist.name}} their profile picture"
-                    class="profile-image-small">
+                <img *ngIf="user.images.length == 0" src="../../../assets/images/defaultProfileImage.png"
+                    alt="{{artist.name}} their profile picture" class="profile-image-small">
+                <img *ngIf="user.images.length != 0" src="{{artist.images[0].url}}"
+                    alt="{{artist.name}} their profile picture" class="profile-image-small">
                 <p class="item-display-name">{{artist.name}}</p>
                 <p class="item-stats">Popularity: {{artist.popularity}}</p>
                 <p class="item-stats">Followers: {{globalFunctionsService.convertNumber(artist.followers.total)}}</p>
@@ -34,8 +44,10 @@
         <h1 class="itemBar-title">Top 25 songs last 30 days.</h1>
         <div class="item-container">
             <div class="item menu-item menu-type-song" *ngFor="let song of top25Songs" [attr.data-value]="song.id">
-                <img src="{{song.album.images[0].url}}" alt="{{song.name}} it's album cover"
-                    class="profile-image-small">
+                <img *ngIf="user.images.length == 0" src="../../../assets/images/defaultCover.png"
+                    alt="{{song.name}} it's album cover" class="profile-image-small">
+                <img *ngIf="user.images.length != 0" src="{{song.album.images[0].url}}"
+                    alt="{{song.name}} it's album cover" class="profile-image-small">
                 <p class="item-display-name">{{song.name}}</p>
                 <p class="item-stats">Popularity: {{song.popularity}}</p>
                 <p class="item-stats" *ngFor="let artist of song.artists">

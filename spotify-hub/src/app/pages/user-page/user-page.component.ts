@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 import { GlobalFunctionsService } from 'src/app/services/global-functions.service';
-import { Router } from '@angular/router';
 import { ToastQueueService } from 'src/app/services/toast-queue.service';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { Subscribable, Subscription } from 'rxjs';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 
 @Component({
     selector: 'app-user-page',
@@ -21,59 +21,78 @@ export class UserPageComponent implements OnInit, OnDestroy {
     myPlaylists: Array<any> = [];
     showImage = false;
     playlistsSubscription: Subscription | null = null;
+    routeSub: Subscription | null = null;
+    self = false;
+    skin = '';
 
-    constructor(private spotifyDataHandlerService: SpotifyDataHandlerService, public globalFunctionsService: GlobalFunctionsService) { }
+    constructor(private spotifyDataHandlerService: SpotifyDataHandlerService, public globalFunctionsService: GlobalFunctionsService, private ActivatedRoute: ActivatedRoute) { }
 
     ngOnDestroy(): void {
         if (this.playlistsSubscription != null) {
             this.playlistsSubscription.unsubscribe();
+        }
+        if (this.routeSub != null) {
+            this.routeSub.unsubscribe();
         }
     }
 
     ngOnInit(): void {
         localStorage.setItem('currentPage', 'user');
         this.waitTimeForImage(10000)
-        this.spotifyDataHandlerService.getUserProfile('user').then((result) => {
-            console.log(result)
-            this.user = result;
-        });
-        this.spotifyDataHandlerService.getArtistsYouFollow('user').subscribe(
-            (response) => {
-                const followedArtists = response.artists.items;
-                console.log(followedArtists);
-                // Process the followed artists list
-                this.followingArtists = followedArtists;
-            },
-            (error) => {
-                console.error('Error retrieving followed artists:', error);
-            }
-        );
-        this.spotifyDataHandlerService.getTop25SongsFromLast30Days('user').subscribe(
-            (response) => {
-                const topTracks = response.items;
-                this.top25Songs = topTracks
-                // this.top25Songs.forEach(element => {
-                //     element['clicked'] = false;
-                // });
-                console.log(this.top25Songs)
-            },
-            (error) => {
-                console.error('Error retrieving followed artists:', error);
-            }
-        );
-        this.spotifyDataHandlerService.getMyOwnPlaylists('user').subscribe(
-            (response) => {
-                const playlists = response; // Assign the response directly
-                this.myPlaylists = playlists; // Assign to myPlaylists
-                console.log(this.myPlaylists);
-                this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
-                    this.myPlaylists = newPlaylists;
+        this.routeSub = this.ActivatedRoute.params.subscribe((params: Params) => {
+            if (params['uid'] == undefined) {
+                this.self = true;
+                this.spotifyDataHandlerService.getUserProfile('user').then((result) => {
+                    console.log(result)
+                    this.user = result;
+                    this.giveCertainPeopleSkins();
                 });
-            },
-            (error) => {
-                console.error('Error retrieving playlists:', error);
+                this.spotifyDataHandlerService.getArtistsYouFollow('user').subscribe(
+                    (response) => {
+                        const followedArtists = response.artists.items;
+                        console.log(followedArtists);
+                        // Process the followed artists list
+                        this.followingArtists = followedArtists;
+                    },
+                    (error) => {
+                        console.error('Error retrieving followed artists:', error);
+                    }
+                );
+                this.spotifyDataHandlerService.getTop25SongsFromLast30Days('user').subscribe(
+                    (response) => {
+                        const topTracks = response.items;
+                        this.top25Songs = topTracks
+                        // this.top25Songs.forEach(element => {
+                        //     element['clicked'] = false;
+                        // });
+                        console.log(this.top25Songs)
+                    },
+                    (error) => {
+                        console.error('Error retrieving followed artists:', error);
+                    }
+                );
+                this.spotifyDataHandlerService.getMyOwnPlaylists('user').subscribe(
+                    (response) => {
+                        const playlists = response; // Assign the response directly
+                        this.myPlaylists = playlists; // Assign to myPlaylists
+                        console.log(this.myPlaylists);
+                        this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
+                            this.myPlaylists = newPlaylists;
+                        });
+                    },
+                    (error) => {
+                        console.error('Error retrieving playlists:', error);
+                    }
+                );
+            } else {
+                this.self = false;
+                this.spotifyDataHandlerService.getUserProfile('user', params['uid']).then((result) => {
+                    console.log(result)
+                    this.user = result;
+                    this.giveCertainPeopleSkins();
+                });
             }
-        );
+        });
 
     }
 
@@ -94,6 +113,14 @@ export class UserPageComponent implements OnInit, OnDestroy {
     replaceCharecterString(input: string) {
         input = input.replace("&#x27;", "'");
         return input
+    }
+
+    giveCertainPeopleSkins() {
+        if (this.user.id == '31pimce2yvnjy7676xhxtp7ouohu') {
+            this.skin = 'heart';
+        } else if (this.user.id == '7uatf47gcofdupwdxammpxliw') {
+            this.skin = 'marvelSnap';
+        }
     }
 
 

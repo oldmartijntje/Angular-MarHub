@@ -164,26 +164,59 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    getUserProfile(path: string = 'home'): Promise<any> {
-        this.loginIfNotAlready(path);
-        if (Object.keys(this.ownUserProfile).length === 0) {
-            return this.spotifyApiService.getMe().then((result) => {
-                this.ownUserProfile = result;
-                console.log(this.ownUserProfile);
-                return this.ownUserProfile;
-            }).catch((error) => {
-                this.returnedErrorHandler(path, error);
-                throw error; // Throw the error to propagate it in the promise chain
-            });
+    private checkIfExtraDataDictExists(dictName: string = 'something') {
+        if (dictName in this.extraData) {
+            return true
         } else {
-            return new Promise((resolve, reject) => {
-                if (this.ownUserProfile) {
-                    resolve(this.ownUserProfile);
-                } else {
-                    reject(new Error('Own user profile not available.'));
-                }
-            });
+            this.extraData[dictName] = {};
+            return true
         }
+    }
+
+    getUserProfile(path: string = 'home', userId: string = ''): Promise<any> {
+        this.loginIfNotAlready(path);
+        if (userId != '') {
+            this.checkIfExtraDataDictExists('user')
+            if ((userId in this.extraData['user']) == false) {
+                return this.spotifyApiService.getUser(userId).then((result) => {
+                    this.addUserToData(result);
+                    console.log(this.extraData['user'][userId]);
+                    return this.extraData['user'][userId];
+                }).catch((error) => {
+                    this.returnedErrorHandler(path, error);
+                    throw error; // Throw the error to propagate it in the promise chain
+                });
+            } else {
+                return new Promise((resolve, reject) => {
+                    if (this.extraData['user'][userId]) {
+                        resolve(this.extraData['user'][userId]);
+                    } else {
+                        reject(new Error('Own user profile not available.'));
+                    }
+                });
+            }
+        } else {
+            if (Object.keys(this.ownUserProfile).length === 0) {
+                return this.spotifyApiService.getMe().then((result) => {
+                    this.ownUserProfile = result;
+                    this.addUserToData(result);
+                    console.log(this.ownUserProfile);
+                    return this.ownUserProfile;
+                }).catch((error) => {
+                    this.returnedErrorHandler(path, error);
+                    throw error; // Throw the error to propagate it in the promise chain
+                });
+            } else {
+                return new Promise((resolve, reject) => {
+                    if (this.ownUserProfile) {
+                        resolve(this.ownUserProfile);
+                    } else {
+                        reject(new Error('Own user profile not available.'));
+                    }
+                });
+            }
+        }
+
     }
 
     getArtistsYouFollow(path: string = 'home'): Observable<any> {
@@ -264,16 +297,24 @@ export class SpotifyDataHandlerService {
         );
     }
 
-    addPlaylistToData(playlist: Record<string, any>) {
-        if (this.extraData.hasOwnProperty('playlist')) {
-            this.extraData['playlist'][playlist['id']] = playlist;
+    private addPlaylistToData(playlist: Record<string, any>) {
+        this.addSomethingToData(playlist, 'playlist')
+    }
+
+    private addUserToData(user: Record<string, any>) {
+        this.addSomethingToData(user, 'user')
+    }
+
+    private addSomethingToData(item: Record<string, any>, dictName: string = '404') {
+        if (this.extraData.hasOwnProperty(dictName)) {
+            this.extraData[dictName][item['id']] = item;
         } else {
-            this.extraData['playlist'] = {};
-            this.extraData['playlist'][playlist['id']] = playlist;
+            this.extraData[dictName] = {};
+            this.extraData[dictName][item['id']] = item;
         }
     }
 
-    replaceDataFromPlaylist(playlist: Record<string, any>) {
+    private replaceDataFromPlaylist(playlist: Record<string, any>) {
         var playlists = this.ownPlaylists;
         playlists.forEach(element => {
             if (element.id == playlist['id']) {
@@ -331,6 +372,4 @@ export class SpotifyDataHandlerService {
         }
 
     }
-
-
 }

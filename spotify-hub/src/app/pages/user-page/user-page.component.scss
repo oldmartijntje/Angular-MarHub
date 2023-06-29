@@ -251,6 +251,14 @@ $item-hover-transition-time: 0.6s;
     transform: rotate(45deg);
 }
 
+.premiumFlip {
+    top: -75%;
+    right: 15%;
+    width: 150%;
+    height: 150%;
+    transform: rotate(-35deg);
+}
+
 .free {
     top: 0%;
     right: -113%;
@@ -259,7 +267,19 @@ $item-hover-transition-time: 0.6s;
     transform: rotate(35deg);
 }
 
+.skinItem {
+    top: -25%;
+    right: -25%;
+    width: 150%;
+    height: 150%;
+}
+
 .premium img {
+    max-width: 40%;
+    max-height: 40%;
+}
+
+.premiumFlip img {
     max-width: 40%;
     max-height: 40%;
 }

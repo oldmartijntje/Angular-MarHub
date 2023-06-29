@@ -81,6 +81,12 @@ export class SpotifyApiService {
         return this.http.get<any>(`${this.apiUrl}/me`, { headers }).toPromise();
     }
 
+    getUser(userId: string): Promise<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        return this.http.get<any>(`${this.apiUrl}/users/${userId}`, { headers }).toPromise();
+    }
+
     getFollowedArtists(): Observable<any> {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
 

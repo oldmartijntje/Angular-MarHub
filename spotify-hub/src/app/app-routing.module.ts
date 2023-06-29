@@ -17,6 +17,7 @@ const routes: Routes = [
     { path: 'info', component: InfoPageComponent },
     { path: 'user', component: UserPageComponent },
     { path: 'settings', component: SettingsPageComponent },
+    { path: 'user/:uid', component: UserPageComponent },
     { path: 'playlist', component: PlaylistPageComponent },
     { path: '**', component: NotFoundPageComponent }
 ];
