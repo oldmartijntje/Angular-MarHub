@@ -120,6 +120,14 @@ export class UserPageComponent implements OnInit, OnDestroy {
             this.skin = 'heart';
         } else if (this.user.id == '7uatf47gcofdupwdxammpxliw') {
             this.skin = 'marvelSnap';
+        } else if (this.user.id == 'xqbc7jduli6jzog1p7d590tg3' || this.user.id == 'tomsom9999') {
+            this.skin = 'doctorStrange';
+        } else if (this.user.id == '31um5yhss4zmmvxvkzxjhurkajiu') {
+            this.skin = 'bobux';
+        } else if (this.user.id == 'vjyh8y2mox894jysp0tnxbmus') {
+            this.skin = 'cookieClicker';
+        } else if (this.user.id == 'liannevanhouwelingen') {
+            this.skin = 'poloroid';
         }
     }
 
