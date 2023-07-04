@@ -21,7 +21,7 @@
             <button *ngFor="let playlist of myPlaylists" class=" menu-popup-element"
                 (click)="addSongToPlaylist(playlist.id)" [innerHTML]="scanForBreak(playlist.name)"></button>
         </div>
-        <button class="menu-popup-element" (click)="handleButtonClick('Button 3')"
+        <button class="menu-popup-element" (click)="handleButtonClick('Button 3 aaaaa')"
             [innerHTML]="scanForBreak('Button 3')"></button>
     </div>
     <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'PlaylistElement'">

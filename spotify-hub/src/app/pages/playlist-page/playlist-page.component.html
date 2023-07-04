@@ -8,7 +8,8 @@
             <p>{{ playlistData['description'] }}</p>
         </div>
         <div class="profile-followers">
-            <p>{{ playlistData['followers']['total'] }} followers</p>
+            <p *ngIf="playlistData['followers'] && playlistData['followers']['total']"> {{
+                playlistData['followers']['total'] }} followers</p>
         </div>
         <div>
             <a href="{{ playlistData['external_urls']['spotify'] }}" target="_blank" class="spotify-link">View on
@@ -19,7 +20,8 @@
     <div class="itemBar">
         <h2 class="itemBar-title">Tracks</h2>
         <div class="item-container">
-            <div class="item" *ngFor="let track of playlistData['tracks']['items']">
+            <div class="item menu-item menu-type-song" *ngFor="let track of playlistData['tracks']['items']"
+                [attr.data-value]="track['track']['id']">
                 <img *ngIf="track['track']['album']['images'] != 0"
                     src="{{ track['track']['album']['images'][0]['url'] }}" alt="{{ track['track']['album']['name'] }}"
                     class="cover-image-small">

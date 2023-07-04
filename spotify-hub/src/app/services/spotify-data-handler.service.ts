@@ -255,7 +255,10 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    getMyOwnPlaylists(path: string = 'home'): Observable<any> {
+    getMyOwnPlaylists(path: string | null = 'home'): Observable<any> {
+        if (path == null) {
+            path = 'home';
+        }
         this.loginIfNotAlready(path);
         if (Object.keys(this.ownPlaylists).length === 0) {
             return this.getPlaylists().pipe(

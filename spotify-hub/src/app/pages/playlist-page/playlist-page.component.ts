@@ -1,21 +1,33 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { DurationPipe } from '../../pipes/duration.pipe';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-playlist-page',
     templateUrl: './playlist-page.component.html',
     styleUrls: ['./playlist-page.component.scss']
 })
-export class PlaylistPageComponent {
+export class PlaylistPageComponent implements OnDestroy {
     playlistId: string | undefined = undefined;
     playlistData: Record<string, any> = {};
+    playlistsSubscription: Subscription | null = null;
+    routeSub: Subscription | null = null;
 
     constructor(private route: ActivatedRoute, private router: Router, private spotifyDataHandlerService: SpotifyDataHandlerService) { }
 
+    ngOnDestroy(): void {
+        if (this.playlistsSubscription != null) {
+            this.playlistsSubscription.unsubscribe();
+        }
+        if (this.routeSub != null) {
+            this.routeSub.unsubscribe();
+        }
+    }
+
     ngOnInit() {
-        this.route.queryParams.subscribe(params => {
+        this.routeSub = this.route.queryParams.subscribe(params => {
             this.playlistId = params['playlistId'];
 
             if (!this.playlistId) {
@@ -37,6 +49,13 @@ export class PlaylistPageComponent {
                 (response) => {
                     console.log(response);
                     this.playlistData = response;
+                    this.playlistsSubscription = this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
+                        newPlaylists.forEach(element => {
+                            if (element.id == currentParams) {
+                                this.playlistData = element;
+                            }
+                        });
+                    });
                     // this.router.navigate(['playlist'], { queryParams: { "playlistId": response.id } });
                 },
                 (error) => {

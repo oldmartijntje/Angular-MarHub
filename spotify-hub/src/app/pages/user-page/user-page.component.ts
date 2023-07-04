@@ -76,8 +76,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
                         const playlists = response; // Assign the response directly
                         this.myPlaylists = playlists; // Assign to myPlaylists
                         console.log(this.myPlaylists);
-                        this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
+                        this.playlistsSubscription = this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
                             this.myPlaylists = newPlaylists;
+                            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                         });
                     },
                     (error) => {

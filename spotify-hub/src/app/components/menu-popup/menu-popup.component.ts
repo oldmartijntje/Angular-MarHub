@@ -28,6 +28,7 @@ export class MenuPopupComponent {
         const menuItemElement = clickedElement.closest('.menu-item');
         if (menuItemElement && clickedElement.nodeName != "A") {
             const dataValue = menuItemElement.getAttribute('data-value');
+            console.log(dataValue)
             if (menuItemElement.classList.contains('menu-type-song')) {
                 this.mode = 'SongElement'
             } else if (menuItemElement.classList.contains('menu-type-artist')) {
@@ -138,7 +139,7 @@ export class MenuPopupComponent {
         this.calculateExtraMenuPosition(90)
         this.extraMenu = 1;
         if (this.myPlaylists.length == 0) {
-            this.spotifyDataHandlerService.getMyOwnPlaylists('user').subscribe(
+            this.spotifyDataHandlerService.getMyOwnPlaylists(localStorage.getItem('currentPage')).subscribe(
                 (response) => {
                     const playlists = response; // Assign the response directly
                     this.myPlaylists = playlists; // Assign to myPlaylists
