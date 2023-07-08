@@ -5,12 +5,14 @@ import { ToastQueueService } from 'src/app/services/toast-queue.service';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { Subscribable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Image } from '../../interfaces/image.interface'
 
 @Component({
     selector: 'app-user-page',
     templateUrl: './user-page.component.html',
     styleUrls: ['./user-page.component.scss']
 })
+
 export class UserPageComponent implements OnInit, OnDestroy {
     accessToken: string | null = null;
     user: any;
@@ -24,6 +26,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     routeSub: Subscription | null = null;
     self = false;
     skin = '';
+    profileImage = '';
 
     constructor(private spotifyDataHandlerService: SpotifyDataHandlerService, public globalFunctionsService: GlobalFunctionsService, private ActivatedRoute: ActivatedRoute) { }
 
@@ -37,6 +40,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        localStorage.setItem('imageQuality', 'none')
         localStorage.setItem('currentPage', 'user');
         this.waitTimeForImage(10000)
         this.routeSub = this.ActivatedRoute.params.subscribe((params: Params) => {
@@ -97,6 +101,36 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
     }
 
+    getCorrectPicture(pictures: Array<Image>): string {
+        if (localStorage.getItem('imageQuality') == 'crack') {
+            var size = Infinity;
+            var image = '';
+            pictures.forEach((element: Image) => {
+                if (element.height < size) {
+                    size = element.height;
+                    image = element.url;
+                } else if (element.height == null && size == Infinity) {
+                    image = element.url;
+                }
+            });
+            return image;
+        } else if (localStorage.getItem('imageQuality') == 'none') {
+            return '../../../assets/images/rick.gif';
+        } else {
+            var size = 0;
+            var image = '';
+            pictures.forEach((element: Image) => {
+                if (element.height > size) {
+                    size = element.height;
+                    image = element.url;
+                } else if (element.height == null && size == 0) {
+                    image = element.url;
+                }
+            });
+            return image;
+        }
+    }
+
     isOwnUserProfileEmpty(): boolean {
         // return true
         return !this.user || Object.keys(this.user).length === 0;
@@ -129,6 +163,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
             this.skin = 'cookieClicker';
         } else if (this.user.id == 'liannevanhouwelingen') {
             this.skin = 'poloroid';
+        } else if (this.user.id == '90s922es1k37z7et7oamoktkj') {
+            this.skin = 'openttd'
         }
     }
 

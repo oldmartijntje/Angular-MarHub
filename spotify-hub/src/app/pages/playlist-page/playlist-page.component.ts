@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { DurationPipe } from '../../pipes/duration.pipe';
 import { Subscription } from 'rxjs';
+import { Image } from '../../interfaces/image.interface'
 
 @Component({
     selector: 'app-playlist-page',
@@ -62,6 +63,36 @@ export class PlaylistPageComponent implements OnDestroy {
                     console.error('Error retrieving playlists:', error);
                 }
             );
+        }
+    }
+
+    getCorrectPicture(pictures: Array<Image>): string {
+        if (localStorage.getItem('imageQuality') == 'crack') {
+            var size = Infinity;
+            var image = '';
+            pictures.forEach((element: Image) => {
+                if (element.height < size) {
+                    size = element.height;
+                    image = element.url;
+                } else if (element.height == null && size == Infinity) {
+                    image = element.url;
+                }
+            });
+            return image;
+        } else if (localStorage.getItem('imageQuality') == 'none') {
+            return '../../../assets/images/rick.gif';
+        } else {
+            var size = 0;
+            var image = '';
+            pictures.forEach((element: Image) => {
+                if (element.height > size) {
+                    size = element.height;
+                    image = element.url;
+                } else if (element.height == null && size == 0) {
+                    image = element.url;
+                }
+            });
+            return image;
         }
     }
 

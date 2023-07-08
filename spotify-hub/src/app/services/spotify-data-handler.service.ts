@@ -148,7 +148,7 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    private returnedErrorHandler(path: string = 'home', error: any) {
+    private returnedErrorHandler(path: string | null = 'home', error: any) {
         console.error(error);
         if (error.status == 403) {
             console.error(error.error)
@@ -159,7 +159,12 @@ export class SpotifyDataHandlerService {
             this.router.navigate([path]);
             console.log(error.error.error.message)
             alert('outdated')
-            this.spotifyApiService.authorize(path)
+            if (path == null) {
+                this.spotifyApiService.authorize('home')
+            } else {
+                this.spotifyApiService.authorize(path)
+            }
+
             // outdated token
         }
     }

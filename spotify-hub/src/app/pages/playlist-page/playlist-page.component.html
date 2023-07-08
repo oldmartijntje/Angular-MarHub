@@ -1,6 +1,6 @@
 <div *ngIf="!isPlaylistDataEmpty()">
     <div class="profile">
-        <img src="{{ playlistData['images'][0]['url'] }}" alt="{{ playlistData['name'] }}" class="cover-image">
+        <img src="{{ getCorrectPicture(playlistData['images']) }}" alt="{{ playlistData['name'] }}" class="cover-image">
         <h1 class="profile-title">{{ playlistData['name'] }}</h1>
         <p class="profile-owner">Created by <a href="user/{{ playlistData['owner']['id'] }}" class="spotify-link">{{
                 playlistData['owner']['display_name'] }}</a></p>
@@ -23,8 +23,8 @@
             <div class="item menu-item menu-type-song" *ngFor="let track of playlistData['tracks']['items']"
                 [attr.data-value]="track['track']['id']">
                 <img *ngIf="track['track']['album']['images'] != 0"
-                    src="{{ track['track']['album']['images'][0]['url'] }}" alt="{{ track['track']['album']['name'] }}"
-                    class="cover-image-small">
+                    src="{{ getCorrectPicture(track['track']['album']['images']) }}"
+                    alt="{{ track['track']['album']['name'] }}" class="cover-image-small">
                 <img *ngIf="track['track']['album']['images'] == 0" src="../../../assets/images/defaultCover.png"
                     alt="this is the default cover" class="cover-image-small">
                 <h3 class="item-display-name">{{ track['track']['name'] }}</h3>

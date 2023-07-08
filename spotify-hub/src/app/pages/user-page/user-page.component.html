@@ -1,7 +1,8 @@
 <div *ngIf="!isOwnUserProfileEmpty()" class="page">
     <div class="profile">
         <div class="container">
-            <img *ngIf="user.images.length > 0" class="profile-image" src="{{user.images[0].url}}" alt="Profile Image">
+            <img *ngIf="user.images.length > 0" class="profile-image" src="{{getCorrectPicture(user.images)}}"
+                alt="Profile Image">
             <img *ngIf="user.images.length == 0" class="profile-image"
                 src="../../../assets/images/defaultProfileImage.png" alt="Profile Image">
             <div *ngIf="user.product == 'premium' && skin == ''" class="overlay premium">
@@ -30,7 +31,7 @@
             <div class="hoverItem" *ngFor="let artist of followingArtists">
                 <img *ngIf="user.images.length == 0" src="../../../assets/images/defaultProfileImage.png"
                     alt="{{artist.name}} their profile picture" class="profile-image-small">
-                <img *ngIf="user.images.length != 0" src="{{artist.images[0].url}}"
+                <img *ngIf="user.images.length != 0" src="{{getCorrectPicture(artist.images)}}"
                     alt="{{artist.name}} their profile picture" class="profile-image-small">
                 <p class="item-display-name">{{artist.name}}</p>
                 <p class="item-stats">Popularity: {{artist.popularity}}</p>
@@ -46,7 +47,7 @@
             <div class="item menu-item menu-type-song" *ngFor="let song of top25Songs" [attr.data-value]="song.id">
                 <img *ngIf="user.images.length == 0" src="../../../assets/images/defaultCover.png"
                     alt="{{song.name}} it's album cover" class="profile-image-small">
-                <img *ngIf="user.images.length != 0" src="{{song.album.images[0].url}}"
+                <img *ngIf="user.images.length != 0" src="{{getCorrectPicture(song.album.images)}}"
                     alt="{{song.name}} it's album cover" class="profile-image-small">
                 <p class="item-display-name">{{song.name}}</p>
                 <p class="item-stats">Popularity: {{song.popularity}}</p>
@@ -62,7 +63,7 @@
         <div class="item-container">
             <div class="item menu-item menu-type-playlist" *ngFor="let playlist of myPlaylists"
                 [attr.data-value]="playlist.id">
-                <img *ngIf="playlist.images.length > 0" src="{{playlist.images[0].url}}"
+                <img *ngIf="playlist.images.length > 0" src="{{getCorrectPicture(playlist.images)}}"
                     alt="{{playlist.name}} it's album cover" class="cover-image-small">
                 <img *ngIf="playlist.images.length == 0" src="../../../assets/images/defaultCover.png"
                     alt="this is the default cover" class="cover-image-small">
