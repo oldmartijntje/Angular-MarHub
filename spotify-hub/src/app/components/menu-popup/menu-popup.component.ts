@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { ToastQueueService } from 'src/app/services/toast-queue.service';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
     templateUrl: './menu-popup.component.html',
     styleUrls: ['./menu-popup.component.scss']
 })
-export class MenuPopupComponent {
+export class MenuPopupComponent implements OnInit {
     // @Input() typeOfMenu: string = '';
     showMenu: boolean = false;
     menuStyle: any = {};
@@ -22,11 +22,41 @@ export class MenuPopupComponent {
 
     constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService, private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService, private router: Router) { }
 
+    ngOnInit() {
+        if (localStorage.getItem('popup-menu-mode') == null) {
+            localStorage.setItem('popup-menu-mode', 'click');
+        }
+    }
+
     @HostListener('document:click', ['$event'])
     onDocumentClick(event: MouseEvent) {
+        if (localStorage.getItem('popup-menu-mode') == 'click') {
+            this.checkForPopup(event);
+        }
+    }
+
+    @HostListener('document:dblclick', ['$event'])
+    onDocumentDblClick(event: MouseEvent) {
+        if (localStorage.getItem('popup-menu-mode') == 'dblclick') {
+            this.checkForPopup(event);
+        }
+    }
+
+    @HostListener('document:contextmenu', ['$event'])
+    onDocumentContextmenu(event: MouseEvent) {
+        if (localStorage.getItem('popup-menu-mode') == 'contextmenu') {
+            this.checkForPopup(event, 'contextmenu');
+        }
+    }
+
+    checkForPopup(event: MouseEvent, mode = '') {
         const clickedElement = event.target as HTMLElement;
         const menuItemElement = clickedElement.closest('.menu-item');
         if (menuItemElement && clickedElement.nodeName != "A") {
+            // the above line is to disable the popup on hyperlinks
+            if (mode == 'contextmenu') {
+                event.preventDefault();
+            }
             const dataValue = menuItemElement.getAttribute('data-value');
             console.log(dataValue)
             if (menuItemElement.classList.contains('menu-type-song')) {

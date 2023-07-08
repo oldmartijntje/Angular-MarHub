@@ -11,11 +11,23 @@
     <br>
     <button type="button" (click)="copyAcessKeyToClipboard()">Copy Access Token</button>
 
-    <h2>Color Theme</h2>
+    <h2>User settings</h2>
     <label for="colorTheme">Color Theme:</label>
-    <select id="colorTheme" name="colorTheme" [(ngModel)]="colorTheme">
+    <select id="colorTheme" name="colorTheme" [(ngModel)]="colorTheme" class="comboBox">
         <option value="light">Light</option>
         <option value="dark">Dark</option>
+    </select>
+    <label for="colorTheme">Image Mode:</label>
+    <select id="imageMode" name="imageMode" [(ngModel)]="imageMode" class="comboBox" (change)="imageModeChange()">
+        <option value="good">Good Quality</option>
+        <option value="bad">Bad Quality</option>
+        <option value="rick">Special</option>
+    </select>
+    <label for="colorTheme">Popup-menu Mode:</label>
+    <select id="popupMode" name="popupMode" [(ngModel)]="popupMode" class="comboBox" (change)="popupModeChange()">
+        <option value="click">On Click</option>
+        <option value="dblclick">On Double Click</option>
+        <option value="contextmenu">On Right Click</option>
     </select>
 
     <h2>Local Storage</h2>

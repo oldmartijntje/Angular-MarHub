@@ -40,7 +40,6 @@ export class UserPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        localStorage.setItem('imageQuality', 'none')
         localStorage.setItem('currentPage', 'user');
         this.waitTimeForImage(10000)
         this.routeSub = this.ActivatedRoute.params.subscribe((params: Params) => {
@@ -102,7 +101,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     }
 
     getCorrectPicture(pictures: Array<Image>): string {
-        if (localStorage.getItem('imageQuality') == 'crack') {
+        if (localStorage.getItem('imageQuality') == 'bad') {
             var size = Infinity;
             var image = '';
             pictures.forEach((element: Image) => {
@@ -114,7 +113,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                 }
             });
             return image;
-        } else if (localStorage.getItem('imageQuality') == 'none') {
+        } else if (localStorage.getItem('imageQuality') == 'rick') {
             return '../../../assets/images/rick.gif';
         } else {
             var size = 0;

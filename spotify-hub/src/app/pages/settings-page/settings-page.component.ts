@@ -13,6 +13,8 @@ import { ToastQueueService } from 'src/app/services/toast-queue.service';
 export class SettingsPageComponent implements OnInit {
     spotifyAccessTokenStoring: boolean = true;
     colorTheme: string = 'light';
+    imageMode: string = 'good';
+    popupMode: string = 'click';
 
     constructor(private toastQueueService: ToastQueueService, private clipboard: Clipboard, private spotifyApiService: SpotifyApiService, private spotifyDataHandlerService: SpotifyDataHandlerService) { }
 
@@ -26,12 +28,28 @@ export class SettingsPageComponent implements OnInit {
         if (localStorage.getItem('copyKeyToClipboard') != null) {
             this.retrieveToken(false)
         }
+        if (localStorage.getItem('imageQuality') == 'rick') {
+            this.imageMode = 'rick';
+        } else if (localStorage.getItem('imageQuality') == 'bad') {
+            this.imageMode = 'bad';
+        } else {
+            localStorage.setItem('imageQuality', 'good');
+            this.imageMode = 'good';
+        }
+        if (localStorage.getItem('popup-menu-mode') == 'click') {
+            this.popupMode = 'click';
+        } else if (localStorage.getItem('popup-menu-mode') == 'dblclick') {
+            this.popupMode = 'dblclick';
+        } else if (localStorage.getItem('popup-menu-mode') == 'contextmenu') {
+            this.popupMode = 'contextmenu';
+        }
     }
 
     saveSettings() {
         // Code to save the settings goes here
         console.log('Settings saved');
         this.showToast('Settings saved!')
+        // console.log(this.imageMode)
     }
 
     copyAcessKeyToClipboard() {
@@ -69,6 +87,14 @@ export class SettingsPageComponent implements OnInit {
         } else {
             this.showToast("No token found!", "error");
         }
+    }
+
+    imageModeChange() {
+        localStorage.setItem('imageQuality', this.imageMode);
+    }
+
+    popupModeChange() {
+        localStorage.setItem('popup-menu-mode', this.popupMode);
     }
 
     deleteToken(ignoreToast: boolean = false) {
