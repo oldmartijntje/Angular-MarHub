@@ -15,6 +15,8 @@ export class SettingsPageComponent implements OnInit {
     colorTheme: string = 'light';
     imageMode: string = 'good';
     popupMode: string = 'click';
+    popupType: string = 'default';
+    popupSaveData: string = 'disabled';
 
     constructor(private toastQueueService: ToastQueueService, private clipboard: Clipboard, private spotifyApiService: SpotifyApiService, private spotifyDataHandlerService: SpotifyDataHandlerService) { }
 
@@ -42,6 +44,29 @@ export class SettingsPageComponent implements OnInit {
             this.popupMode = 'dblclick';
         } else if (localStorage.getItem('popup-menu-mode') == 'contextmenu') {
             this.popupMode = 'contextmenu';
+        } else {
+            localStorage.setItem('popup-menu-mode', 'click');
+            this.popupMode = 'click';
+        }
+        if (localStorage.getItem('popup-menu-type') == 'default') {
+            this.popupType = 'default';
+        } else if (localStorage.getItem('popup-menu-type') == 'defaultdev') {
+            this.popupType = 'defaultdev';
+        } else if (localStorage.getItem('popup-menu-type') == 'dev') {
+            this.popupType = 'dev';
+        } else {
+            localStorage.setItem('popup-menu-type', 'default');
+            this.popupType = 'default';
+        }
+        if (localStorage.getItem('popup-menu-save-data') == 'enabled') {
+            this.popupSaveData = 'enabled';
+        } else if (localStorage.getItem('popup-menu-save-data') == 'disabled') {
+            this.popupSaveData = 'disabled';
+        } else if (localStorage.getItem('popup-menu-save-data') == 'unlimited') {
+            this.popupSaveData = 'unlimited';
+        } else {
+            localStorage.setItem('popup-menu-save-data', 'disabled');
+            this.popupSaveData = 'disabled';
         }
     }
 
@@ -95,6 +120,14 @@ export class SettingsPageComponent implements OnInit {
 
     popupModeChange() {
         localStorage.setItem('popup-menu-mode', this.popupMode);
+    }
+
+    popupTypeChange() {
+        localStorage.setItem('popup-menu-type', this.popupType);
+    }
+
+    popupSaveDataChange() {
+        localStorage.setItem('popup-menu-save-data', this.popupSaveData);
     }
 
     deleteToken(ignoreToast: boolean = false) {

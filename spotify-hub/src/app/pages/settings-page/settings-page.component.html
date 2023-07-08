@@ -29,8 +29,21 @@
         <option value="dblclick">On Double Click</option>
         <option value="contextmenu">On Right Click</option>
     </select>
+    <label for="colorTheme">Popup-menu Type:</label>
+    <select id="popupType" name="popupType" [(ngModel)]="popupType" class="comboBox" (change)="popupTypeChange()">
+        <option value="default">Default</option>
+        <option value="defaultdev">Default + Dev</option>
+        <option value="dev">Dev</option>
+    </select>
 
     <h2>Local Storage</h2>
+    <label for="colorTheme">Save for later setting in pop-up:</label>
+    <select id="popupSaveData" name="popupSaveData" [(ngModel)]="popupSaveData" class="comboBox"
+        (change)="popupSaveDataChange()">
+        <option value="disabled">Disabled</option>
+        <option value="enabled">Enabled</option>
+        <option value="unlimited">Unlimited Clipboard</option>
+    </select>
     <button type="button" (click)="deleteLocalStorage()">Delete Local Storage</button>
     <h2>Account</h2>
     <button type="button" (click)="logout()">Logout</button>
