@@ -19,6 +19,9 @@ export class MenuPopupComponent implements OnInit {
     mode = 'Default';
     extraMenu = 0;
     myPlaylists: Array<any> = [];
+    popupTypeDefault = true;
+    popupTypeDev = true;
+    popupSaveData = 'disabled';
 
     constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService, private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService, private router: Router) { }
 
@@ -49,10 +52,38 @@ export class MenuPopupComponent implements OnInit {
         }
     }
 
+    checkCookies() {
+        if (localStorage.getItem('popup-menu-type') == 'default') {
+            this.popupTypeDev = false;
+            this.popupTypeDefault = true;
+        } else if (localStorage.getItem('popup-menu-type') == 'defaultdev') {
+            this.popupTypeDev = true;
+            this.popupTypeDefault = true;
+        } else if (localStorage.getItem('popup-menu-type') == 'dev') {
+            this.popupTypeDev = true;
+            this.popupTypeDefault = false;
+        } else {
+            localStorage.setItem('popup-menu-type', 'default');
+            this.popupTypeDev = false;
+            this.popupTypeDefault = true;
+        }
+        if (localStorage.getItem('popup-menu-save-data') == 'enabled') {
+            this.popupSaveData = 'enabled';
+        } else if (localStorage.getItem('popup-menu-save-data') == 'disabled') {
+            this.popupSaveData = 'disabled';
+        } else if (localStorage.getItem('popup-menu-save-data') == 'unlimited') {
+            this.popupSaveData = 'unlimited';
+        } else {
+            localStorage.setItem('popup-menu-save-data', 'disabled');
+            this.popupSaveData = 'disabled';
+        }
+    }
+
     checkForPopup(event: MouseEvent, mode = '') {
         const clickedElement = event.target as HTMLElement;
         const menuItemElement = clickedElement.closest('.menu-item');
         if (menuItemElement && clickedElement.nodeName != "A") {
+            this.checkCookies()
             // the above line is to disable the popup on hyperlinks
             if (mode == 'contextmenu') {
                 event.preventDefault();
