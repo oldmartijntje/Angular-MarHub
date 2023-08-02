@@ -4,6 +4,8 @@ import { ToastQueueService } from 'src/app/services/toast-queue.service';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 import { Router } from '@angular/router';
+import { ClipboardItem } from '../../interfaces/clipboard-item.interface';
+import { ClipboardServiceService } from 'src/app/services/clipboard-service.service';
 
 @Component({
     selector: 'app-menu-popup',
@@ -23,7 +25,7 @@ export class MenuPopupComponent implements OnInit {
     popupTypeDev = true;
     popupSaveData = 'disabled';
 
-    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService, private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService, private router: Router) { }
+    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService, private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService, private router: Router, private clipboardServiceService: ClipboardServiceService) { }
 
     ngOnInit() {
         if (localStorage.getItem('popup-menu-mode') == null) {
@@ -94,6 +96,8 @@ export class MenuPopupComponent implements OnInit {
                 this.mode = 'SongElement'
             } else if (menuItemElement.classList.contains('menu-type-artist')) {
                 this.mode = 'ArtistElement'
+            } else if (menuItemElement.classList.contains('menu-type-user')) {
+                this.mode = 'UserElement'
             } else if (menuItemElement.classList.contains('menu-type-playlist')) {
                 this.mode = 'PlaylistElement'
             } else {
@@ -245,5 +249,35 @@ export class MenuPopupComponent implements OnInit {
             page = currentPage;
         }
         return page
+    }
+
+    copyElement() {
+        console.log(this.dataValue, this.mode)
+        if (this.mode == 'PlaylistElement') {
+            this.getPlaylistData(this.dataValue)
+        }
+    }
+
+    getPlaylistData(playlistId: string | null) {
+        const currentParams = playlistId;
+        if (currentParams != undefined) {
+            localStorage.setItem('playlistId', currentParams)
+            this.spotifyDataHandlerService.getPlaylistData('playlist', currentParams).subscribe(
+                (response) => {
+                    console.log(response);
+                    var playlistData = response;
+                    var item: ClipboardItem = {
+                        "type": "PlaylistElement",
+                        "id": this.clipboardServiceService.getClipboardId(),
+                        "data": { ...playlistData }
+                    };
+                    this.clipboardServiceService.addClipboardItem(item);
+                    // this.router.navigate(['playlist'], { queryParams: { "playlistId": response.id } });
+                },
+                (error) => {
+                    console.error('Error retrieving playlists:', error);
+                }
+            );
+        }
     }
 }

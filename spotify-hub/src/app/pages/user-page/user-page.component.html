@@ -1,5 +1,5 @@
 <div *ngIf="!isOwnUserProfileEmpty()" class="page">
-    <div class="profile">
+    <div class="profile menu-item menu-type-user" [attr.data-value]="user.id">
         <div class="container">
             <img *ngIf="user.images.length > 0" class="profile-image" src="{{getCorrectPicture(user.images)}}"
                 alt="Profile Image">
@@ -28,7 +28,8 @@
     <div class="itemBar" id="artistsFollowed" *ngIf="followingArtists.length != 0">
         <h1 class="itemBar-title">Artists followed.</h1>
         <div class="item-container">
-            <div class="hoverItem" *ngFor="let artist of followingArtists">
+            <div class="hoverItem menu-item menu-type-artist" *ngFor="let artist of followingArtists"
+                [attr.data-value]="artist.id">
                 <img *ngIf="user.images.length == 0" src="../../../assets/images/defaultProfileImage.png"
                     alt="{{artist.name}} their profile picture" class="profile-image-small">
                 <img *ngIf="user.images.length != 0" src="{{getCorrectPicture(artist.images)}}"
