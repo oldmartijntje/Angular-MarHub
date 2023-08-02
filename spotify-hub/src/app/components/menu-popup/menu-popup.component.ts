@@ -103,6 +103,9 @@ export class MenuPopupComponent implements OnInit {
             } else {
                 this.mode = 'Default'
             }
+            if (this.showMenu == false) {
+                this.extraMenu = 0;
+            }
             this.showMenu = true;
             this.calculateMenuPosition(event);
             if (dataValue) {
