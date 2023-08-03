@@ -12,14 +12,7 @@ export class InfoPageComponent implements OnInit {
     constructor(private spotifyApiService: SpotifyApiService) { }
 
     ngOnInit(): void {
-        const urlParams = new URLSearchParams(window.location.search);
-        this.accessToken = urlParams.get('access_token');
-        if (this.accessToken == null) {
-            this.spotifyApiService.authorize()
-        } else {
-            this.spotifyApiService.setAccessToken(this.accessToken)
-            console.log(this.spotifyApiService.getMe())
-        }
+        localStorage.setItem('currentPage', 'info');
     }
 
 }

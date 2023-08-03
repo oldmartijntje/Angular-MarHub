@@ -57,15 +57,16 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        localStorage.setItem('currentPage', 'user');
+        localStorage.setItem('currentPage', 'search');
         this.routeSub = this.ActivatedRoute.params.subscribe((params: Params) => {
-            if (params['query'] == undefined) {
-                console.log(params)
+            if (params['query'] != undefined) {
+                localStorage.setItem('searchQuery', params['query']);
+                this.search(params['query'], 'track');
+                this.search(params['query'], 'album');
+                this.search(params['query'], 'artist');
+                this.search(params['query'], 'playlist');
             }
-            this.search(params['query'], 'track');
-            this.search(params['query'], 'album');
-            this.search(params['query'], 'artist');
-            this.search(params['query'], 'playlist');
+
         });
     }
 

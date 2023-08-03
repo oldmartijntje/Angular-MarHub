@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
     templateUrl: './documantation-page.component.html',
     styleUrls: ['./documantation-page.component.scss']
 })
-export class DocumantationPageComponent {
+export class DocumantationPageComponent implements OnInit {
+    ngOnInit(): void {
+        localStorage.setItem('currentPage', 'docs');
+    }
 
 }

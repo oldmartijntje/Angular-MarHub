@@ -67,6 +67,15 @@ export class SpotifyApiService {
         return this.http.post<any>(tokenEndpoint, body, { headers });
     }
 
+    refreshToken(refreshToken: string): Promise<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Basic ' + btoa(this.clientId + ':' + environment.spotify.clientSecret));
+        const body = new URLSearchParams();
+        body.set('grant_type', 'refresh_token');
+        body.set('refresh_token', refreshToken);
+
+        return this.http.post<any>(this.apiUrl, body.toString(), { headers }).toPromise();
+    }
+
     private generateRandomString(length: number): string {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         let randomString = '';

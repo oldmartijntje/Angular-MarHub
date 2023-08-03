@@ -28,6 +28,7 @@ export class PlaylistPageComponent implements OnDestroy {
     }
 
     ngOnInit() {
+        localStorage.setItem('currentPage', 'playlist');
         this.routeSub = this.route.queryParams.subscribe(params => {
             this.playlistId = params['playlistId'];
 
@@ -53,7 +54,18 @@ export class PlaylistPageComponent implements OnDestroy {
                     this.playlistsSubscription = this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
                         newPlaylists.forEach(element => {
                             if (element.id == currentParams) {
-                                this.playlistData = element;
+                                console.log(this.playlistData)
+                                if (!element['tracks'].hasOwnProperty('items') && this.playlistData['tracks'].hasOwnProperty('items')) {
+                                    Object.keys(element).forEach(element2 => {
+                                        if (element2 != 'tracks') {
+                                            element[element2] = this.playlistData[element2];
+                                        }
+                                    });
+                                } else {
+                                    this.playlistData = { ...element };
+                                }
+
+                                console.log(this.playlistData)
                             }
                         });
                     });

@@ -118,7 +118,6 @@ export class SpotifyDataHandlerService {
                 console.error('Error retrieving followed artists:', error);
             }
         );
-        // this.getPlaylists()
     }
 
     private getTopTracks() {
@@ -156,14 +155,28 @@ export class SpotifyDataHandlerService {
         } else if (error.status == 401) {
             this.loggedIn = false
             localStorage.removeItem('spotifyAccessToken')
-            this.router.navigate([path]);
+            // this.router.navigate([path]);
             console.log(error.error.error.message)
-            alert('outdated')
+            // var refreshToken = localStorage.getItem('spotifyRefreshToken')
+            // console.log(refreshToken)
+            // if (refreshToken == null) {
             if (path == null) {
                 this.spotifyApiService.authorize('home')
             } else {
                 this.spotifyApiService.authorize(path)
             }
+            // } else {
+            //     this.spotifyApiService.refreshToken(refreshToken)
+            //         .then((response) => {
+            //             console.log('New access token:', response.access_token);
+            //             // Use the new access token for further requests
+            //         })
+            //         .catch((error) => {
+            //             console.error('Error refreshing token:', error);
+            //             // Handle the error if token refresh fails
+            //         });
+            // }
+
 
             // outdated token
         }
@@ -334,12 +347,8 @@ export class SpotifyDataHandlerService {
         var playlists = this.ownPlaylists;
         playlists.forEach(element => {
             if (element.id == playlist['id']) {
-                console.log('aaaaa')
                 for (const key in element) {
                     if (playlist.hasOwnProperty(key)) {
-                        if (key == 'tracks') {
-                            console.log(key)
-                        }
                         element[key] = playlist[key];
                         //console.log({ ...element })
                     }
