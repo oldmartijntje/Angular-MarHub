@@ -85,23 +85,23 @@ export class MenuPopupComponent implements OnInit {
         const clickedElement = event.target as HTMLElement;
         const menuItemElement = clickedElement.closest('.menu-item');
         if (menuItemElement && clickedElement.nodeName != "A") {
-            this.checkCookies()
+            this.checkCookies();
             // the above line is to disable the popup on hyperlinks
             if (mode == 'contextmenu') {
                 event.preventDefault();
             }
             const dataValue = menuItemElement.getAttribute('data-value');
-            console.log(dataValue)
+            console.log(dataValue);
             if (menuItemElement.classList.contains('menu-type-song')) {
-                this.mode = 'SongElement'
+                this.mode = 'SongElement';
             } else if (menuItemElement.classList.contains('menu-type-artist')) {
-                this.mode = 'ArtistElement'
+                this.mode = 'ArtistElement';
             } else if (menuItemElement.classList.contains('menu-type-user')) {
-                this.mode = 'UserElement'
+                this.mode = 'UserElement';
             } else if (menuItemElement.classList.contains('menu-type-playlist')) {
-                this.mode = 'PlaylistElement'
+                this.mode = 'PlaylistElement';
             } else {
-                this.mode = 'Default'
+                this.mode = 'Default';
             }
             if (this.showMenu == false) {
                 this.extraMenu = 0;
@@ -154,7 +154,7 @@ export class MenuPopupComponent implements OnInit {
         var modifier = -1;
 
         if (parseFloat(this.menuStyle.left) < menuWidth) {
-            modifier = 1
+            modifier = 1;
         }
         this.extraMenuStyle = {
             top: clickedButtonHeight + 'px',
@@ -165,7 +165,7 @@ export class MenuPopupComponent implements OnInit {
     }
 
     generateLink(id: string, type: string): string {
-        return `https://open.spotify.com/${type}/${id}`
+        return `https://open.spotify.com/${type}/${id}`;
     }
 
     copyLink(id: string, type: string): void {
@@ -204,7 +204,7 @@ export class MenuPopupComponent implements OnInit {
     }
 
     addToPlaylistButton() {
-        this.calculateExtraMenuPosition(90)
+        this.calculateExtraMenuPosition(90);
         this.extraMenu = 1;
         if (this.myPlaylists.length == 0) {
             this.spotifyDataHandlerService.getMyOwnPlaylists(localStorage.getItem('currentPage')).subscribe(
@@ -251,21 +251,38 @@ export class MenuPopupComponent implements OnInit {
         if (currentPage != null) {
             page = currentPage;
         }
-        return page
+        return page;
     }
 
     copyElement() {
-        console.log(this.dataValue, this.mode)
-        if (this.mode == 'PlaylistElement') {
-            this.getPlaylistData(this.dataValue)
+        if (this.dataValue != null) {
+            console.log(this.dataValue, this.mode)
+            if (this.mode == 'PlaylistElement') {
+                this.getPlaylistData(this.dataValue);
+            } else if (this.mode == 'UserElement') {
+                this.getUserData(this.dataValue)
+            } else if (this.mode == 'SongElement') {
+                this.getSongData(this.dataValue)
+            } else if (this.mode == 'ArtistElement') {
+                this.getArtistData(this.dataValue)
+            }
         }
     }
 
-    getPlaylistData(playlistId: string | null) {
+    getRedirectPage() {
+        var path = localStorage.getItem('currentPage');
+        if (path == null) {
+            return 'home';
+        } else {
+            return path;
+        }
+    }
+
+    getPlaylistData(playlistId: string) {
         const currentParams = playlistId;
         if (currentParams != undefined) {
-            localStorage.setItem('playlistId', currentParams)
-            this.spotifyDataHandlerService.getPlaylistData('playlist', currentParams).subscribe(
+            localStorage.setItem('playlistId', currentParams);
+            this.spotifyDataHandlerService.getPlaylistData(this.getRedirectPage(), currentParams).subscribe(
                 (response) => {
                     console.log(response);
                     var playlistData = response;
@@ -282,5 +299,44 @@ export class MenuPopupComponent implements OnInit {
                 }
             );
         }
+    }
+
+    getUserData(userId: string) {
+        this.spotifyDataHandlerService.getUserProfile(this.getRedirectPage(), userId).then((result) => {
+            console.log(result)
+            var user = result;
+            var item: ClipboardItem = {
+                "type": "UserElement",
+                "id": this.clipboardServiceService.getClipboardId(),
+                "data": { ...user }
+            };
+            this.clipboardServiceService.addClipboardItem(item);
+        });
+    }
+
+    getSongData(songId: string) {
+        this.spotifyDataHandlerService.getSongData(this.getRedirectPage(), songId).then((result) => {
+            console.log(result)
+            var song = result;
+            var item: ClipboardItem = {
+                "type": "SongElement",
+                "id": this.clipboardServiceService.getClipboardId(),
+                "data": { ...song }
+            };
+            this.clipboardServiceService.addClipboardItem(item);
+        });
+    }
+
+    getArtistData(artistId: string) {
+        this.spotifyDataHandlerService.getArtistData(this.getRedirectPage(), artistId).then((result) => {
+            console.log(result)
+            var artist = result;
+            var item: ClipboardItem = {
+                "type": "ArtistElement",
+                "id": this.clipboardServiceService.getClipboardId(),
+                "data": { ...artist }
+            };
+            this.clipboardServiceService.addClipboardItem(item);
+        });
     }
 }

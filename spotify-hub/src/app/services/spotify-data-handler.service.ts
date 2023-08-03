@@ -313,6 +313,14 @@ export class SpotifyDataHandlerService {
         this.addSomethingToData(user, 'user')
     }
 
+    private addSongToData(song: Record<string, any>) {
+        this.addSomethingToData(song, 'song')
+    }
+
+    private addArtistToData(artist: Record<string, any>) {
+        this.addSomethingToData(artist, 'artist')
+    }
+
     private addSomethingToData(item: Record<string, any>, dictName: string = '404') {
         if (this.extraData.hasOwnProperty(dictName)) {
             this.extraData[dictName][item['id']] = item;
@@ -379,5 +387,51 @@ export class SpotifyDataHandlerService {
             );
         }
 
+    }
+
+    getSongData(path: string = 'home', songId: string): Promise<any> {
+        this.loginIfNotAlready(path);
+        this.checkIfExtraDataDictExists('song');
+        if ((songId in this.extraData['song']) == false) {
+            return this.spotifyApiService.getSongById(songId).then((result) => {
+                this.addSongToData(result);
+                console.log(this.extraData['song'][songId]);
+                return this.extraData['song'][songId];
+            }).catch((error) => {
+                this.returnedErrorHandler(path, error);
+                throw error; // Throw the error to propagate it in the promise chain
+            });
+        } else {
+            return new Promise((resolve, reject) => {
+                if (this.extraData['song'][songId]) {
+                    resolve(this.extraData['song'][songId]);
+                } else {
+                    reject(new Error('song not available.'));
+                }
+            });
+        }
+    }
+
+    getArtistData(path: string = 'home', artistId: string): Promise<any> {
+        this.loginIfNotAlready(path);
+        this.checkIfExtraDataDictExists('artist');
+        if ((artistId in this.extraData['artist']) == false) {
+            return this.spotifyApiService.getArtistById(artistId).then((result) => {
+                this.addArtistToData(result);
+                console.log(this.extraData['artist'][artistId]);
+                return this.extraData['artist'][artistId];
+            }).catch((error) => {
+                this.returnedErrorHandler(path, error);
+                throw error; // Throw the error to propagate it in the promise chain
+            });
+        } else {
+            return new Promise((resolve, reject) => {
+                if (this.extraData['artist'][artistId]) {
+                    resolve(this.extraData['artist'][artistId]);
+                } else {
+                    reject(new Error('artist not available.'));
+                }
+            });
+        }
     }
 }

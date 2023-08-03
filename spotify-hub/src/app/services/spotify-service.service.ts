@@ -133,6 +133,18 @@ export class SpotifyApiService {
         return this.http.get<any>(`${this.apiUrl}/playlists/${playlistId}`, { headers });
     }
 
+    getSongById(songId: string): Promise<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        return this.http.get<any>(`${this.apiUrl}/tracks/${songId}`, { headers }).toPromise();
+    }
+
+    getArtistById(artistId: string): Promise<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        return this.http.get<any>(`${this.apiUrl}/artists/${artistId}`, { headers }).toPromise();
+    }
+
 
     // Other methods for interacting with the Spotify API
 }
