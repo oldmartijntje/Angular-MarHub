@@ -20,9 +20,7 @@ export class SpotifyApiService {
         this.accessToken = token;
     }
 
-    authorize(redirectURI: string = ''): void {
-        console.log(redirectURI)
-        localStorage.setItem('redirectFromSpotifyTo', redirectURI)
+    authorize(): void {
         const scopes = ['user-read-private', 'user-follow-read', 'user-library-read', 'user-top-read', 'playlist-modify-public', 'playlist-modify-private'];
         const state = this.generateRandomString(16);
         const authorizeUrl = `https://accounts.spotify.com/authorize?client_id=${this.clientId}&response_type=code&redirect_uri=${encodeURIComponent(this.redirectUri)}&scope=${encodeURIComponent(scopes.join(' '))}&state=${state}`;
@@ -31,7 +29,7 @@ export class SpotifyApiService {
         window.location.href = authorizeUrl;
     }
 
-    checkIfLoggedIn(redirectURI: string = '', autoLogin: boolean = true): boolean {
+    checkIfLoggedIn(autoLogin: boolean = true): boolean {
         this.accessToken = localStorage.getItem('spotifyAccessToken');
         const urlParams = new URLSearchParams(window.location.search);
         var accessTokenURL = urlParams.get('access_token');
@@ -44,7 +42,7 @@ export class SpotifyApiService {
         }
         else {
             if (autoLogin) {
-                this.authorize(redirectURI)
+                this.authorize()
             }
             return false
         }

@@ -46,8 +46,8 @@ export class PlaylistPageComponent implements OnDestroy {
     getPlaylistData() {
         const currentParams = this.playlistId;
         if (currentParams != undefined) {
-            localStorage.setItem('playlistId', currentParams)
-            this.spotifyDataHandlerService.getPlaylistData('playlist', currentParams).subscribe(
+            localStorage.setItem('pageVariation', currentParams)
+            this.spotifyDataHandlerService.getPlaylistData(currentParams).subscribe(
                 (response) => {
                     console.log(response);
                     this.playlistData = response;

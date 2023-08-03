@@ -198,7 +198,7 @@ export class MenuPopupComponent implements OnInit {
         this.calculateExtraMenuPosition(90);
         this.extraMenu = 1;
         if (this.myPlaylists.length == 0) {
-            this.spotifyDataHandlerService.getMyOwnPlaylists(localStorage.getItem('currentPage')).subscribe(
+            this.spotifyDataHandlerService.getMyOwnPlaylists().subscribe(
                 (response) => {
                     const playlists = response; // Assign the response directly
                     this.myPlaylists = playlists; // Assign to myPlaylists
@@ -215,7 +215,7 @@ export class MenuPopupComponent implements OnInit {
     }
 
     addSongToPlaylist(id: string) {
-        this.spotifyDataHandlerService.addSongToPlaylist(this.getPage(), id, `spotify:track:${this.dataValue}`);
+        this.spotifyDataHandlerService.addSongToPlaylist(id, `spotify:track:${this.dataValue}`);
     }
 
     navigateToPlaylist() {
@@ -234,15 +234,6 @@ export class MenuPopupComponent implements OnInit {
         }
     }
 
-    getPage() {
-        var page = 'home';
-        const currentPage = localStorage.getItem('currentPage');
-        if (currentPage != null) {
-            page = currentPage;
-        }
-        return page;
-    }
-
     copyElement() {
         if (this.dataValue != null) {
             console.log(this.dataValue, this.mode)
@@ -258,20 +249,12 @@ export class MenuPopupComponent implements OnInit {
         }
     }
 
-    getRedirectPage() {
-        var path = localStorage.getItem('currentPage');
-        if (path == null) {
-            return 'home';
-        } else {
-            return path;
-        }
-    }
 
     getPlaylistData(playlistId: string) {
         const currentParams = playlistId;
         if (currentParams != undefined) {
             localStorage.setItem('playlistId', currentParams);
-            this.spotifyDataHandlerService.getPlaylistData(this.getRedirectPage(), currentParams).subscribe(
+            this.spotifyDataHandlerService.getPlaylistData(currentParams).subscribe(
                 (response) => {
                     console.log(response);
                     var playlistData = response;
@@ -291,7 +274,7 @@ export class MenuPopupComponent implements OnInit {
     }
 
     getUserData(userId: string) {
-        this.spotifyDataHandlerService.getUserProfile(this.getRedirectPage(), userId).then((result) => {
+        this.spotifyDataHandlerService.getUserProfile(userId).then((result) => {
             console.log(result)
             var user = result;
             var item: ClipboardItem = {
@@ -304,7 +287,7 @@ export class MenuPopupComponent implements OnInit {
     }
 
     getSongData(songId: string) {
-        this.spotifyDataHandlerService.getSongData(this.getRedirectPage(), songId).then((result) => {
+        this.spotifyDataHandlerService.getSongData(songId).then((result) => {
             console.log(result)
             var song = result;
             var item: ClipboardItem = {
@@ -317,7 +300,7 @@ export class MenuPopupComponent implements OnInit {
     }
 
     getArtistData(artistId: string) {
-        this.spotifyDataHandlerService.getArtistData(this.getRedirectPage(), artistId).then((result) => {
+        this.spotifyDataHandlerService.getArtistData(artistId).then((result) => {
             console.log(result)
             var artist = result;
             var item: ClipboardItem = {

@@ -60,7 +60,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
         localStorage.setItem('currentPage', 'search');
         this.routeSub = this.ActivatedRoute.params.subscribe((params: Params) => {
             if (params['query'] != undefined) {
-                localStorage.setItem('searchQuery', params['query']);
+                localStorage.setItem('pageVariation', params['query']);
                 this.search(params['query'], 'track');
                 this.search(params['query'], 'album');
                 this.search(params['query'], 'artist');
@@ -80,7 +80,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     }
 
     search(query: string, type: string) {
-        this.spotifyDataHandlerService.search(this.getRedirectPage(), query, type).then((result) => {
+        this.spotifyDataHandlerService.search(query, type).then((result) => {
             console.log(result);
             if (type == 'track') {
                 this.tracks = result;

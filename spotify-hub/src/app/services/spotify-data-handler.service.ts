@@ -67,87 +67,18 @@ export class SpotifyDataHandlerService {
         return target
     }
 
-    private getNewToken(path: string = 'home') {
-        const urlParams = new URLSearchParams(window.location.search);
-        var accessTokenURL = urlParams.get('access_token');
-        if (accessTokenURL != null) {
-            this.spotifyApiService.setAccessToken(accessTokenURL);
-            this.spotifyApiService.getMe().then((result) => {
-                this.ownUserProfile = result;
-                console.log(this.ownUserProfile);
-            }).catch((error) => {
-                console.error(error);
-                if (error.status == 403) {
-                    console.error(error.error)
-                    // User not registered in the Developer Dashboard
-                } else if (error.status == 401) {
-                    console.log(error.error.error.message)
-                    this.router.navigate([path]);
-                    // outdated token
-                    // should also remove params before trying again
-                }
-            });
-        } else if (this.spotifyApiService.checkIfLoggedIn(`/${path}`)) {
-            console.log('piss');
-            this.spotifyApiService.getMe().then((result) => {
-                this.ownUserProfile = result;
-                console.log(this.ownUserProfile);
-            }).catch((error) => {
-                console.error(error);
-                if (error.status == 403) {
-                    console.error(error.error)
-                    // User not registered in the Developer Dashboard
-                } else if (error.status == 401) {
-                    localStorage.removeItem('spotifyAccessToken')
-                    console.log(error.error.error.message)
-                    // outdated token
-                }
-            });
-        }
-    }
-
-    private getFollowing() {
-        this.spotifyApiService.getFollowedArtists().subscribe(
-            (response) => {
-                const followedArtists = response.artists.items;
-                console.log(followedArtists)
-                // Process the followed artists list
-                this.ownFollowingArtists = followedArtists;
-            },
-            (error) => {
-                console.error('Error retrieving followed artists:', error);
-            }
-        );
-    }
-
-    private getTopTracks() {
-        this.spotifyApiService.getTopTracks().subscribe(
-            (response) => {
-                const topTracks = response.items;
-                this.ownTop25 = topTracks
-                this.ownTop25.forEach(element => {
-                    element['clicked'] = false;
-                });
-                console.log(this.ownTop25)
-            },
-            (error) => {
-                console.error('Error retrieving followed artists:', error);
-            }
-        );
-    }
-
     private showToast(toastMessage: string = 'Default Toast: "Hello World!"', type: string = 'info', timeModifier: number = 0) {
         this.toastQueueService.enqueueToast(toastMessage, type, timeModifier);
     }
 
-    private loginIfNotAlready(path: string = 'home') {
+    private loginIfNotAlready() {
         if (!this.loggedIn) {
-            this.spotifyApiService.checkIfLoggedIn(path)
+            this.spotifyApiService.checkIfLoggedIn()
             this.loggedIn = true
         }
     }
 
-    private returnedErrorHandler(path: string | null = 'home', error: any) {
+    private returnedErrorHandler(error: any) {
         console.error(error);
         if (error.status == 403) {
             console.error(error.error)
@@ -155,16 +86,13 @@ export class SpotifyDataHandlerService {
         } else if (error.status == 401) {
             this.loggedIn = false
             localStorage.removeItem('spotifyAccessToken')
-            // this.router.navigate([path]);
             console.log(error.error.error.message)
             // var refreshToken = localStorage.getItem('spotifyRefreshToken')
             // console.log(refreshToken)
             // if (refreshToken == null) {
-            if (path == null) {
-                this.spotifyApiService.authorize('home')
-            } else {
-                this.spotifyApiService.authorize(path)
-            }
+
+            this.spotifyApiService.authorize()
+
             // } else {
             //     this.spotifyApiService.refreshToken(refreshToken)
             //         .then((response) => {
@@ -191,8 +119,8 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    getUserProfile(path: string = 'home', userId: string = ''): Promise<any> {
-        this.loginIfNotAlready(path);
+    getUserProfile(userId: string = ''): Promise<any> {
+        this.loginIfNotAlready();
         if (userId != '') {
             this.checkIfExtraDataDictExists('user')
             if ((userId in this.extraData['user']) == false) {
@@ -201,7 +129,7 @@ export class SpotifyDataHandlerService {
                     console.log(this.extraData['user'][userId]);
                     return this.extraData['user'][userId];
                 }).catch((error) => {
-                    this.returnedErrorHandler(path, error);
+                    this.returnedErrorHandler(error);
                     throw error; // Throw the error to propagate it in the promise chain
                 });
             } else {
@@ -221,7 +149,7 @@ export class SpotifyDataHandlerService {
                     console.log(this.ownUserProfile);
                     return this.ownUserProfile;
                 }).catch((error) => {
-                    this.returnedErrorHandler(path, error);
+                    this.returnedErrorHandler(error);
                     throw error; // Throw the error to propagate it in the promise chain
                 });
             } else {
@@ -237,8 +165,8 @@ export class SpotifyDataHandlerService {
 
     }
 
-    getArtistsYouFollow(path: string = 'home'): Observable<any> {
-        this.loginIfNotAlready(path);
+    getArtistsYouFollow(): Observable<any> {
+        this.loginIfNotAlready();
         if (Object.keys(this.ownFollowingArtists).length === 0) {
             return this.spotifyApiService.getFollowedArtists().pipe(
                 tap((result) => {
@@ -246,7 +174,7 @@ export class SpotifyDataHandlerService {
                     console.log(this.ownFollowingArtists);
                 }),
                 catchError((error) => {
-                    this.returnedErrorHandler(path, error);
+                    this.returnedErrorHandler(error);
                     throw error; // Throw the error to propagate it in the observable chain
                 })
             );
@@ -255,8 +183,8 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    getTop25SongsFromLast30Days(path: string = 'home'): Observable<any> {
-        this.loginIfNotAlready(path);
+    getTop25SongsFromLast30Days(): Observable<any> {
+        this.loginIfNotAlready();
         if (Object.keys(this.ownTop25).length === 0) {
             return this.spotifyApiService.getTopTracks().pipe(
                 tap((result) => {
@@ -264,7 +192,7 @@ export class SpotifyDataHandlerService {
                     console.log(this.ownTop25);
                 }),
                 catchError((error) => {
-                    this.returnedErrorHandler(path, error);
+                    this.returnedErrorHandler(error);
                     throw error; // Throw the error to propagate it in the observable chain
                 })
             );
@@ -273,16 +201,13 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    getMyOwnPlaylists(path: string | null = 'home'): Observable<any> {
-        if (path == null) {
-            path = 'home';
-        }
-        this.loginIfNotAlready(path);
+    getMyOwnPlaylists(): Observable<any> {
+        this.loginIfNotAlready();
         if (Object.keys(this.ownPlaylists).length === 0) {
             return this.getPlaylists().pipe(
                 map(() => this.ownPlaylists), // Map to return this.ownPlaylists
                 catchError((error) => {
-                    this.returnedErrorHandler(path, error);
+                    this.returnedErrorHandler(error);
                     throw error;
                 })
             );
@@ -291,8 +216,8 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    addSongToPlaylist(path: string = 'home', playlistId: string, trackUri: string) {
-        this.loginIfNotAlready(path);
+    addSongToPlaylist(playlistId: string, trackUri: string) {
+        this.loginIfNotAlready();
         this.spotifyApiService.addTrackToPlaylist(playlistId, trackUri).subscribe(
             (result) => {
                 console.log(result);
@@ -306,7 +231,7 @@ export class SpotifyDataHandlerService {
                     },
                     (error) => {
                         console.log(error);
-                        this.returnedErrorHandler(path, error);
+                        this.returnedErrorHandler(error);
                         // Handle the error here
                     }
                 );
@@ -358,8 +283,8 @@ export class SpotifyDataHandlerService {
         this.setOwnPlaylists(playlists);
     }
 
-    getPlaylistData(path: string = 'home', playlistId: string): Observable<any> {
-        this.loginIfNotAlready(path);
+    getPlaylistData(playlistId: string): Observable<any> {
+        this.loginIfNotAlready();
         console.log(1)
         if (this.extraData.hasOwnProperty('playlist')) {
             console.log(2)
@@ -375,7 +300,7 @@ export class SpotifyDataHandlerService {
                     map(() => this.extraData['playlist'][playlistId]),
                     catchError((error) => {
                         console.error(error);
-                        this.returnedErrorHandler(path, error);
+                        this.returnedErrorHandler(error);
                         throw error;
                     })
                 );
@@ -390,7 +315,7 @@ export class SpotifyDataHandlerService {
                 map(() => this.extraData['playlist'][playlistId]),
                 catchError((error) => {
                     console.error(error);
-                    this.returnedErrorHandler(path, error);
+                    this.returnedErrorHandler(error);
                     throw error;
                 })
             );
@@ -398,8 +323,8 @@ export class SpotifyDataHandlerService {
 
     }
 
-    getSongData(path: string = 'home', songId: string): Promise<any> {
-        this.loginIfNotAlready(path);
+    getSongData(songId: string): Promise<any> {
+        this.loginIfNotAlready();
         this.checkIfExtraDataDictExists('song');
         if ((songId in this.extraData['song']) == false) {
             return this.spotifyApiService.getSongById(songId).then((result) => {
@@ -407,7 +332,7 @@ export class SpotifyDataHandlerService {
                 console.log(this.extraData['song'][songId]);
                 return this.extraData['song'][songId];
             }).catch((error) => {
-                this.returnedErrorHandler(path, error);
+                this.returnedErrorHandler(error);
                 throw error; // Throw the error to propagate it in the promise chain
             });
         } else {
@@ -421,8 +346,8 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    getArtistData(path: string = 'home', artistId: string): Promise<any> {
-        this.loginIfNotAlready(path);
+    getArtistData(artistId: string): Promise<any> {
+        this.loginIfNotAlready();
         this.checkIfExtraDataDictExists('artist');
         if ((artistId in this.extraData['artist']) == false) {
             return this.spotifyApiService.getArtistById(artistId).then((result) => {
@@ -430,7 +355,7 @@ export class SpotifyDataHandlerService {
                 console.log(this.extraData['artist'][artistId]);
                 return this.extraData['artist'][artistId];
             }).catch((error) => {
-                this.returnedErrorHandler(path, error);
+                this.returnedErrorHandler(error);
                 throw error; // Throw the error to propagate it in the promise chain
             });
         } else {
@@ -444,11 +369,11 @@ export class SpotifyDataHandlerService {
         }
     }
 
-    search(path: string = 'home', query: string, type: string): Promise<any> {
+    search(query: string, type: string): Promise<any> {
         return this.spotifyApiService.search(query, type).then((searchResults) => {
             return searchResults
         }).catch((error) => {
-            this.returnedErrorHandler(path, error);
+            this.returnedErrorHandler(error);
             throw error; // Throw the error to propagate it in the promise chain
         });
     }

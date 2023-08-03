@@ -45,8 +45,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
         this.waitTimeForImage(10000)
         this.routeSub = this.ActivatedRoute.params.subscribe((params: Params) => {
             if (params['uid'] == undefined) {
+                localStorage.setItem('pageVariation', '')
                 this.self = true;
-                this.spotifyDataHandlerService.getUserProfile('user').then((result) => {
+                this.spotifyDataHandlerService.getUserProfile().then((result) => {
                     console.log(result)
                     this.user = result;
                     if ((localStorage.getItem('personalSpotifyAccount') == null || localStorage.getItem('personalSpotifyAccount') == '') && localStorage.getItem('customPersonalSpotifyAccount') == 'false') {
@@ -54,7 +55,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                     }
                     this.giveCertainPeopleSkins();
                 });
-                this.spotifyDataHandlerService.getArtistsYouFollow('user').subscribe(
+                this.spotifyDataHandlerService.getArtistsYouFollow().subscribe(
                     (response) => {
                         const followedArtists = response.artists.items;
                         console.log(followedArtists);
@@ -65,7 +66,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                         console.error('Error retrieving followed artists:', error);
                     }
                 );
-                this.spotifyDataHandlerService.getTop25SongsFromLast30Days('user').subscribe(
+                this.spotifyDataHandlerService.getTop25SongsFromLast30Days().subscribe(
                     (response) => {
                         const topTracks = response.items;
                         this.top25Songs = topTracks
@@ -78,7 +79,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                         console.error('Error retrieving followed artists:', error);
                     }
                 );
-                this.spotifyDataHandlerService.getMyOwnPlaylists('user').subscribe(
+                this.spotifyDataHandlerService.getMyOwnPlaylists().subscribe(
                     (response) => {
                         const playlists = response; // Assign the response directly
                         this.myPlaylists = playlists; // Assign to myPlaylists
@@ -93,8 +94,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
                     }
                 );
             } else {
+                localStorage.setItem('pageVariation', params['uid'])
                 this.self = false;
-                this.spotifyDataHandlerService.getUserProfile('user', params['uid']).then((result) => {
+                this.spotifyDataHandlerService.getUserProfile(params['uid']).then((result) => {
                     console.log(result)
                     this.user = result;
                     if (localStorage.getItem('personalSpotifyAccount') == this.user.id) {

@@ -96,7 +96,7 @@ export class SettingsPageComponent implements OnInit {
         var accessTokenURL = urlParams.get('access_token');
         if (accessTokenURL != null) {
             this.retrieveToken(true)
-        } else if (this.spotifyApiService.checkIfLoggedIn('/settings')) {
+        } else if (this.spotifyApiService.checkIfLoggedIn()) {
             this.retrieveToken(true)
         }
     }
