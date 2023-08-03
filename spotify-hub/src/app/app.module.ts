@@ -18,6 +18,7 @@ import { MenuPopupComponent } from './components/menu-popup/menu-popup.component
 import { ToastPopupComponent } from './components/toast-popup/toast-popup.component';
 import { PlaylistPageComponent } from './pages/playlist-page/playlist-page.component';
 import { DurationPipe } from './pipes/duration.pipe';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import { DurationPipe } from './pipes/duration.pipe';
         DurationPipe,
         MenuPopupComponent,
         ToastPopupComponent,
-        PlaylistPageComponent
+        PlaylistPageComponent,
+        SearchPageComponent
     ],
     imports: [
         BrowserModule,

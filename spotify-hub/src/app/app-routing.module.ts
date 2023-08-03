@@ -8,6 +8,7 @@ import { InfoPageComponent } from './pages/info-page/info-page.component';
 import { UserPageComponent } from './pages/user-page/user-page.component';
 import { SettingsPageComponent } from './pages/settings-page/settings-page.component';
 import { PlaylistPageComponent } from './pages/playlist-page/playlist-page.component';
+import { SearchPageComponent } from './pages/search-page/search-page.component';
 
 const routes: Routes = [
     { path: 'home', component: HomePageComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
     { path: 'user', component: UserPageComponent },
     { path: 'settings', component: SettingsPageComponent },
     { path: 'user/:uid', component: UserPageComponent },
+    { path: 'search/:query', component: SearchPageComponent },
     { path: 'playlist', component: PlaylistPageComponent },
     { path: '**', component: NotFoundPageComponent }
 ];

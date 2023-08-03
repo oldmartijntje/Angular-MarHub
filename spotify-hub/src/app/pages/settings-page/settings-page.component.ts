@@ -17,6 +17,8 @@ export class SettingsPageComponent implements OnInit {
     popupMode: string = 'click';
     popupType: string = 'default';
     popupSaveData: string = 'disabled';
+    profileRedirectTo: string = '';
+    customProfileRedirect: boolean = false;
 
     constructor(private toastQueueService: ToastQueueService, private clipboard: Clipboard, private spotifyApiService: SpotifyApiService, private spotifyDataHandlerService: SpotifyDataHandlerService) { }
 
@@ -58,16 +60,27 @@ export class SettingsPageComponent implements OnInit {
             localStorage.setItem('popup-menu-type', 'default');
             this.popupType = 'default';
         }
-        if (localStorage.getItem('popup-menu-save-data') == 'enabled') {
-            this.popupSaveData = 'enabled';
-        } else if (localStorage.getItem('popup-menu-save-data') == 'disabled') {
-            this.popupSaveData = 'disabled';
+        if (localStorage.getItem('popup-menu-save-data') == 'one') {
+            this.popupSaveData = 'one';
         } else if (localStorage.getItem('popup-menu-save-data') == 'unlimited') {
             this.popupSaveData = 'unlimited';
         } else {
-            localStorage.setItem('popup-menu-save-data', 'disabled');
-            this.popupSaveData = 'disabled';
+            localStorage.setItem('popup-menu-save-data', 'one');
+            this.popupSaveData = 'one';
         }
+        var account = localStorage.getItem('personalSpotifyAccount')
+        if (account == null) {
+            this.profileRedirectTo = '';
+            localStorage.setItem('personalSpotifyAccount', '')
+        } else {
+            this.profileRedirectTo = account
+        }
+        if (localStorage.getItem('customPersonalSpotifyAccount') == null) {
+            localStorage.setItem('customPersonalSpotifyAccount', 'false');
+        } else {
+            this.customProfileRedirect = localStorage.getItem('customPersonalSpotifyAccount') == 'true';
+        }
+        console.log(this.customProfileRedirect, localStorage.getItem('customPersonalSpotifyAccount'))
     }
 
     saveSettings() {
@@ -127,7 +140,13 @@ export class SettingsPageComponent implements OnInit {
     }
 
     popupSaveDataChange() {
+        console.log(localStorage.getItem('popup-menu-save-data'))
         localStorage.setItem('popup-menu-save-data', this.popupSaveData);
+        console.log(localStorage.getItem('popup-menu-save-data'))
+    }
+
+    profileRedirectChange() {
+        localStorage.setItem('personalSpotifyAccount', this.profileRedirectTo);
     }
 
     deleteToken(ignoreToast: boolean = false) {
@@ -142,10 +161,20 @@ export class SettingsPageComponent implements OnInit {
         localStorage.clear();
     }
 
-    onCheckboxChange(newValue: boolean) {
+    onSpotifyAccessTokenCheckboxChange(newValue: boolean) {
         this.spotifyAccessTokenStoring = newValue;
         localStorage.setItem('keepSpotifyAccessToken', this.spotifyAccessTokenStoring.toString());
         console.log(this.spotifyAccessTokenStoring);
+    }
+
+    onCustomProfileRedirectCheckboxChange(newValue: boolean) {
+        this.customProfileRedirect = newValue;
+        localStorage.setItem('customPersonalSpotifyAccount', this.customProfileRedirect.toString());
+        console.log(this.customProfileRedirect);
+        if (this.customProfileRedirect == false) {
+            localStorage.setItem('personalSpotifyAccount', '');
+            this.profileRedirectTo = '';
+        }
     }
 
     logout() {

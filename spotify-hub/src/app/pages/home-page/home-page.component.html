@@ -1,4 +1,9 @@
-<button (click)="addArticle()">Test dynamic loading</button>
+<div class="page">
+
+
+    <!-- Rest of your page content goes here -->
+</div>
+<!-- <button (click)="addArticle()">Test dynamic loading</button> -->
 <div class="page" *ngFor="let item of Articles.reverse()">
     <div class="Item {{item.class}}">
         <h1 class="Title" [innerHTML]="item.title"></h1>

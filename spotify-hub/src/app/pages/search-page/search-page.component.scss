@@ -1,0 +1,309 @@
+@import '../../../styles.scss';
+
+body {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    /* Adjust as needed */
+}
+
+.profile {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: $backgroundShade1;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px $backgroundShade2;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+}
+
+// .profile * {
+//     color: $background-text-color;
+// }
+
+
+.itemBar {
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: $backgroundShade1;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px $backgroundShade2;
+    margin-bottom: 1rem;
+}
+
+.item-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.itemBar-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: inline-block;
+}
+
+$item-initial-width: 50px;
+$item-initial-height: 50px;
+$item-final-width: 200px;
+$item-final-height: 200px;
+$item-hover-transition-time: 0.6s;
+
+.hoverItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    border-radius: 5px;
+    background-color: $backgroundShade2;
+    margin: 0.5rem;
+    overflow: hidden;
+    width: $item-initial-width;
+    height: $item-initial-height;
+    transition: width $item-hover-transition-time ease-in-out,
+        height $item-hover-transition-time ease-in-out;
+
+    &:hover {
+        width: $item-final-width;
+        height: $item-final-height;
+
+        .item-display-name,
+        .item-stats,
+        .item-genres,
+        .spotify-link {
+            opacity: 1;
+        }
+    }
+
+    .item-display-name,
+    .item-stats,
+    .item-genres,
+    .spotify-link {
+        opacity: 0;
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .item-display-name {
+        font-size: 18px;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    .item-stats,
+    .item-genres {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .spotify-link {
+        background-color: transparent;
+        color: $primary-color;
+        padding: 0;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+
+@keyframes expandhoverItem {
+    from {
+        width: $item-initial-width;
+        height: $item-initial-height;
+    }
+
+    to {
+        width: $item-final-width;
+        height: $item-final-height;
+    }
+}
+
+.item:hover .item-display-name,
+.item:hover .item-stats,
+.item:hover .item-genres,
+.item:hover .spotify-link {
+    animation: fadeIn $item-hover-transition-time ease-in-out;
+}
+
+.hoverItem {
+    animation: expandhoverItem$item-hover-transition-time ease-in-out;
+}
+
+
+
+.item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    border-radius: 5px;
+    background-color: $backgroundShade2;
+    margin: 0.5rem;
+    overflow: hidden;
+    width: 180px;
+    // height: $item-final-height;
+    padding: 1rem;
+
+    .item-display-name,
+    .item-stats,
+    .item-genres,
+    .spotify-link {
+        text-align: center;
+        margin-top: 0;
+    }
+
+    .item-display-name {
+        font-size: 18px;
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    .item-stats,
+    .item-genres {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
+
+    .spotify-link {
+        background-color: transparent;
+        color: $primary-color;
+        padding: 0;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
+
+
+.profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    object-fit: cover;
+    object-position: center center;
+
+    &-small {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        object-position: center center;
+    }
+}
+
+.cover-image-small {
+    width: 100px;
+    height: 100px;
+    // border-radius: 50%;
+    margin-bottom: 20px;
+    object-fit: cover;
+    object-position: center center;
+}
+
+.display-name {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.country,
+.followers,
+.product {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.spotify-link {
+    background-color: transparent;
+    color: $primary-color;
+    padding: 0
+}
+
+.container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+    width: 150px;
+    height: 150px;
+    border-bottom-left-radius: 50%;
+    border-bottom-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+}
+
+.container img {
+    overflow: hidden;
+}
+
+.overlay {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.premium {
+    top: -70%;
+    right: -70%;
+    width: 150%;
+    height: 150%;
+    transform: rotate(45deg);
+}
+
+.premiumFlip {
+    top: -75%;
+    right: 15%;
+    width: 150%;
+    height: 150%;
+    transform: rotate(-35deg);
+}
+
+.free {
+    top: 0%;
+    right: -113%;
+    width: 150%;
+    height: 150%;
+    transform: rotate(35deg);
+}
+
+.skinItem {
+    top: -25%;
+    right: -25%;
+    width: 150%;
+    height: 150%;
+}
+
+.premium img {
+    max-width: 40%;
+    max-height: 40%;
+}
+
+.premiumFlip img {
+    max-width: 40%;
+    max-height: 40%;
+}
+
+.free img {
+    max-width: 50%;
+    max-height: 50%;
+}
+
+.hideButton {
+    padding: 7px 7px;
+    background-color: $primary-color;
+    border: none;
+    border-radius: 5px 5px 5px 5px;
+    color: $primary-text-color;
+    font-size: 16px;
+    margin-left: 10px;
+    cursor: pointer;
+    height: 27px;
+    display: inline-block;
+}

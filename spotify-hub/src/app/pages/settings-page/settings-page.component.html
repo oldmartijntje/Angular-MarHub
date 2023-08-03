@@ -5,7 +5,7 @@
     <div class="checkbox-wrapper">
         <label for="spotifyAccessToken" class="noTopMargin">Save Spotify Access Token:</label>
         <input type="checkbox" id="spotifyAccessToken" name="spotifyAccessToken" [ngModel]="spotifyAccessTokenStoring"
-            (ngModelChange)="onCheckboxChange($event)">
+            (ngModelChange)="onSpotifyAccessTokenCheckboxChange($event)">
     </div>
     <button type="button" (click)="deleteToken()">Delete Access Token</button>
     <br>
@@ -17,33 +17,39 @@
         <option value="light">Light</option>
         <option value="dark">Dark</option>
     </select>
-    <label for="colorTheme">Image Mode:</label>
+    <label for="imageMode">Image Mode:</label>
     <select id="imageMode" name="imageMode" [(ngModel)]="imageMode" class="comboBox" (change)="imageModeChange()">
         <option value="good">Good Quality</option>
         <option value="bad">Bad Quality</option>
         <option value="rick">Special</option>
     </select>
-    <label for="colorTheme">Popup-menu Mode:</label>
+    <label for="popupMode">Popup-menu Mode:</label>
     <select id="popupMode" name="popupMode" [(ngModel)]="popupMode" class="comboBox" (change)="popupModeChange()">
         <option value="click">On Click</option>
         <option value="dblclick">On Double Click</option>
         <option value="contextmenu">On Right Click</option>
     </select>
-    <label for="colorTheme">Popup-menu Type:</label>
+    <label for="popupType">Popup-menu Type:</label>
     <select id="popupType" name="popupType" [(ngModel)]="popupType" class="comboBox" (change)="popupTypeChange()">
         <option value="default">Default</option>
         <option value="defaultdev">Default + Dev</option>
         <option value="dev">Dev</option>
     </select>
-
-    <h2>Local Storage</h2>
-    <label for="colorTheme">Save for later setting in pop-up:</label>
+    <label for="popupSaveData">Clipboard:</label>
     <select id="popupSaveData" name="popupSaveData" [(ngModel)]="popupSaveData" class="comboBox"
         (change)="popupSaveDataChange()">
-        <option value="disabled">Disabled</option>
-        <option value="enabled">Enabled</option>
-        <option value="unlimited">Unlimited Clipboard</option>
+        <option value="one">Normal mode</option>
+        <option value="unlimited">Unlimited Clipboard mode</option>
     </select>
+    <div class="checkbox-wrapper">
+        <label for="customProfileRedirect" class="noTopMargin">Custom Redirect:</label>
+        <input type="checkbox" id="customProfileRedirect" name="customProfileRedirect" [ngModel]="customProfileRedirect"
+            (ngModelChange)="onCustomProfileRedirectCheckboxChange($event)">
+    </div>
+    <label for="profileRedirect" *ngIf="customProfileRedirect">Profile Redirect to:</label>
+    <input *ngIf="customProfileRedirect" id="profileRedirect" type="text" name="profileRedirect"
+        [(ngModel)]="profileRedirectTo" class="comboBox" (change)="profileRedirectChange()">
+    <h2>Local Storage</h2>
     <button type="button" (click)="deleteLocalStorage()">Delete Local Storage</button>
     <h2>Account</h2>
     <button type="button" (click)="logout()">Logout</button>

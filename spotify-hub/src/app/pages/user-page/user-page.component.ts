@@ -5,7 +5,7 @@ import { ToastQueueService } from 'src/app/services/toast-queue.service';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { Subscribable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { Image } from '../../interfaces/image.interface'
+import { Image } from '../../interfaces/image.interface';
 
 @Component({
     selector: 'app-user-page',
@@ -28,7 +28,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
     skin = '';
     profileImage = '';
 
-    constructor(private spotifyDataHandlerService: SpotifyDataHandlerService, public globalFunctionsService: GlobalFunctionsService, private ActivatedRoute: ActivatedRoute) { }
+    constructor(private router: Router, private spotifyDataHandlerService: SpotifyDataHandlerService,
+        public globalFunctionsService: GlobalFunctionsService, private ActivatedRoute: ActivatedRoute) { }
 
     ngOnDestroy(): void {
         if (this.playlistsSubscription != null) {
@@ -48,6 +49,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
                 this.spotifyDataHandlerService.getUserProfile('user').then((result) => {
                     console.log(result)
                     this.user = result;
+                    if ((localStorage.getItem('personalSpotifyAccount') == null || localStorage.getItem('personalSpotifyAccount') == '') && localStorage.getItem('customPersonalSpotifyAccount') == 'false') {
+                        localStorage.setItem('personalSpotifyAccount', this.user.id)
+                    }
                     this.giveCertainPeopleSkins();
                 });
                 this.spotifyDataHandlerService.getArtistsYouFollow('user').subscribe(
@@ -93,6 +97,9 @@ export class UserPageComponent implements OnInit, OnDestroy {
                 this.spotifyDataHandlerService.getUserProfile('user', params['uid']).then((result) => {
                     console.log(result)
                     this.user = result;
+                    if (localStorage.getItem('personalSpotifyAccount') == this.user.id) {
+                        this.router.navigate(['user']);
+                    }
                     this.giveCertainPeopleSkins();
                 });
             }

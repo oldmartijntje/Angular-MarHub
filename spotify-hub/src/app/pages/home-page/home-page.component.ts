@@ -9,12 +9,12 @@ import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 export class HomePageComponent implements OnInit {
     Articles = [
         {
-            "title": "Welcome to HenkHub!", "text": "Welcome,\nWe'd like to thank you for visiting this new website.",
+            "title": "Welcome to MarHub!", "text": "Welcome,\nWe'd like to thank you for visiting this new website.",
             "class": "highlight", "image": {
                 "enabled": false, "path": "", "altText": "",
                 "bottomText": ""
             },
-            "bottomText": { "enabled": true, "innerHTML": "To read the full info on this website, <a href='/docs'>Click here!</a>" }
+            "bottomText": { "enabled": true, "innerHTML": "To read the full info on this website, click in the header on docs." }
         }
     ];
     length = 1;

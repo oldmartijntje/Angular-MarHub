@@ -1,28 +1,14 @@
 <div class="menu-overlay" *ngIf="showMenu" (click)="showMenu = false"></div>
 <div *ngIf="showMenu">
     <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'ArtistElement'">
-        <button (click)="handleButtonClick(dataValue)" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
-            [innerHTML]="scanForBreak(dataValue)"></button>
-        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="handleButtonClick('Button 1')"
-            [innerHTML]="scanForBreak('Button 2')"></button>
-        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="handleButtonClick('Button 2')"
-            [innerHTML]="scanForBreak('Button 3')"></button>
-        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="handleButtonClick('Button 3')"
-            [innerHTML]="scanForBreak('Button 4')"></button>
         <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
             [innerHTML]="scanForBreak('Copy')"></button>
     </div>
     <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'UserElement'">
-        <button (click)="handleButtonClick(dataValue)" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
-            [innerHTML]="scanForBreak(dataValue)"></button>
-        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="handleButtonClick('Button 1')"
-            [innerHTML]="scanForBreak('Button 2')"></button>
-        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="handleButtonClick('Button 2')"
-            [innerHTML]="scanForBreak('Button 3')"></button>
-        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="handleButtonClick('Button 3')"
-            [innerHTML]="scanForBreak('Button 4')"></button>
         <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
             [innerHTML]="scanForBreak('Copy')"></button>
+        <button (click)="navigateToUser()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Go To User')"></button>
     </div>
     <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'SongElement'">
         <button (click)="copyLink(dataValue, 'track')" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"

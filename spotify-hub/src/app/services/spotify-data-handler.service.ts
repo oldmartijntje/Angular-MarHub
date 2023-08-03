@@ -434,4 +434,13 @@ export class SpotifyDataHandlerService {
             });
         }
     }
+
+    search(path: string = 'home', query: string, type: string): Promise<any> {
+        return this.spotifyApiService.search(query, type).then((searchResults) => {
+            return searchResults
+        }).catch((error) => {
+            this.returnedErrorHandler(path, error);
+            throw error; // Throw the error to propagate it in the promise chain
+        });
+    }
 }

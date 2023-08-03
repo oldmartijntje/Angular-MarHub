@@ -4,7 +4,14 @@
             <img id="spotifyLogo" src="assets/icons/origami.png" alt="Logo" />
         </div>
         <div id="HeaderBarLeftTitle">
-            <h1 id="titleInHeader">HenkHub</h1>
+            <h1 id="titleInHeader">MarHub</h1>
+        </div>
+    </div>
+    <div id="HeaderBarMiddle">
+        <div class="search-container">
+            <input class="search-bar" #searchInput type="text" placeholder="Enter your search term here"
+                (keyup.enter)="onSearchClicked(searchInput.value)">
+            <button class="search-button" (click)="onSearchClicked(searchInput.value)">Search</button>
         </div>
     </div>
     <div id="HeaderBarRight">

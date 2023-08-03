@@ -145,6 +145,14 @@ export class SpotifyApiService {
         return this.http.get<any>(`${this.apiUrl}/artists/${artistId}`, { headers }).toPromise();
     }
 
+    search(query: string, type: string): Promise<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
 
-    // Other methods for interacting with the Spotify API
+        const params = new HttpParams()
+            .set('q', query)
+            .set('type', type);
+
+        return this.http.get<any>(`${this.apiUrl}/search`, { headers, params }).toPromise();
+    }
+
 }

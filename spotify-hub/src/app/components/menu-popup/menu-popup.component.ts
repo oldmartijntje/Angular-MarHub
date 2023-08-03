@@ -23,9 +23,10 @@ export class MenuPopupComponent implements OnInit {
     myPlaylists: Array<any> = [];
     popupTypeDefault = true;
     popupTypeDev = true;
-    popupSaveData = 'disabled';
 
-    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService, private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService, private router: Router, private clipboardServiceService: ClipboardServiceService) { }
+    constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService,
+        private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService,
+        private router: Router, private clipboardServiceService: ClipboardServiceService) { }
 
     ngOnInit() {
         if (localStorage.getItem('popup-menu-mode') == null) {
@@ -68,16 +69,6 @@ export class MenuPopupComponent implements OnInit {
             localStorage.setItem('popup-menu-type', 'default');
             this.popupTypeDev = false;
             this.popupTypeDefault = true;
-        }
-        if (localStorage.getItem('popup-menu-save-data') == 'enabled') {
-            this.popupSaveData = 'enabled';
-        } else if (localStorage.getItem('popup-menu-save-data') == 'disabled') {
-            this.popupSaveData = 'disabled';
-        } else if (localStorage.getItem('popup-menu-save-data') == 'unlimited') {
-            this.popupSaveData = 'unlimited';
-        } else {
-            localStorage.setItem('popup-menu-save-data', 'disabled');
-            this.popupSaveData = 'disabled';
         }
     }
 
@@ -231,17 +222,15 @@ export class MenuPopupComponent implements OnInit {
         if (this.dataValue != null) {
             this.showMenu = false;
             this.extraMenu = 0;
-            this.spotifyDataHandlerService.getPlaylistData(this.getPage(), this.dataValue).subscribe(
-                (response) => {
-                    this.showMenu = false;
-                    this.extraMenu = 0;
-                    console.log(response);
-                    this.router.navigate(['playlist'], { queryParams: { "playlistId": response.id } });
-                },
-                (error) => {
-                    console.error('Error retrieving playlists:', error);
-                }
-            );
+            this.router.navigate(['playlist'], { queryParams: { "playlistId": this.dataValue } });
+        }
+    }
+
+    navigateToUser() {
+        if (this.dataValue != null) {
+            this.showMenu = false;
+            this.extraMenu = 0;
+            this.router.navigate(['user', this.dataValue]);
         }
     }
 
