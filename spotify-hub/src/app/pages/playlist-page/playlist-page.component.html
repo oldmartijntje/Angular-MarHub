@@ -1,8 +1,9 @@
 <div *ngIf="!isPlaylistDataEmpty()">
-    <div class="profile">
+    <div class="profile menu-item menu-type-playlist" [attr.data-value]="playlistData['id']">
         <img src="{{ getCorrectPicture(playlistData['images']) }}" alt="{{ playlistData['name'] }}" class="cover-image">
         <h1 class="profile-title">{{ playlistData['name'] }}</h1>
-        <p class="profile-owner">Created by <a href="user/{{ playlistData['owner']['id'] }}" class="spotify-link">{{
+        <p class="profile-owner">Created by <a routerLink="../user/{{ playlistData['owner']['id'] }}"
+                class="spotify-link">{{
                 playlistData['owner']['display_name'] }}</a></p>
         <div class="profile-description">
             <p>{{ playlistData['description'] }}</p>

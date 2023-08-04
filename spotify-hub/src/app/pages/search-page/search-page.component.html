@@ -2,7 +2,7 @@
     <div class="itemBar" id="tracks" *ngIf="!isEmpty(tracks)">
         <h1 class="itemBar-title">Tracks</h1>
         <button class="hideButton" (click)="flipState('tracks')">Hide</button>
-        <div class="item-container" *ngIf="showTracks">
+        <div class="item-container" *ngIf="showTracks && tracks['tracks']['items'].length != 0">
             <div class="item menu-item menu-type-song" *ngFor="let song of tracks['tracks']['items']"
                 [attr.data-value]="song.id">
                 <img *ngIf="song.album.images.length == 0" src="../../../assets/images/defaultCover.png"
@@ -17,11 +17,14 @@
                 <a class="spotify-link" href="{{song.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
             </div>
         </div>
+        <div class="item-container" *ngIf="showTracks && tracks['tracks']['items'].length === 0">
+            <h2 class="itemBar-subtitle">404 nothing found</h2>
+        </div>
     </div>
     <div class="itemBar" id="artistsFollowed" *ngIf="!isEmpty(artists)">
         <h1 class="itemBar-title">Artists</h1>
         <button class="hideButton" (click)="flipState('artists')">Hide</button>
-        <div class="item-container" *ngIf="showArtists">
+        <div class="item-container" *ngIf="showArtists && artists['artists']['items'].length != 0">
             <div class="item menu-item menu-type-artist" *ngFor="let artist of artists['artists']['items']"
                 [attr.data-value]="artist.id">
                 <img *ngIf="artist.images.length == 0" src="../../../assets/images/defaultProfileImage.png"
@@ -35,11 +38,14 @@
                 <a class="spotify-link" href="{{artist.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
             </div>
         </div>
+        <div class="item-container" *ngIf="showArtists && artists['artists']['items'].length === 0">
+            <h2 class="itemBar-subtitle">404 nothing found</h2>
+        </div>
     </div>
     <div class="itemBar" id="albums" *ngIf="!isEmpty(albums)">
         <h1 class="itemBar-title">Albums</h1>
         <button class="hideButton" (click)="flipState('albums')">Hide</button>
-        <div class="item-container" *ngIf="showAlbums">
+        <div class="item-container" *ngIf="showAlbums && albums['albums']['items'].length != 0">
             <div class="item menu-item menu-type-album" *ngFor="let album of albums['albums']['items']"
                 [attr.data-value]="album.id">
                 <img *ngIf="album.images.length > 0" src="{{getCorrectPicture(album.images)}}"
@@ -56,11 +62,14 @@
                     Spotify.com</a>
             </div>
         </div>
+        <div class="item-container" *ngIf="showAlbums && albums['albums']['items'].length === 0">
+            <h2 class="itemBar-subtitle">404 nothing found</h2>
+        </div>
     </div>
     <div class="itemBar" id="playlists" *ngIf="!isEmpty(playlists)">
         <h1 class="itemBar-title">Playlists</h1>
         <button class="hideButton" (click)="flipState('playlists')">Hide</button>
-        <div class="item-container" *ngIf="showPlaylists">
+        <div class="item-container" *ngIf="showPlaylists && playlists['playlists']['items'].length != 0">
             <div class="item menu-item menu-type-playlist" *ngFor="let playlist of playlists['playlists']['items']"
                 [attr.data-value]="playlist.id">
                 <img *ngIf="playlist.images.length > 0" src="{{getCorrectPicture(playlist.images)}}"
@@ -74,6 +83,9 @@
                 <a class="spotify-link" href="{{playlist.external_urls.spotify}}" target="_blank">Visit on
                     Spotify.com</a>
             </div>
+        </div>
+        <div class="item-container" *ngIf="showPlaylists && playlists['playlists']['items'].length === 0">
+            <h2 class="itemBar-subtitle">404 nothing found</h2>
         </div>
     </div>
 </div>

@@ -30,7 +30,7 @@ export class CallbackPageComponent implements OnInit {
                 if (localStorage.getItem('keepSpotifyAccessToken') == 'true' || localStorage.getItem('keepSpotifyAccessToken') == null) {
                     // console.log(accessToken)
                     localStorage.setItem('spotifyAccessToken', accessToken['access_token']);
-                    // localStorage.setItem('spotifyRefreshToken', accessToken['refresh_token']);
+                    localStorage.setItem('spotifyRefreshToken', accessToken['refresh_token']);
                     if (localStorage.getItem('currentPage') == 'playlist') {
                         this.router.navigate([localStorage.getItem('currentPage')], { queryParams: { "playlistId": localStorage.getItem('pageVariation') } });
                     } else if (localStorage.getItem('currentPage') == 'search') {

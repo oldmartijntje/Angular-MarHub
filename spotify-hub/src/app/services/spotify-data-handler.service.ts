@@ -87,23 +87,22 @@ export class SpotifyDataHandlerService {
             this.loggedIn = false
             localStorage.removeItem('spotifyAccessToken')
             console.log(error.error.error.message)
-            // var refreshToken = localStorage.getItem('spotifyRefreshToken')
+            var refreshToken = localStorage.getItem('spotifyRefreshToken')
             // console.log(refreshToken)
-            // if (refreshToken == null) {
-
-            this.spotifyApiService.authorize()
-
-            // } else {
-            //     this.spotifyApiService.refreshToken(refreshToken)
-            //         .then((response) => {
-            //             console.log('New access token:', response.access_token);
-            //             // Use the new access token for further requests
-            //         })
-            //         .catch((error) => {
-            //             console.error('Error refreshing token:', error);
-            //             // Handle the error if token refresh fails
-            //         });
-            // }
+            if (refreshToken == null) {
+                this.spotifyApiService.authorize()
+                alert('aa')
+            } else {
+                this.spotifyApiService.refreshToken(refreshToken)
+                    .then((response) => {
+                        console.log('New access token:', response.access_token);
+                        // Use the new access token for further requests
+                    })
+                    .catch((error) => {
+                        console.error('Error refreshing token:', error);
+                        // Handle the error if token refresh fails
+                    });
+            }
 
 
             // outdated token
@@ -370,6 +369,10 @@ export class SpotifyDataHandlerService {
     }
 
     search(query: string, type: string): Promise<any> {
+        this.loginIfNotAlready();
+        if (query == '') {
+            throw "Empty Search query";
+        }
         return this.spotifyApiService.search(query, type).then((searchResults) => {
             return searchResults
         }).catch((error) => {

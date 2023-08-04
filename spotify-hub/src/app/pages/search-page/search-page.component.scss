@@ -44,6 +44,13 @@ body {
     display: inline-block;
 }
 
+.itemBar-subtitle {
+    font-size: 19px;
+    margin-bottom: 10px;
+    text-align: center;
+    display: inline-block;
+}
+
 $item-initial-width: 50px;
 $item-initial-height: 50px;
 $item-final-width: 200px;
