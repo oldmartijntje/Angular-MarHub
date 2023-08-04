@@ -29,7 +29,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     profileImage = '';
 
     constructor(private router: Router, private spotifyDataHandlerService: SpotifyDataHandlerService,
-        public globalFunctionsService: GlobalFunctionsService, private ActivatedRoute: ActivatedRoute) { }
+        public globalFunctionsService: GlobalFunctionsService, private activatedRoute: ActivatedRoute) { }
 
     ngOnDestroy(): void {
         if (this.playlistsSubscription != null) {
@@ -43,7 +43,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         localStorage.setItem('currentPage', 'user');
         this.waitTimeForImage(10000)
-        this.routeSub = this.ActivatedRoute.params.subscribe((params: Params) => {
+        this.routeSub = this.activatedRoute.params.subscribe((params: Params) => {
             if (params['uid'] == undefined) {
                 localStorage.setItem('pageVariation', '')
                 this.self = true;

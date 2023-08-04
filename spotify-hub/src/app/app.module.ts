@@ -19,6 +19,8 @@ import { ToastPopupComponent } from './components/toast-popup/toast-popup.compon
 import { PlaylistPageComponent } from './pages/playlist-page/playlist-page.component';
 import { DurationPipe } from './pipes/duration.pipe';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
+import { SongPageComponent } from './pages/song-page/song-page.component';
+import { AlbumPageComponent } from './pages/album-page/album-page.component';
 
 
 @NgModule({
@@ -36,7 +38,9 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
         MenuPopupComponent,
         ToastPopupComponent,
         PlaylistPageComponent,
-        SearchPageComponent
+        SearchPageComponent,
+        SongPageComponent,
+        AlbumPageComponent
     ],
     imports: [
         BrowserModule,
