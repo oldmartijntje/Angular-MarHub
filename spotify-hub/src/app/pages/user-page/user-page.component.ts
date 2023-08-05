@@ -56,7 +56,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                 localStorage.setItem('pageVariation', '')
                 this.self = true;
                 this.spotifyDataHandlerService.getUserProfile().then((result) => {
-                    console.log(result)
+                    this.globalFunctionsService.log(result)
                     this.user = result;
                     if ((localStorage.getItem('personalSpotifyAccount') == null || localStorage.getItem('personalSpotifyAccount') == '') && localStorage.getItem('customPersonalSpotifyAccount') == 'false') {
                         localStorage.setItem('personalSpotifyAccount', this.user.id)
@@ -66,7 +66,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                 this.spotifyDataHandlerService.getArtistsYouFollow().subscribe(
                     (response) => {
                         const followedArtists = response.artists.items;
-                        console.log(followedArtists);
+                        this.globalFunctionsService.log(followedArtists);
                         // Process the followed artists list
                         this.followingArtists = followedArtists;
                     },
@@ -81,7 +81,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                         // this.top25Songs.forEach(element => {
                         //     element['clicked'] = false;
                         // });
-                        console.log(this.top25Songs)
+                        this.globalFunctionsService.log(this.top25Songs)
                     },
                     (error) => {
                         console.error('Error retrieving followed artists:', error);
@@ -91,10 +91,10 @@ export class UserPageComponent implements OnInit, OnDestroy {
                     (response) => {
                         const playlists = response; // Assign the response directly
                         this.myPlaylists = playlists; // Assign to myPlaylists
-                        console.log(this.myPlaylists);
+                        this.globalFunctionsService.log(this.myPlaylists);
                         this.playlistsSubscription = this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
                             this.myPlaylists = newPlaylists;
-                            console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                            this.globalFunctionsService.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                         });
                     },
                     (error) => {
@@ -105,7 +105,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                 localStorage.setItem('pageVariation', params['uid'])
                 this.self = false;
                 this.spotifyDataHandlerService.getUserProfile(params['uid']).then((result) => {
-                    console.log(result)
+                    this.globalFunctionsService.log(result)
                     this.user = result;
                     if (localStorage.getItem('personalSpotifyAccount') == this.user.id) {
                         this.router.navigate(['user']);

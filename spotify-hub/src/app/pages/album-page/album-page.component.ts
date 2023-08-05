@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { GlobalFunctionsService } from 'src/app/services/global-functions.service';
@@ -10,7 +10,7 @@ import { Image } from '../../interfaces/image.interface';
     templateUrl: './album-page.component.html',
     styleUrls: ['./album-page.component.scss']
 })
-export class AlbumPageComponent {
+export class AlbumPageComponent implements OnInit, OnDestroy {
     albumId: string | undefined = undefined;
     albumData: Record<string, any> = {};
     routeSub: Subscription | null = null;
@@ -26,11 +26,11 @@ export class AlbumPageComponent {
             } else {
                 localStorage.setItem('pageVariation', params['id']);
                 this.spotifyDataHandlerService.getAlbumData(params['id']).then((result) => {
-                    console.log(result)
+                    this.globalFunctionsService.log(result)
                     this.albumData = result;
 
                 }).catch((error) => {
-                    console.log(error);
+                    this.globalFunctionsService.log(error);
 
                 });
             }

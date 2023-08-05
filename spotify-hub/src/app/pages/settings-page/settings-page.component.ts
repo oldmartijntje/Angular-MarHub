@@ -3,6 +3,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { ToastQueueService } from 'src/app/services/toast-queue.service';
+import { GlobalFunctionsService } from 'src/app/services/global-functions.service';
 
 
 @Component({
@@ -20,7 +21,8 @@ export class SettingsPageComponent implements OnInit {
     profileRedirectTo: string = '';
     customProfileRedirect: boolean = false;
 
-    constructor(private toastQueueService: ToastQueueService, private clipboard: Clipboard, private spotifyApiService: SpotifyApiService, private spotifyDataHandlerService: SpotifyDataHandlerService) { }
+    constructor(private toastQueueService: ToastQueueService, private clipboard: Clipboard, private spotifyApiService: SpotifyApiService,
+        private spotifyDataHandlerService: SpotifyDataHandlerService, private globalFunctionsService: GlobalFunctionsService) { }
 
     ngOnInit(): void {
         localStorage.setItem('currentPage', 'settings');
@@ -80,14 +82,14 @@ export class SettingsPageComponent implements OnInit {
         } else {
             this.customProfileRedirect = localStorage.getItem('customPersonalSpotifyAccount') == 'true';
         }
-        console.log(this.customProfileRedirect, localStorage.getItem('customPersonalSpotifyAccount'))
+        this.globalFunctionsService.log((this.customProfileRedirect, localStorage.getItem('customPersonalSpotifyAccount')));
     }
 
     saveSettings() {
         // Code to save the settings goes here
-        console.log('Settings saved');
+        this.globalFunctionsService.log('Settings saved');
         this.showToast('Settings saved!')
-        // console.log(this.imageMode)
+        // this.globalFunctionsService.log(this.imageMode)
     }
 
     copyAcessKeyToClipboard() {
@@ -140,9 +142,9 @@ export class SettingsPageComponent implements OnInit {
     }
 
     popupSaveDataChange() {
-        console.log(localStorage.getItem('popup-menu-save-data'))
+        this.globalFunctionsService.log(localStorage.getItem('popup-menu-save-data'))
         localStorage.setItem('popup-menu-save-data', this.popupSaveData);
-        console.log(localStorage.getItem('popup-menu-save-data'))
+        this.globalFunctionsService.log(localStorage.getItem('popup-menu-save-data'))
     }
 
     profileRedirectChange() {
@@ -164,13 +166,13 @@ export class SettingsPageComponent implements OnInit {
     onSpotifyAccessTokenCheckboxChange(newValue: boolean) {
         this.spotifyAccessTokenStoring = newValue;
         localStorage.setItem('keepSpotifyAccessToken', this.spotifyAccessTokenStoring.toString());
-        console.log(this.spotifyAccessTokenStoring);
+        this.globalFunctionsService.log(this.spotifyAccessTokenStoring);
     }
 
     onCustomProfileRedirectCheckboxChange(newValue: boolean) {
         this.customProfileRedirect = newValue;
         localStorage.setItem('customPersonalSpotifyAccount', this.customProfileRedirect.toString());
-        console.log(this.customProfileRedirect);
+        this.globalFunctionsService.log(this.customProfileRedirect);
         if (this.customProfileRedirect == false) {
             localStorage.setItem('personalSpotifyAccount', '');
             this.profileRedirectTo = '';

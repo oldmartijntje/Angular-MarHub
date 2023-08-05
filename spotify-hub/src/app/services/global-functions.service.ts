@@ -15,4 +15,16 @@ export class GlobalFunctionsService {
 
         return `${roundedNumber}${suffixes[suffixIndex]}`;
     }
+
+    log(variable: any, from: string, type: string = 'log') {
+        if (type == "log") {
+            console.log(`from: ${from}:`, variable)
+        } else if (type == "info") {
+            console.info(`from: ${from}:`, variable)
+        } else if (type == "error") {
+            console.error(`from: ${from}:`, variable)
+        } else if (type == "warning") {
+            console.warn(`from: ${from}:`, variable)
+        }
+    }
 }

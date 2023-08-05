@@ -128,8 +128,6 @@ export class SpotifyApiService {
         const body = {
             uris: [trackUri]
         };
-        console.log(playlistId)
-        console.log(trackUri)
 
         return this.http.post<any>(`${this.apiUrl}/playlists/${playlistId}/tracks`, body, { headers });
     }
@@ -166,6 +164,16 @@ export class SpotifyApiService {
         const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
 
         return this.http.get<any>(`${this.apiUrl}/albums/${albumId}`, { headers }).toPromise();
+    }
+
+    getAlbumsByArtistId(artistId: string): Promise<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        const params = new HttpParams()
+            .set('include_groups', 'album')
+            .set('market', 'US'); // Replace with the desired market code
+
+        return this.http.get<any>(`${this.apiUrl}/artists/${artistId}/albums`, { headers, params }).toPromise();
     }
 
 }

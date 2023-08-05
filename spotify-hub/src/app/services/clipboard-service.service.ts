@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ClipboardItem } from '../interfaces/clipboard-item.interface';
+import { GlobalFunctionsService } from './global-functions.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class ClipboardServiceService {
 
-    constructor() { }
+    constructor(private globalFunctionsService: GlobalFunctionsService) { }
 
     // This is the array that will hold all of the clipboard items
     clipboardItems: Array<ClipboardItem> = [];
@@ -17,9 +18,9 @@ export class ClipboardServiceService {
         if (localStorage.getItem('popup-menu-save-data') == 'one' || localStorage.getItem('popup-menu-save-data') == null) {
             this.clipboardItems.length = 0;
         }
-        console.log(localStorage.getItem('popup-menu-save-data'))
+        this.globalFunctionsService.log(localStorage.getItem('popup-menu-save-data'))
         this.clipboardItems.push(item);
-        console.log(this.clipboardItems);
+        this.globalFunctionsService.log(this.clipboardItems);
     }
 
     getClipboardId() {

@@ -4,6 +4,7 @@ import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler
 import { DurationPipe } from '../../pipes/duration.pipe';
 import { Subscription } from 'rxjs';
 import { Image } from '../../interfaces/image.interface';
+import { GlobalFunctionsService } from 'src/app/services/global-functions.service';
 
 @Component({
     selector: 'app-playlist-page',
@@ -16,7 +17,8 @@ export class PlaylistPageComponent implements OnDestroy {
     playlistsSubscription: Subscription | null = null;
     routeSub: Subscription | null = null;
 
-    constructor(private route: ActivatedRoute, private router: Router, private spotifyDataHandlerService: SpotifyDataHandlerService) { }
+    constructor(private route: ActivatedRoute, private router: Router, private spotifyDataHandlerService: SpotifyDataHandlerService,
+        private globalFunctionsService: GlobalFunctionsService) { }
 
     ngOnDestroy(): void {
         if (this.playlistsSubscription != null) {
@@ -53,12 +55,12 @@ export class PlaylistPageComponent implements OnDestroy {
             localStorage.setItem('pageVariation', currentParams)
             this.spotifyDataHandlerService.getPlaylistData(currentParams).subscribe(
                 (response) => {
-                    console.log(response);
+                    this.globalFunctionsService.log(response);
                     this.playlistData = response;
                     this.playlistsSubscription = this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
                         newPlaylists.forEach(element => {
                             if (element.id == currentParams) {
-                                console.log(this.playlistData)
+                                this.globalFunctionsService.log(this.playlistData)
                                 if (!element['tracks'].hasOwnProperty('items') && this.playlistData['tracks'].hasOwnProperty('items')) {
                                     Object.keys(element).forEach(element2 => {
                                         if (element2 != 'tracks') {
@@ -69,7 +71,7 @@ export class PlaylistPageComponent implements OnDestroy {
                                     this.playlistData = { ...element };
                                 }
 
-                                console.log(this.playlistData)
+                                this.globalFunctionsService.log(this.playlistData)
                             }
                         });
                     });

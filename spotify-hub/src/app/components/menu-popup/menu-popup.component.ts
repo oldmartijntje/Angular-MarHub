@@ -6,6 +6,7 @@ import { SpotifyApiService } from 'src/app/services/spotify-service.service';
 import { Router } from '@angular/router';
 import { ClipboardItem } from '../../interfaces/clipboard-item.interface';
 import { ClipboardServiceService } from 'src/app/services/clipboard-service.service';
+import { GlobalFunctionsService } from 'src/app/services/global-functions.service';
 
 @Component({
     selector: 'app-menu-popup',
@@ -28,7 +29,7 @@ export class MenuPopupComponent implements OnInit {
 
     constructor(private clipboard: Clipboard, private toastQueueService: ToastQueueService,
         private spotifyDataHandlerService: SpotifyDataHandlerService, private spotifyApiService: SpotifyApiService,
-        private router: Router, private clipboardServiceService: ClipboardServiceService) { }
+        private router: Router, private clipboardServiceService: ClipboardServiceService, private globalFunctionsService: GlobalFunctionsService) { }
 
     ngOnInit() {
         if (localStorage.getItem('popup-menu-mode') == null) {
@@ -84,7 +85,7 @@ export class MenuPopupComponent implements OnInit {
                 event.preventDefault();
             }
             const dataValue = menuItemElement.getAttribute('data-value');
-            console.log(dataValue);
+            this.globalFunctionsService.log(dataValue);
             if (menuItemElement.classList.contains('menu-type-song') || menuItemElement.classList.contains('menu-type-track')) {
                 this.mode = 'SongElement';
             } else if (menuItemElement.classList.contains('menu-type-artist')) {
@@ -179,9 +180,9 @@ export class MenuPopupComponent implements OnInit {
 
 
     handleButtonClick(buttonLabel: string) {
-        console.log('Button clicked:', buttonLabel);
-        console.log(this.showMenu);
-        console.log(this.extraMenu);
+        this.globalFunctionsService.log('Button clicked:', buttonLabel);
+        this.globalFunctionsService.log(this.showMenu);
+        this.globalFunctionsService.log(this.extraMenu);
         // Add your button click logic here
     }
 
@@ -204,7 +205,7 @@ export class MenuPopupComponent implements OnInit {
                 (response) => {
                     const playlists = response; // Assign the response directly
                     this.myPlaylists = playlists; // Assign to myPlaylists
-                    console.log(this.myPlaylists);
+                    this.globalFunctionsService.log(this.myPlaylists);
                     this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
                         this.myPlaylists = newPlaylists;
                     });
@@ -247,7 +248,7 @@ export class MenuPopupComponent implements OnInit {
 
     copyElement() {
         if (this.dataValue != null) {
-            console.log(this.dataValue, this.mode)
+            this.globalFunctionsService.log(this.dataValue, this.mode)
             if (this.mode == 'PlaylistElement') {
                 this.getPlaylistData(this.dataValue);
             } else if (this.mode == 'UserElement') {
@@ -267,7 +268,7 @@ export class MenuPopupComponent implements OnInit {
             localStorage.setItem('playlistId', currentParams);
             this.spotifyDataHandlerService.getPlaylistData(currentParams).subscribe(
                 (response) => {
-                    console.log(response);
+                    this.globalFunctionsService.log(response);
                     var playlistData = response;
                     var item: ClipboardItem = {
                         "type": "PlaylistElement",
@@ -288,7 +289,7 @@ export class MenuPopupComponent implements OnInit {
 
     getUserData(userId: string) {
         this.spotifyDataHandlerService.getUserProfile(userId).then((result) => {
-            console.log(result)
+            this.globalFunctionsService.log(result)
             var user = result;
             var item: ClipboardItem = {
                 "type": "UserElement",
@@ -306,7 +307,7 @@ export class MenuPopupComponent implements OnInit {
 
     getSongData(songId: string) {
         this.spotifyDataHandlerService.getSongData(songId).then((result) => {
-            console.log(result)
+            this.globalFunctionsService.log(result)
             var song = result;
             var item: ClipboardItem = {
                 "type": "SongElement",
@@ -324,7 +325,7 @@ export class MenuPopupComponent implements OnInit {
 
     getArtistData(artistId: string) {
         this.spotifyDataHandlerService.getArtistData(artistId).then((result) => {
-            console.log(result);
+            this.globalFunctionsService.log(result);
             var artist = result;
             var item: ClipboardItem = {
                 "type": "ArtistElement",
