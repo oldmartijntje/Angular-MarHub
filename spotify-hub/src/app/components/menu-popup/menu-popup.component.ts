@@ -13,6 +13,8 @@ import { ClipboardServiceService } from 'src/app/services/clipboard-service.serv
     styleUrls: ['./menu-popup.component.scss']
 })
 export class MenuPopupComponent implements OnInit {
+    copiedResponse = "Copied data to our clipboard system!";
+    unableToCopyResponse = 'Encountered error whilst trying to copy data to our clipboard system!';
     // @Input() typeOfMenu: string = '';
     showMenu: boolean = false;
     menuStyle: any = {};
@@ -83,7 +85,7 @@ export class MenuPopupComponent implements OnInit {
             }
             const dataValue = menuItemElement.getAttribute('data-value');
             console.log(dataValue);
-            if (menuItemElement.classList.contains('menu-type-song')) {
+            if (menuItemElement.classList.contains('menu-type-song') || menuItemElement.classList.contains('menu-type-track')) {
                 this.mode = 'SongElement';
             } else if (menuItemElement.classList.contains('menu-type-artist')) {
                 this.mode = 'ArtistElement';
@@ -209,6 +211,7 @@ export class MenuPopupComponent implements OnInit {
                 },
                 (error) => {
                     console.error('Error retrieving playlists:', error);
+                    this.showToast(`Encountered Error whilst trying to retrieve playlists!\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
                 }
             );
         }
@@ -227,10 +230,18 @@ export class MenuPopupComponent implements OnInit {
     }
 
     navigateToUser() {
+        this.navigate('user');
+    }
+
+    navigateToTrack() {
+        this.navigate('track');
+    }
+
+    navigate(type: string) {
         if (this.dataValue != null) {
             this.showMenu = false;
             this.extraMenu = 0;
-            this.router.navigate(['user', this.dataValue]);
+            this.router.navigate([type, this.dataValue]);
         }
     }
 
@@ -264,10 +275,12 @@ export class MenuPopupComponent implements OnInit {
                         "data": { ...playlistData }
                     };
                     this.clipboardServiceService.addClipboardItem(item);
+                    this.showToast(this.copiedResponse);
                     // this.router.navigate(['playlist'], { queryParams: { "playlistId": response.id } });
                 },
                 (error) => {
                     console.error('Error retrieving playlists:', error);
+                    this.showToast(`${this.unableToCopyResponse}\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
                 }
             );
         }
@@ -283,7 +296,12 @@ export class MenuPopupComponent implements OnInit {
                 "data": { ...user }
             };
             this.clipboardServiceService.addClipboardItem(item);
-        });
+            this.showToast(this.copiedResponse);
+        },
+            (error) => {
+                console.error('Error retrieving playlists:', error);
+                this.showToast(`${this.unableToCopyResponse}\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
+            });
     }
 
     getSongData(songId: string) {
@@ -296,12 +314,17 @@ export class MenuPopupComponent implements OnInit {
                 "data": { ...song }
             };
             this.clipboardServiceService.addClipboardItem(item);
-        });
+            this.showToast(this.copiedResponse);
+        },
+            (error) => {
+                console.error('Error retrieving playlists:', error);
+                this.showToast(`${this.unableToCopyResponse}\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
+            });
     }
 
     getArtistData(artistId: string) {
         this.spotifyDataHandlerService.getArtistData(artistId).then((result) => {
-            console.log(result)
+            console.log(result);
             var artist = result;
             var item: ClipboardItem = {
                 "type": "ArtistElement",
@@ -309,6 +332,11 @@ export class MenuPopupComponent implements OnInit {
                 "data": { ...artist }
             };
             this.clipboardServiceService.addClipboardItem(item);
-        });
+            this.showToast(this.copiedResponse);
+        },
+            (error) => {
+                console.error('Error retrieving playlists:', error);
+                this.showToast(`${this.unableToCopyResponse}\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
+            });
     }
 }

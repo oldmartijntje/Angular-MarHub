@@ -1,0 +1,8 @@
+<div class="error-page">
+    <div class="error-content">
+        <h1>{{ errorStatus }}</h1>
+        <p>Oops! {{ errorMessage }}!</p>
+        <a routerLink="/" routerLinkActive="active">Go back to homepage</a>
+        <img src="assets/images/{{ errorStatus }}error-image.png" alt="Error Image" class="error-image" />
+    </div>
+</div>

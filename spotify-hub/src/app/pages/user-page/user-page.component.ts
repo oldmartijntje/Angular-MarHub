@@ -40,6 +40,14 @@ export class UserPageComponent implements OnInit, OnDestroy {
         }
     }
 
+    navigate(type: string, id: string) {
+        if (type == 'playlist') {
+            this.router.navigate([`/${type}`], { queryParams: { "playlistId": id } })
+        } else {
+            this.router.navigate([`/${type}/${id}`]);
+        }
+    }
+
     ngOnInit(): void {
         localStorage.setItem('currentPage', 'user');
         this.waitTimeForImage(10000)

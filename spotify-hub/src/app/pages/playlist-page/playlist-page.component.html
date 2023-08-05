@@ -22,7 +22,8 @@
         <h2 class="itemBar-title">Tracks</h2>
         <div class="item-container">
             <div class="item menu-item menu-type-song" *ngFor="let track of playlistData['tracks']['items']"
-                [attr.data-value]="track['track']['id']">
+                [attr.data-value]="track['track']['id']" (click)="navigate('track', track['track']['id'] )"
+                style="cursor: pointer;">
                 <img *ngIf="track['track']['album']['images'] != 0"
                     src="{{ getCorrectPicture(track['track']['album']['images']) }}"
                     alt="{{ track['track']['album']['name'] }}" class="cover-image-small">
@@ -30,12 +31,11 @@
                     alt="this is the default cover" class="cover-image-small">
                 <h3 class="item-display-name">{{ track['track']['name'] }}</h3>
                 <span class="item-stats" *ngFor="let artist of track['track']['artists']">
-                    <a class="spotify-link" target="_blank" href="{{artist.external_urls.spotify}}"> {{artist.name}}
+                    <a class="spotify-link" (click)="navigate('artist', artist['id'] )"> {{artist.name}}
                     </a>
                 </span>
                 <p class="item-stats">Album:
-                    <a class="spotify-link" target="_blank"
-                        href="{{track['track']['album']['external_urls']['spotify']}}">
+                    <a class="spotify-link" (click)="navigate('album', track['track']['album']['id'] )">
                         {{track['track']['album']['name']}}
                     </a>
                 </p>

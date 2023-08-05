@@ -1,1 +1,52 @@
-<p>song-page works!</p>
+<div *ngIf="mode == 'waiting'">
+    <div class="loading-screen">
+        <div class="loader"></div>
+    </div>
+</div>
+<div *ngIf="mode == 'OK'">
+    <div class="profile menu-item menu-type-track" [attr.data-value]="data['id']">
+        <div class="container">
+            <img *ngIf="data['album']['images'].length > 0" class="profile-image"
+                src="{{getCorrectPicture(data['album']['images'])}}" alt="Profile Image">
+            <img *ngIf="data['album']['images'].length == 0" class="profile-image"
+                src="../../../assets/images/defaultProfileImage.png" alt="Profile Image">
+        </div>
+        <h1 class="display-name">{{data['name']}}</h1>
+        <p class="item-stats">Duration: {{msToHMS(data['duration_ms'])}}</p>
+        <p class="item-stats">Popularity: {{data['popularity']}}</p>
+        <h2 class="">Preview:</h2>
+        <audio controls class="songPreview">
+            <source [src]="data['preview_url']" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <p class="item-stats">Track Id: {{data['id']}}</p>
+        <a class="spotify-link" href="{{data['external_urls']['spotify']}}" target="_blank">Visit on Spotify.com</a>
+    </div>
+    <div class="profile">
+        <h1 class="display-name">Made by:</h1>
+        <div class="multipleItemsContainer">
+            <div class="item menu-item menu-type-artist" *ngFor="let artist of data['artists']" style="cursor:pointer;"
+                (click)="navigate('artist', artist['id'] )" [attr.data-value]="artist['id']">
+                <h1 class="artist-display-name">{{artist['name']}}</h1>
+                <p class="artist-stats">Artist Id: {{artist['id']}}</p>
+                <a class="spotify-link" href="{{artist['external_urls']['spotify']}}" target="_blank">Visit on
+                    Spotify.com</a>
+            </div>
+        </div>
+    </div>
+    <div class="profile  menu-item menu-type-album" [attr.data-value]="data['album']['id']"
+        (click)="navigate('album', data['album']['id'] )" style="cursor:pointer;">
+        <h1 class="display-name">Album:</h1>
+        <div class="container">
+            <img *ngIf="data['album']['images'].length > 0" class="profile-image"
+                src="{{getCorrectPicture(data['album']['images'])}}" alt="Profile Image">
+            <img *ngIf="data['album']['images'].length == 0" class="profile-image"
+                src="../../../assets/images/defaultProfileImage.png" alt="Profile Image">
+        </div>
+        <h1 class="display-name">{{data['album']['name']}}</h1>
+        <p class="item-stats">Release: {{data['album']['release_date']}}</p>
+        <p class="item-stats">Album Id: {{data['album']['id']}}</p>
+        <a class="spotify-link" href="{{data['album']['external_urls']['spotify']}}" target="_blank">Visit on
+            Spotify.com</a>
+    </div>
+</div>

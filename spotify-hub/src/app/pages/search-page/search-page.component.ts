@@ -27,7 +27,7 @@ export class SearchPageComponent implements OnInit, OnDestroy {
     showSpotifyResults: boolean = true;
 
     constructor(private spotifyDataHandlerService: SpotifyDataHandlerService, private ActivatedRoute: ActivatedRoute,
-        public globalFunctionsService: GlobalFunctionsService) { }
+        public globalFunctionsService: GlobalFunctionsService, private router: Router) { }
 
     ngOnDestroy(): void {
         if (this.routeSub != null) {
@@ -76,6 +76,14 @@ export class SearchPageComponent implements OnInit, OnDestroy {
             return 'home';
         } else {
             return path;
+        }
+    }
+
+    navigate(type: string, id: string) {
+        if (type == 'playlist') {
+            this.router.navigate([`/${type}`], { queryParams: { "playlistId": id } })
+        } else {
+            this.router.navigate([`/${type}/${id}`]);
         }
     }
 

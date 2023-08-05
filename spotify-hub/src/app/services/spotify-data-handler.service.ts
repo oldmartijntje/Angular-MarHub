@@ -81,31 +81,32 @@ export class SpotifyDataHandlerService {
     private returnedErrorHandler(error: any) {
         console.error(error);
         if (error.status == 403) {
-            console.error(error.error)
-            // User not registered in the Developer Dashboard
+            console.error(error);
+            this.router.navigate(['error'], { queryParams: { "status": error.status, "message": error.error } });
         } else if (error.status == 401) {
             this.loggedIn = false
             localStorage.removeItem('spotifyAccessToken')
             console.log(error.error.error.message)
-            var refreshToken = localStorage.getItem('spotifyRefreshToken')
+            // var refreshToken = localStorage.getItem('spotifyRefreshToken')
             // console.log(refreshToken)
-            if (refreshToken == null) {
-                this.spotifyApiService.authorize()
-                alert('aa')
-            } else {
-                this.spotifyApiService.refreshToken(refreshToken)
-                    .then((response) => {
-                        console.log('New access token:', response.access_token);
-                        // Use the new access token for further requests
-                    })
-                    .catch((error) => {
-                        console.error('Error refreshing token:', error);
-                        // Handle the error if token refresh fails
-                    });
-            }
+            // if (refreshToken == null) {
+            this.spotifyApiService.authorize()
+            // } else {
+            //     this.spotifyApiService.refreshToken(refreshToken)
+            //         .then((response) => {
+            //             console.log('New access token:', response.access_token);
+            //             // Use the new access token for further requests
+            //         })
+            //         .catch((error) => {
+            //             console.error('Error refreshing token:', error);
+            //             // Handle the error if token refresh fails
+            //         });
+            // }
 
 
             // outdated token
+        } else {
+            this.router.navigate(['error'], { queryParams: { "status": error.status, "message": error.error.error.message } });
         }
     }
 
@@ -284,11 +285,8 @@ export class SpotifyDataHandlerService {
 
     getPlaylistData(playlistId: string): Observable<any> {
         this.loginIfNotAlready();
-        console.log(1)
         if (this.extraData.hasOwnProperty('playlist')) {
-            console.log(2)
             if (this.extraData['playlist'].hasOwnProperty(playlistId)) {
-                console.log(3)
                 return of(this.extraData['playlist'][playlistId]);
             } else {
                 return this.spotifyApiService.getSinglePlaylist(playlistId).pipe(

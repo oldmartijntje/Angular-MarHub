@@ -27,6 +27,10 @@ export class PlaylistPageComponent implements OnDestroy {
         }
     }
 
+    navigate(type: string, id: string) {
+        this.router.navigate([`/${type}/${id}`]);
+    }
+
     ngOnInit() {
         localStorage.setItem('currentPage', 'playlist');
         this.routeSub = this.route.queryParams.subscribe(params => {
@@ -79,7 +83,7 @@ export class PlaylistPageComponent implements OnDestroy {
     }
 
     getCorrectPicture(pictures: Array<Image>): string {
-        if (localStorage.getItem('imageQuality') == 'crack') {
+        if (localStorage.getItem('imageQuality') == 'bad') {
             var size = Infinity;
             var image = '';
             pictures.forEach((element: Image) => {
@@ -91,7 +95,7 @@ export class PlaylistPageComponent implements OnDestroy {
                 }
             });
             return image;
-        } else if (localStorage.getItem('imageQuality') == 'none') {
+        } else if (localStorage.getItem('imageQuality') == 'rick') {
             return '../../../assets/images/rick.gif';
         } else {
             var size = 0;

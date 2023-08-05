@@ -8,13 +8,17 @@
         <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
             [innerHTML]="scanForBreak('Copy')"></button>
         <button (click)="navigateToUser()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
-            [innerHTML]="scanForBreak('Go To User')"></button>
+            [innerHTML]="scanForBreak('Go To User Page')"></button>
     </div>
     <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'SongElement'">
+        <p *ngIf="!dataValue && popupTypeDefault" class="menu-text menu-popup-element">No SongId found, could be a
+            local song.</p>
         <button (click)="copyLink(dataValue, 'track')" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
             [innerHTML]="scanForBreak('Copy Track URL')"></button>
         <button (click)="copyEmbed(dataValue, 'track')" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
             [innerHTML]="scanForBreak('Copy Track Embed')"></button>
+        <button (click)="navigateToTrack()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Go To Track Page')"></button>
         <button class="menu-popup-element" *ngIf="dataValue && popupTypeDefault" (click)="addToPlaylistButton()"
             [innerHTML]="scanForBreak('Add to Playlist')"></button>
         <div *ngIf="extraMenu == 1" class="menu-popup menu-popup-element" [ngStyle]="extraMenuStyle">
@@ -23,8 +27,9 @@
         </div>
         <button class="menu-popup-element" (click)="handleButtonClick('This can only be clicked by dev')"
             *ngIf="popupTypeDev" [innerHTML]="scanForBreak('Button 3')"></button>
-        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
+        <button *ngIf="dataValue && popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
             [innerHTML]="scanForBreak('Copy')"></button>
+
     </div>
     <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'PlaylistElement'">
         <button (click)="copyLink(dataValue, 'playlist')" *ngIf="dataValue && popupTypeDefault"
@@ -32,7 +37,7 @@
         <button (click)="copyEmbed(dataValue, 'playlist')" *ngIf="dataValue && popupTypeDefault"
             class="menu-popup-element" [innerHTML]="scanForBreak('Copy Playlist Embed')"></button>
         <button (click)="navigateToPlaylist()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
-            [innerHTML]="scanForBreak('Go To Playlist')"></button>
+            [innerHTML]="scanForBreak('Go To Playlist Page')"></button>
         <div *ngIf="extraMenu == 1" class="menu-popup menu-popup-element" [ngStyle]="extraMenuStyle">
             <button *ngFor="let playlist of myPlaylists" class=" menu-popup-element" (click)="addToPlaylistButton()"
                 [innerHTML]="scanForBreak(playlist.name)"></button>

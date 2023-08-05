@@ -181,6 +181,9 @@ export class SettingsPageComponent implements OnInit {
         this.showToast('Logged out succesfully!', "info")
         this.spotifyDataHandlerService.forgetEverything()
         this.deleteToken(true)
+        if (localStorage.getItem('customPersonalSpotifyAccount') != 'true') {
+            localStorage.setItem('personalSpotifyAccount', '')
+        }
     }
 
     private showToast(toastMessage: string = 'Default Toast: "Hello World!"', type: string = 'info', timeModifier: number = 0) {

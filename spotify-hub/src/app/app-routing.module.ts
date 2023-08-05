@@ -11,6 +11,7 @@ import { PlaylistPageComponent } from './pages/playlist-page/playlist-page.compo
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { AlbumPageComponent } from './pages/album-page/album-page.component';
 import { SongPageComponent } from './pages/song-page/song-page.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 const routes: Routes = [
     { path: 'home', component: HomePageComponent },
@@ -21,10 +22,11 @@ const routes: Routes = [
     { path: 'user', component: UserPageComponent },
     { path: 'settings', component: SettingsPageComponent },
     { path: 'user/:uid', component: UserPageComponent },
-    { path: 'song/:id', component: SongPageComponent },
+    { path: 'track/:id', component: SongPageComponent },
     { path: 'album/:id', component: AlbumPageComponent },
     { path: 'search/:query', component: SearchPageComponent },
     { path: 'playlist', component: PlaylistPageComponent },
+    { path: 'error', component: ErrorPageComponent },
     { path: '**', component: NotFoundPageComponent }
 ];
 

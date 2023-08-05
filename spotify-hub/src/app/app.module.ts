@@ -21,6 +21,7 @@ import { DurationPipe } from './pipes/duration.pipe';
 import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { SongPageComponent } from './pages/song-page/song-page.component';
 import { AlbumPageComponent } from './pages/album-page/album-page.component';
+import { ErrorPageComponent } from './pages/error-page/error-page.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { AlbumPageComponent } from './pages/album-page/album-page.component';
         PlaylistPageComponent,
         SearchPageComponent,
         SongPageComponent,
-        AlbumPageComponent
+        AlbumPageComponent,
+        ErrorPageComponent
     ],
     imports: [
         BrowserModule,

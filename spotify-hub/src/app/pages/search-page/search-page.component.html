@@ -4,7 +4,7 @@
         <button class="hideButton" (click)="flipState('tracks')">Hide</button>
         <div class="item-container" *ngIf="showTracks && tracks['tracks']['items'].length != 0">
             <div class="item menu-item menu-type-song" *ngFor="let song of tracks['tracks']['items']"
-                [attr.data-value]="song.id">
+                [attr.data-value]="song.id" (click)="navigate('track', song['id'] )" style="cursor: pointer;">
                 <img *ngIf="song.album.images.length == 0" src="../../../assets/images/defaultCover.png"
                     alt="{{song.name}} it's album cover" class="profile-image-small">
                 <img *ngIf="song.album.images.length != 0" src="{{getCorrectPicture(song.album.images)}}"
@@ -12,7 +12,7 @@
                 <p class="item-display-name">{{song.name}}</p>
                 <p class="item-stats">Popularity: {{song.popularity}}</p>
                 <p class="item-stats" *ngFor="let artist of song.artists">
-                    <a class="spotify-link" target="_blank" href="{{artist.external_urls.spotify}}">{{artist.name}}</a>
+                    <a class="spotify-link" (click)="navigate('artist', artist['id'] )">{{artist.name}}</a>
                 </p>
                 <a class="spotify-link" href="{{song.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
             </div>
@@ -26,7 +26,7 @@
         <button class="hideButton" (click)="flipState('artists')">Hide</button>
         <div class="item-container" *ngIf="showArtists && artists['artists']['items'].length != 0">
             <div class="item menu-item menu-type-artist" *ngFor="let artist of artists['artists']['items']"
-                [attr.data-value]="artist.id">
+                [attr.data-value]="artist.id" (click)="navigate('artist', artist['id'] )" style="cursor: pointer;">
                 <img *ngIf="artist.images.length == 0" src="../../../assets/images/defaultProfileImage.png"
                     alt="{{artist.name}} their profile picture" class="profile-image-small">
                 <img *ngIf="artist.images.length != 0" src="{{getCorrectPicture(artist.images)}}"
@@ -47,7 +47,7 @@
         <button class="hideButton" (click)="flipState('albums')">Hide</button>
         <div class="item-container" *ngIf="showAlbums && albums['albums']['items'].length != 0">
             <div class="item menu-item menu-type-album" *ngFor="let album of albums['albums']['items']"
-                [attr.data-value]="album.id">
+                [attr.data-value]="album.id" (click)="navigate('album', album['id'] )" style="cursor: pointer;">
                 <img *ngIf="album.images.length > 0" src="{{getCorrectPicture(album.images)}}"
                     alt="{{album.name}} it's album cover" class="cover-image-small">
                 <img *ngIf="album.images.length == 0" src="../../../assets/images/defaultCover.png"
@@ -56,7 +56,7 @@
                 <p class="item-stats">Type: {{album.album_type}}</p>
                 <p class="item-stats">Tracks: {{album.total_tracks}}</p>
                 <p class="item-stats" *ngFor="let artist of album.artists">
-                    <a class="spotify-link" target="_blank" href="{{artist.external_urls.spotify}}">{{artist.name}}</a>
+                    <a class="spotify-link" (click)="navigate('artist', artist['id'] )">{{artist.name}}</a>
                 </p>
                 <a class="spotify-link" href="{{album.external_urls.spotify}}" target="_blank">Visit on
                     Spotify.com</a>
@@ -71,13 +71,13 @@
         <button class="hideButton" (click)="flipState('playlists')">Hide</button>
         <div class="item-container" *ngIf="showPlaylists && playlists['playlists']['items'].length != 0">
             <div class="item menu-item menu-type-playlist" *ngFor="let playlist of playlists['playlists']['items']"
-                [attr.data-value]="playlist.id">
+                [attr.data-value]="playlist.id" (click)="navigate('playlist', playlist['id'] )"
+                style="cursor: pointer;">
                 <img *ngIf="playlist.images.length > 0" src="{{getCorrectPicture(playlist.images)}}"
                     alt="{{playlist.name}} it's album cover" class="cover-image-small">
                 <img *ngIf="playlist.images.length == 0" src="../../../assets/images/defaultCover.png"
                     alt="this is the default cover" class="cover-image-small">
                 <p class="item-display-name">{{playlist.name}}</p>
-                <p class="item-stats">Public: {{playlist.public}}</p>
                 <p class="item-stats">Tracks: {{playlist.tracks.total}}</p>
                 <p class="item-stats">{{replaceCharecterString(playlist.description)}}</p>
                 <a class="spotify-link" href="{{playlist.external_urls.spotify}}" target="_blank">Visit on
