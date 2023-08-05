@@ -39,9 +39,6 @@
                         {{track['track']['album']['name']}}
                     </a>
                 </p>
-                <a *ngIf="track['is_local'] == false" class="spotify-link"
-                    href="{{ track['track']['external_urls']['spotify'] }}" target="_blank">Listen
-                    on Spotify</a>
                 <p *ngIf="track['is_local'] != false" class="item-stats">This is a local song.</p>
             </div>
         </div>

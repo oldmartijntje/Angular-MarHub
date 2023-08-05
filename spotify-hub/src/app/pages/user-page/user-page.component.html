@@ -39,7 +39,6 @@
                 <p class="item-stats">Popularity: {{artist.popularity}}</p>
                 <p class="item-stats">Followers: {{globalFunctionsService.convertNumber(artist.followers.total)}}</p>
                 <p class="item-genres">{{artist.genres.join(', ')}}</p>
-                <a class="spotify-link" href="{{artist.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
             </div>
         </div>
     </div>
@@ -57,7 +56,6 @@
                 <p class="item-stats" *ngFor="let artist of song.artists">
                     <a class="spotify-link" (click)="navigate('artist', artist['id'] )">{{artist.name}}</a>
                 </p>
-                <a class="spotify-link" href="{{song.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
             </div>
         </div>
     </div>
@@ -74,8 +72,6 @@
                 <p class="item-stats">Public: {{playlist.public}}</p>
                 <p class="item-stats">Tracks: {{playlist.tracks.total}}</p>
                 <p class="item-stats">{{replaceCharecterString(playlist.description)}}</p>
-                <a class="spotify-link" href="{{playlist.external_urls.spotify}}" target="_blank">Visit on
-                    Spotify.com</a>
             </div>
         </div>
     </div>

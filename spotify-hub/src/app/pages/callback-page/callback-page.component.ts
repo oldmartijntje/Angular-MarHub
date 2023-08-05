@@ -11,8 +11,17 @@ export class CallbackPageComponent implements OnInit {
 
     constructor(private spotifyApiService: SpotifyApiService, private router: Router) { }
 
+    needsExtraData = ["search", "user", "album", "song", "artist"];
+
     ngOnInit(): void {
         this.handleAuthorizationCallback();
+    }
+
+    isStringInList(page: string | null): boolean {
+        if (page == null) {
+            return false;
+        }
+        return this.needsExtraData.includes(page);
     }
 
     handleAuthorizationCallback(): void {
@@ -33,9 +42,7 @@ export class CallbackPageComponent implements OnInit {
                     localStorage.setItem('spotifyRefreshToken', accessToken['refresh_token']);
                     if (localStorage.getItem('currentPage') == 'playlist') {
                         this.router.navigate([localStorage.getItem('currentPage')], { queryParams: { "playlistId": localStorage.getItem('pageVariation') } });
-                    } else if (localStorage.getItem('currentPage') == 'search') {
-                        this.router.navigate([localStorage.getItem('currentPage'), localStorage.getItem('pageVariation')]);
-                    } else if (localStorage.getItem('currentPage') == 'user') {
+                    } else if (this.isStringInList(localStorage.getItem('currentPage'))) {
                         this.router.navigate([localStorage.getItem('currentPage'), localStorage.getItem('pageVariation')]);
                     } else {
                         this.router.navigate([localStorage.getItem('currentPage')]);
@@ -43,9 +50,7 @@ export class CallbackPageComponent implements OnInit {
                 } else {
                     if (localStorage.getItem('currentPage') == 'playlist') {
                         this.router.navigate([localStorage.getItem('currentPage')], { queryParams: { "playlistId": localStorage.getItem('pageVariation'), "access_token": accessToken['access_token'] } });
-                    } else if (localStorage.getItem('currentPage') == 'search') {
-                        this.router.navigate([localStorage.getItem('currentPage'), localStorage.getItem('pageVariation')], { queryParams: { "access_token": accessToken['access_token'] } });
-                    } else if (localStorage.getItem('currentPage') == 'user') {
+                    } else if (this.isStringInList(localStorage.getItem('currentPage'))) {
                         this.router.navigate([localStorage.getItem('currentPage'), localStorage.getItem('pageVariation')], { queryParams: { "access_token": accessToken['access_token'] } });
                     } else {
                         this.router.navigate([localStorage.getItem('currentPage')], { queryParams: { "access_token": accessToken['access_token'] } });

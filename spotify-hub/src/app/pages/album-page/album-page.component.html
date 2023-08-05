@@ -1,1 +1,45 @@
-<p>album-page works!</p>
+<div *ngIf="!isPlaylistDataEmpty()">
+    <div class="profile menu-item menu-type-album" [attr.data-value]="albumData['id']">
+        <img src="{{ getCorrectPicture(albumData['images']) }}" alt="{{ albumData['name'] }}" class="cover-image">
+        <h1 class="profile-title">{{ albumData['name'] }}</h1>
+        <div class="profile-description">
+            <p>{{ albumData['label'] }}</p>
+        </div>
+        <p class="item-stats">Album Id: {{albumData['id']}}</p>
+        <p class="item-stats">Popularity: {{albumData['popularity']}}</p>
+        <p class="item-stats">Release: {{albumData['release_date']}}</p>
+        <div>
+            <a href="{{ albumData['external_urls']['spotify'] }}" target="_blank" class="spotify-link">View on
+                Spotify</a>
+        </div>
+    </div>
+
+    <div class="itemBar">
+        <h2 class="itemBar-title">Tracks</h2>
+        <div class="item-container">
+            <div class="item menu-item menu-type-track" *ngFor="let track of albumData['tracks']['items']"
+                [attr.data-value]="track['id']" (click)="navigate('track', track['id'] )" style="cursor: pointer;">
+                <h3 class="item-display-name">{{ track['name'] }}</h3>
+                <span class="item-stats" *ngFor="let artist of track['artists']">
+                    <a class="spotify-link" (click)="navigate('artist', artist['id'] )"> {{artist.name}}
+                    </a>
+                </span>
+                <p *ngIf="track['is_local'] != false" class="item-stats">This is a local song.</p>
+            </div>
+        </div>
+    </div>
+    <div class="profile">
+        <h1 class="display-name">Made by:</h1>
+        <div class="multipleItemsContainer">
+            <div class="boxItem menu-item menu-type-artist" *ngFor="let artist of albumData['artists']"
+                style="cursor:pointer;" (click)="navigate('artist', artist['id'] )" [attr.data-value]="artist['id']">
+                <h1 class="artist-display-name">{{artist['name']}}</h1>
+                <p class="artist-stats">Artist Id: {{artist['id']}}</p>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div *ngIf="isPlaylistDataEmpty()" class="itemBar">
+    <h1>Welp, there is no data right now, that's akward.</h1>
+</div>

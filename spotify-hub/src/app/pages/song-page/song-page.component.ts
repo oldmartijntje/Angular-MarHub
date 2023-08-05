@@ -21,13 +21,15 @@ export class SongPageComponent implements OnInit, OnDestroy {
         public globalFunctionsService: GlobalFunctionsService, private activatedRoute: ActivatedRoute) { }
 
     ngOnInit(): void {
-        localStorage.setItem('currentPage', 'user');
+        localStorage.setItem('currentPage', 'song');
         this.routeSub = this.activatedRoute.params.subscribe((params: Params) => {
             if (params['id'] == undefined) {
+                localStorage.setItem('pageVariation', '');
                 this.mode = "error";
                 this.errorMessage = 'Empty URL';
                 this.errorType = '404';
             } else {
+                localStorage.setItem('pageVariation', params['id']);
                 this.spotifyDataHandlerService.getSongData(params['id']).then((result) => {
                     console.log(result)
                     this.mode = "OK";

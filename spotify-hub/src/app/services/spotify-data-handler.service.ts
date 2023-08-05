@@ -259,6 +259,10 @@ export class SpotifyDataHandlerService {
         this.addSomethingToData(artist, 'artist')
     }
 
+    private addAlbumToData(artist: Record<string, any>) {
+        this.addSomethingToData(artist, 'album')
+    }
+
     private addSomethingToData(item: Record<string, any>, dictName: string = '404') {
         if (this.extraData.hasOwnProperty(dictName)) {
             this.extraData[dictName][item['id']] = item;
@@ -377,5 +381,28 @@ export class SpotifyDataHandlerService {
             this.returnedErrorHandler(error);
             throw error; // Throw the error to propagate it in the promise chain
         });
+    }
+
+    getAlbumData(albumId: string): Promise<any> {
+        this.loginIfNotAlready();
+        this.checkIfExtraDataDictExists('album');
+        if ((albumId in this.extraData['album']) == false) {
+            return this.spotifyApiService.getAlbumById(albumId).then((result) => {
+                this.addAlbumToData(result);
+                console.log(this.extraData['album'][albumId]);
+                return this.extraData['album'][albumId];
+            }).catch((error) => {
+                this.returnedErrorHandler(error);
+                throw error; // Throw the error to propagate it in the promise chain
+            });
+        } else {
+            return new Promise((resolve, reject) => {
+                if (this.extraData['album'][albumId]) {
+                    resolve(this.extraData['album'][albumId]);
+                } else {
+                    reject(new Error('artist not available.'));
+                }
+            });
+        }
     }
 }

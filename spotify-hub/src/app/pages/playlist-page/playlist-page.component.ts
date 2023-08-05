@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler.service';
 import { DurationPipe } from '../../pipes/duration.pipe';
 import { Subscription } from 'rxjs';
-import { Image } from '../../interfaces/image.interface'
+import { Image } from '../../interfaces/image.interface';
 
 @Component({
     selector: 'app-playlist-page',

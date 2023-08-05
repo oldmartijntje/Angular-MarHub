@@ -162,4 +162,10 @@ export class SpotifyApiService {
         return this.http.get<any>(`${this.apiUrl}/search`, { headers, params }).toPromise();
     }
 
+    getAlbumById(albumId: string): Promise<any> {
+        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.accessToken);
+
+        return this.http.get<any>(`${this.apiUrl}/albums/${albumId}`, { headers }).toPromise();
+    }
+
 }
