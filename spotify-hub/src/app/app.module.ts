@@ -22,6 +22,7 @@ import { SearchPageComponent } from './pages/search-page/search-page.component';
 import { SongPageComponent } from './pages/song-page/song-page.component';
 import { AlbumPageComponent } from './pages/album-page/album-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
+import { ArtistPageComponent } from './pages/artist-page/artist-page.component';
 
 
 @NgModule({
@@ -42,7 +43,8 @@ import { ErrorPageComponent } from './pages/error-page/error-page.component';
         SearchPageComponent,
         SongPageComponent,
         AlbumPageComponent,
-        ErrorPageComponent
+        ErrorPageComponent,
+        ArtistPageComponent
     ],
     imports: [
         BrowserModule,
