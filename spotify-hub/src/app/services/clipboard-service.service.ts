@@ -18,9 +18,9 @@ export class ClipboardServiceService {
         if (localStorage.getItem('popup-menu-save-data') == 'one' || localStorage.getItem('popup-menu-save-data') == null) {
             this.clipboardItems.length = 0;
         }
-        this.globalFunctionsService.log(localStorage.getItem('popup-menu-save-data'))
+        this.globalFunctionsService.log(localStorage.getItem('popup-menu-save-data'), "clipboard", "info")
         this.clipboardItems.push(item);
-        this.globalFunctionsService.log(this.clipboardItems);
+        this.globalFunctionsService.log(this.clipboardItems, "clipboard", "info");
     }
 
     getClipboardId() {

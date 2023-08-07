@@ -11,7 +11,6 @@ export class HeaderComponent {
     constructor(private router: Router, private globalFunctionsService: GlobalFunctionsService) { }
 
     onSearchClicked(searchTerm: string) {
-        this.globalFunctionsService.log('Search term:', searchTerm);
         // You can add your search functionality here
         this.router.navigate(['/search', searchTerm]);
     }

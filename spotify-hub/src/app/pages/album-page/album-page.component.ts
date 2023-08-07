@@ -26,11 +26,9 @@ export class AlbumPageComponent implements OnInit, OnDestroy {
             } else {
                 localStorage.setItem('pageVariation', params['id']);
                 this.spotifyDataHandlerService.getAlbumData(params['id']).then((result) => {
-                    this.globalFunctionsService.log(result)
                     this.albumData = result;
 
                 }).catch((error) => {
-                    this.globalFunctionsService.log(error);
 
                 });
             }

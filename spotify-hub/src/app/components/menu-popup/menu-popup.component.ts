@@ -85,15 +85,18 @@ export class MenuPopupComponent implements OnInit {
                 event.preventDefault();
             }
             const dataValue = menuItemElement.getAttribute('data-value');
-            this.globalFunctionsService.log(dataValue);
             if (menuItemElement.classList.contains('menu-type-song') || menuItemElement.classList.contains('menu-type-track')) {
-                this.mode = 'SongElement';
+                this.mode = 'TrackElement';
             } else if (menuItemElement.classList.contains('menu-type-artist')) {
                 this.mode = 'ArtistElement';
             } else if (menuItemElement.classList.contains('menu-type-user')) {
                 this.mode = 'UserElement';
             } else if (menuItemElement.classList.contains('menu-type-playlist')) {
                 this.mode = 'PlaylistElement';
+            } else if (menuItemElement.classList.contains('menu-type-album')) {
+                this.mode = 'AlbumElement';
+            } else if (menuItemElement.classList.contains('menu-type-genreName')) {
+                this.mode = 'GenreNameElement';
             } else {
                 this.mode = 'Default';
             }
@@ -179,13 +182,6 @@ export class MenuPopupComponent implements OnInit {
     }
 
 
-    handleButtonClick(buttonLabel: string) {
-        this.globalFunctionsService.log('Button clicked:', buttonLabel);
-        this.globalFunctionsService.log(this.showMenu);
-        this.globalFunctionsService.log(this.extraMenu);
-        // Add your button click logic here
-    }
-
     private showToast(toastMessage: string = 'Default Toast: "Hello World!"', type: string = 'info', timeModifier: number = 0) {
         this.toastQueueService.enqueueToast(toastMessage, type, timeModifier);
     }
@@ -205,7 +201,6 @@ export class MenuPopupComponent implements OnInit {
                 (response) => {
                     const playlists = response; // Assign the response directly
                     this.myPlaylists = playlists; // Assign to myPlaylists
-                    this.globalFunctionsService.log(this.myPlaylists);
                     this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
                         this.myPlaylists = newPlaylists;
                     });
@@ -218,7 +213,7 @@ export class MenuPopupComponent implements OnInit {
         }
     }
 
-    addSongToPlaylist(id: string) {
+    addTrackToPlaylist(id: string) {
         this.spotifyDataHandlerService.addSongToPlaylist(id, `spotify:track:${this.dataValue}`);
     }
 
@@ -230,8 +225,16 @@ export class MenuPopupComponent implements OnInit {
         }
     }
 
+    navigateToAlbum() {
+        this.navigate('album')
+    }
+
     navigateToUser() {
         this.navigate('user');
+    }
+
+    navigateToArtist() {
+        this.navigate('artist');
     }
 
     navigateToTrack() {
@@ -248,36 +251,49 @@ export class MenuPopupComponent implements OnInit {
 
     copyElement() {
         if (this.dataValue != null) {
-            this.globalFunctionsService.log(this.dataValue, this.mode)
             if (this.mode == 'PlaylistElement') {
                 this.getPlaylistData(this.dataValue);
             } else if (this.mode == 'UserElement') {
                 this.getUserData(this.dataValue)
-            } else if (this.mode == 'SongElement') {
-                this.getSongData(this.dataValue)
+            } else if (this.mode == 'TrackElement') {
+                this.getTrackData(this.dataValue)
             } else if (this.mode == 'ArtistElement') {
                 this.getArtistData(this.dataValue)
+            } else if (this.mode == 'AlbumElement') {
+                this.getAlbumData(this.dataValue)
+            } else if (this.mode == 'GenreNameElement') {
+                var item: ClipboardItem = {
+                    "type": "GenreElement",
+                    "id": this.clipboardServiceService.getClipboardId(),
+                    "data": { "name": this.dataValue }
+                };
+                this.clipboardServiceService.addClipboardItem(item);
+                this.showToast(this.copiedResponse);
             }
         }
     }
 
 
-    getPlaylistData(playlistId: string) {
+    getPlaylistData(playlistId: string, action: string = "copy") {
         const currentParams = playlistId;
         if (currentParams != undefined) {
             localStorage.setItem('playlistId', currentParams);
             this.spotifyDataHandlerService.getPlaylistData(currentParams).subscribe(
                 (response) => {
-                    this.globalFunctionsService.log(response);
                     var playlistData = response;
-                    var item: ClipboardItem = {
-                        "type": "PlaylistElement",
-                        "id": this.clipboardServiceService.getClipboardId(),
-                        "data": { ...playlistData }
-                    };
-                    this.clipboardServiceService.addClipboardItem(item);
-                    this.showToast(this.copiedResponse);
-                    // this.router.navigate(['playlist'], { queryParams: { "playlistId": response.id } });
+                    if (action == "copy") {
+                        var item: ClipboardItem = {
+                            "type": "PlaylistElement",
+                            "id": this.clipboardServiceService.getClipboardId(),
+                            "data": { ...playlistData }
+                        };
+                        this.clipboardServiceService.addClipboardItem(item);
+                        this.showToast(this.copiedResponse);
+                    } else if (action == "search") {
+                        this.showMenu = false;
+                        this.extraMenu = 0;
+                        this.router.navigate(["search", playlistData["name"]]);
+                    }
                 },
                 (error) => {
                     console.error('Error retrieving playlists:', error);
@@ -287,57 +303,145 @@ export class MenuPopupComponent implements OnInit {
         }
     }
 
-    getUserData(userId: string) {
+    getUserData(userId: string, action: string = "copy") {
         this.spotifyDataHandlerService.getUserProfile(userId).then((result) => {
-            this.globalFunctionsService.log(result)
             var user = result;
-            var item: ClipboardItem = {
-                "type": "UserElement",
-                "id": this.clipboardServiceService.getClipboardId(),
-                "data": { ...user }
-            };
-            this.clipboardServiceService.addClipboardItem(item);
-            this.showToast(this.copiedResponse);
+            if (action == "copy") {
+                var item: ClipboardItem = {
+                    "type": "UserElement",
+                    "id": this.clipboardServiceService.getClipboardId(),
+                    "data": { ...user }
+                };
+                this.clipboardServiceService.addClipboardItem(item);
+                this.showToast(this.copiedResponse);
+            } else if (action == "search") {
+                this.showMenu = false;
+                this.extraMenu = 0;
+                this.router.navigate(["search", user["display_name"]]);
+            }
         },
             (error) => {
                 console.error('Error retrieving playlists:', error);
                 this.showToast(`${this.unableToCopyResponse}\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
-            });
+            }
+        );
     }
 
-    getSongData(songId: string) {
-        this.spotifyDataHandlerService.getSongData(songId).then((result) => {
-            this.globalFunctionsService.log(result)
-            var song = result;
-            var item: ClipboardItem = {
-                "type": "SongElement",
-                "id": this.clipboardServiceService.getClipboardId(),
-                "data": { ...song }
-            };
-            this.clipboardServiceService.addClipboardItem(item);
-            this.showToast(this.copiedResponse);
+    getTrackData(trackId: string, action: string = "copy") {
+        this.spotifyDataHandlerService.getSongData(trackId).then((result) => {
+            var track = result;
+            if (action == "copy") {
+                var item: ClipboardItem = {
+                    "type": "TrackElement",
+                    "id": this.clipboardServiceService.getClipboardId(),
+                    "data": { ...track }
+                };
+                this.clipboardServiceService.addClipboardItem(item);
+                this.showToast(this.copiedResponse);
+            } else if (action == "search") {
+                this.showMenu = false;
+                this.extraMenu = 0;
+                this.router.navigate(["search", track["name"]]);
+            }
         },
             (error) => {
                 console.error('Error retrieving playlists:', error);
                 this.showToast(`${this.unableToCopyResponse}\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
-            });
+            }
+        );
     }
 
-    getArtistData(artistId: string) {
+    getArtistData(artistId: string, action: string = "copy") {
         this.spotifyDataHandlerService.getArtistData(artistId).then((result) => {
-            this.globalFunctionsService.log(result);
             var artist = result;
-            var item: ClipboardItem = {
-                "type": "ArtistElement",
-                "id": this.clipboardServiceService.getClipboardId(),
-                "data": { ...artist }
-            };
-            this.clipboardServiceService.addClipboardItem(item);
-            this.showToast(this.copiedResponse);
+            if (action == "copy") {
+                var item: ClipboardItem = {
+                    "type": "ArtistElement",
+                    "id": this.clipboardServiceService.getClipboardId(),
+                    "data": { ...artist }
+                };
+                this.clipboardServiceService.addClipboardItem(item);
+                this.showToast(this.copiedResponse);
+            } else if (action == "search") {
+                this.showMenu = false;
+                this.extraMenu = 0;
+                this.router.navigate(["search", artist["name"]]);
+            }
+
         },
             (error) => {
                 console.error('Error retrieving playlists:', error);
                 this.showToast(`${this.unableToCopyResponse}\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
-            });
+            }
+        );
+    }
+
+    getAlbumData(albumId: string, action: string = "copy") {
+        this.spotifyDataHandlerService.getAlbumData(albumId).then((result) => {
+            var album = result;
+            if (action == "copy") {
+                var item: ClipboardItem = {
+                    "type": "AlbumElement",
+                    "id": this.clipboardServiceService.getClipboardId(),
+                    "data": { ...album }
+                };
+                this.clipboardServiceService.addClipboardItem(item);
+                this.showToast(this.copiedResponse);
+            } else if (action == "search") {
+                this.showMenu = false;
+                this.extraMenu = 0;
+                this.router.navigate(["search", album["name"]]);
+            }
+
+        },
+            (error) => {
+                console.error('Error retrieving playlists:', error);
+                this.showToast(`${this.unableToCopyResponse}\n${error.error.error.status} ${error.error.error.message}`, "error", 5);
+            }
+        );
+    }
+
+    SearchElement() {
+        if (this.dataValue != null) {
+            if (this.mode == 'PlaylistElement') {
+                this.getPlaylistData(this.dataValue, "search");
+            } else if (this.mode == 'UserElement') {
+                this.getUserData(this.dataValue, "search")
+            } else if (this.mode == 'TrackElement') {
+                this.getTrackData(this.dataValue, "search")
+            } else if (this.mode == 'ArtistElement') {
+                this.getArtistData(this.dataValue, "search")
+            } else if (this.mode == 'AlbumElement') {
+                this.getAlbumData(this.dataValue, "search")
+            } else if (this.mode == 'GenreNameElement') {
+                this.showMenu = false;
+                this.extraMenu = 0;
+                this.router.navigate(["search", this.dataValue]);
+            }
+        } else {
+            this.showToast("Can't search things without ID", "error", 5);
+        }
+    }
+
+    visitOnSpotify() {
+        if (this.dataValue != null) {
+            this.showMenu = false;
+            this.extraMenu = 0;
+            if (this.mode == 'PlaylistElement') {
+                window.open(`https://open.spotify.com/playlist/${this.dataValue}`, '_blank');
+            } else if (this.mode == 'UserElement') {
+                window.open(`https://open.spotify.com/user/${this.dataValue}`, '_blank');
+            } else if (this.mode == 'TrackElement') {
+                window.open(`https://open.spotify.com/track/${this.dataValue}`, '_blank');
+            } else if (this.mode == 'ArtistElement') {
+                window.open(`https://open.spotify.com/artist/${this.dataValue}`, '_blank');
+            } else if (this.mode == 'AlbumElement') {
+                window.open(`https://open.spotify.com/album/${this.dataValue}`, '_blank');
+            } else if (this.mode == 'GenreElement') {
+                window.open(`https://open.spotify.com/genre/${this.dataValue}`, '_blank');
+            }
+        } else {
+            this.showToast("Can't search things without ID", "error", 5);
+        }
     }
 }

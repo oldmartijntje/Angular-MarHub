@@ -89,7 +89,6 @@ export class SearchPageComponent implements OnInit, OnDestroy {
 
     search(query: string, type: string) {
         this.spotifyDataHandlerService.search(query, type).then((result) => {
-            this.globalFunctionsService.log(result);
             if (type == 'track') {
                 this.tracks = result;
             } else if (type == 'album') {

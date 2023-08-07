@@ -82,13 +82,11 @@ export class SettingsPageComponent implements OnInit {
         } else {
             this.customProfileRedirect = localStorage.getItem('customPersonalSpotifyAccount') == 'true';
         }
-        this.globalFunctionsService.log((this.customProfileRedirect, localStorage.getItem('customPersonalSpotifyAccount')));
     }
 
     saveSettings() {
         // Code to save the settings goes here
-        this.globalFunctionsService.log('Settings saved');
-        this.showToast('Settings saved!')
+        this.showToast('Settings saved! (does nothing)')
         // this.globalFunctionsService.log(this.imageMode)
     }
 
@@ -142,9 +140,7 @@ export class SettingsPageComponent implements OnInit {
     }
 
     popupSaveDataChange() {
-        this.globalFunctionsService.log(localStorage.getItem('popup-menu-save-data'))
         localStorage.setItem('popup-menu-save-data', this.popupSaveData);
-        this.globalFunctionsService.log(localStorage.getItem('popup-menu-save-data'))
     }
 
     profileRedirectChange() {
@@ -166,13 +162,11 @@ export class SettingsPageComponent implements OnInit {
     onSpotifyAccessTokenCheckboxChange(newValue: boolean) {
         this.spotifyAccessTokenStoring = newValue;
         localStorage.setItem('keepSpotifyAccessToken', this.spotifyAccessTokenStoring.toString());
-        this.globalFunctionsService.log(this.spotifyAccessTokenStoring);
     }
 
     onCustomProfileRedirectCheckboxChange(newValue: boolean) {
         this.customProfileRedirect = newValue;
         localStorage.setItem('customPersonalSpotifyAccount', this.customProfileRedirect.toString());
-        this.globalFunctionsService.log(this.customProfileRedirect);
         if (this.customProfileRedirect == false) {
             localStorage.setItem('personalSpotifyAccount', '');
             this.profileRedirectTo = '';

@@ -16,7 +16,7 @@ export class GlobalFunctionsService {
         return `${roundedNumber}${suffixes[suffixIndex]}`;
     }
 
-    log(variable: any, from: string, type: string = 'log') {
+    log(variable: any, from: string = "Unsigned", type: string = 'log') {
         if (type == "log") {
             console.log(`from: ${from}:`, variable)
         } else if (type == "info") {

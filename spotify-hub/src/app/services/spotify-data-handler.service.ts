@@ -50,7 +50,6 @@ export class SpotifyDataHandlerService {
                     return this.getPlaylists(index + 1);
                 } else {
                     // Process the followed artists list
-                    this.globalFunctionsService.log(this.ownPlaylists);
                     return of(true);
                 }
 
@@ -88,7 +87,6 @@ export class SpotifyDataHandlerService {
         } else if (error.status == 401) {
             this.loggedIn = false
             localStorage.removeItem('spotifyAccessToken')
-            this.globalFunctionsService.log(error.error.error.message)
             // var refreshToken = localStorage.getItem('spotifyRefreshToken')
             // this.globalFunctionsService.log(refreshToken)
             // if (refreshToken == null) {
@@ -128,7 +126,6 @@ export class SpotifyDataHandlerService {
             if ((userId in this.extraData['user']) == false) {
                 return this.spotifyApiService.getUser(userId).then((result) => {
                     this.addUserToData(result);
-                    this.globalFunctionsService.log(this.extraData['user'][userId]);
                     return this.extraData['user'][userId];
                 }).catch((error) => {
                     this.returnedErrorHandler(error);
@@ -148,7 +145,6 @@ export class SpotifyDataHandlerService {
                 return this.spotifyApiService.getMe().then((result) => {
                     this.ownUserProfile = result;
                     this.addUserToData(result);
-                    this.globalFunctionsService.log(this.ownUserProfile);
                     return this.ownUserProfile;
                 }).catch((error) => {
                     this.returnedErrorHandler(error);
@@ -173,7 +169,6 @@ export class SpotifyDataHandlerService {
             return this.spotifyApiService.getFollowedArtists().pipe(
                 tap((result) => {
                     this.ownFollowingArtists = result;
-                    this.globalFunctionsService.log(this.ownFollowingArtists);
                 }),
                 catchError((error) => {
                     this.returnedErrorHandler(error);
@@ -191,7 +186,6 @@ export class SpotifyDataHandlerService {
             return this.spotifyApiService.getTopTracks().pipe(
                 tap((result) => {
                     this.ownTop25 = result;
-                    this.globalFunctionsService.log(this.ownTop25);
                 }),
                 catchError((error) => {
                     this.returnedErrorHandler(error);
@@ -222,24 +216,21 @@ export class SpotifyDataHandlerService {
         this.loginIfNotAlready();
         this.spotifyApiService.addTrackToPlaylist(playlistId, trackUri).subscribe(
             (result) => {
-                this.globalFunctionsService.log(result);
                 this.spotifyApiService.getSinglePlaylist(playlistId).subscribe(
                     (result) => {
-                        this.globalFunctionsService.log(result);
                         this.addPlaylistToData(result);
                         this.replaceDataFromPlaylist(result)
                         this.showToast('Added song to playlist!')
                         // Handle the result here
                     },
                     (error) => {
-                        this.globalFunctionsService.log(error);
                         this.returnedErrorHandler(error);
                         // Handle the error here
                     }
                 );
             },
             (error) => {
-                this.globalFunctionsService.log(error);
+                this.returnedErrorHandler(error);
                 // Handle the error here
             }
         );
@@ -297,7 +288,6 @@ export class SpotifyDataHandlerService {
             } else {
                 return this.spotifyApiService.getSinglePlaylist(playlistId).pipe(
                     tap((result) => {
-                        this.globalFunctionsService.log(result);
                         this.addPlaylistToData(result);
                     }),
                     map(() => this.extraData['playlist'][playlistId]),
@@ -312,7 +302,6 @@ export class SpotifyDataHandlerService {
             this.extraData['playlist'] = {};
             return this.spotifyApiService.getSinglePlaylist(playlistId).pipe(
                 tap((result) => {
-                    this.globalFunctionsService.log(result);
                     this.addPlaylistToData(result);
                 }),
                 map(() => this.extraData['playlist'][playlistId]),
@@ -332,7 +321,6 @@ export class SpotifyDataHandlerService {
         if ((songId in this.extraData['song']) == false) {
             return this.spotifyApiService.getSongById(songId).then((result) => {
                 this.addSongToData(result);
-                this.globalFunctionsService.log(this.extraData['song'][songId]);
                 return this.extraData['song'][songId];
             }).catch((error) => {
                 this.returnedErrorHandler(error);
@@ -355,7 +343,6 @@ export class SpotifyDataHandlerService {
         if ((artistId in this.extraData['artist']) == false) {
             return this.spotifyApiService.getArtistById(artistId).then((result) => {
                 this.addArtistToData(result);
-                this.globalFunctionsService.log(this.extraData['artist'][artistId]);
                 return this.extraData['artist'][artistId];
             }).catch((error) => {
                 this.returnedErrorHandler(error);
@@ -391,7 +378,6 @@ export class SpotifyDataHandlerService {
         if ((albumId in this.extraData['album']) == false) {
             return this.spotifyApiService.getAlbumById(albumId).then((result) => {
                 this.addAlbumToData(result);
-                this.globalFunctionsService.log(this.extraData['album'][albumId]);
                 return this.extraData['album'][albumId];
             }).catch((error) => {
                 this.returnedErrorHandler(error);

@@ -31,15 +31,12 @@ export class SongPageComponent implements OnInit, OnDestroy {
             } else {
                 localStorage.setItem('pageVariation', params['id']);
                 this.spotifyDataHandlerService.getSongData(params['id']).then((result) => {
-                    this.globalFunctionsService.log(result)
                     this.mode = "OK";
                     this.data = result;
                 }).catch((error) => {
-                    this.globalFunctionsService.log(error);
                     this.errorType = error.error.error.status;
                     this.errorMessage = error.error.error.message;
                     this.mode = "error";
-                    this.globalFunctionsService.log(this.mode);
                 });
             }
         });

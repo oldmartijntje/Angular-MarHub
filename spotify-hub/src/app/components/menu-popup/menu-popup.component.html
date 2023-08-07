@@ -1,21 +1,47 @@
 <div class="menu-overlay" *ngIf="showMenu" (click)="showMenu = false"></div>
 <div *ngIf="showMenu">
-    <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'ArtistElement'">
+    <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'GenreNameElement'">
         <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
             [innerHTML]="scanForBreak('Copy')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="SearchElement()"
+            [innerHTML]="scanForBreak('Search')"></button>
+    </div>
+    <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'ArtistElement'">
+        <button (click)="navigateToArtist()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Go To Artist Page')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
+            [innerHTML]="scanForBreak('Copy')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="SearchElement()"
+            [innerHTML]="scanForBreak('Search')"></button>
+        <button (click)="visitOnSpotify()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Visit on Spotify.com')"></button>
+    </div>
+    <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'AlbumElement'">
+        <button (click)="navigateToAlbum()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Go To Album Page')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
+            [innerHTML]="scanForBreak('Copy')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="SearchElement()"
+            [innerHTML]="scanForBreak('Search')"></button>
+        <button (click)="visitOnSpotify()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Visit on Spotify.com')"></button>
     </div>
     <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'UserElement'">
-        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
-            [innerHTML]="scanForBreak('Copy')"></button>
         <button (click)="navigateToUser()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
             [innerHTML]="scanForBreak('Go To User Page')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
+            [innerHTML]="scanForBreak('Copy')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="SearchElement()"
+            [innerHTML]="scanForBreak('Search')"></button>
+        <button (click)="visitOnSpotify()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Visit on Spotify.com')"></button>
     </div>
-    <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'SongElement'">
+    <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'TrackElement'">
         <p *ngIf="!dataValue && popupTypeDefault" class="menu-text menu-popup-element">No SongId found, could be a
             local song.</p>
-        <button (click)="copyLink(dataValue, 'track')" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+        <button (click)="copyLink(dataValue, 'track')" *ngIf="dataValue && popupTypeDev" class="menu-popup-element"
             [innerHTML]="scanForBreak('Copy Track URL')"></button>
-        <button (click)="copyEmbed(dataValue, 'track')" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+        <button (click)="copyEmbed(dataValue, 'track')" *ngIf="dataValue && popupTypeDev" class="menu-popup-element"
             [innerHTML]="scanForBreak('Copy Track Embed')"></button>
         <button (click)="navigateToTrack()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
             [innerHTML]="scanForBreak('Go To Track Page')"></button>
@@ -23,28 +49,33 @@
             [innerHTML]="scanForBreak('Add to Playlist')"></button>
         <div *ngIf="extraMenu == 1" class="menu-popup menu-popup-element" [ngStyle]="extraMenuStyle">
             <button *ngFor="let playlist of myPlaylists" class=" menu-popup-element"
-                (click)="addSongToPlaylist(playlist.id)" [innerHTML]="scanForBreak(playlist.name)"></button>
+                (click)="addTrackToPlaylist(playlist.id)" [innerHTML]="scanForBreak(playlist.name)"></button>
         </div>
-        <button class="menu-popup-element" (click)="handleButtonClick('This can only be clicked by dev')"
-            *ngIf="popupTypeDev" [innerHTML]="scanForBreak('Button 3')"></button>
         <button *ngIf="dataValue && popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
             [innerHTML]="scanForBreak('Copy')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="SearchElement()"
+            [innerHTML]="scanForBreak('Search')"></button>
+        <button (click)="visitOnSpotify()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Visit on Spotify.com')"></button>
 
     </div>
     <div class="menu-popup menu-popup-element" [ngStyle]="menuStyle" *ngIf="mode == 'PlaylistElement'">
-        <button (click)="copyLink(dataValue, 'playlist')" *ngIf="dataValue && popupTypeDefault"
-            class="menu-popup-element" [innerHTML]="scanForBreak('Copy Playlist URL')"></button>
-        <button (click)="copyEmbed(dataValue, 'playlist')" *ngIf="dataValue && popupTypeDefault"
-            class="menu-popup-element" [innerHTML]="scanForBreak('Copy Playlist Embed')"></button>
+        <button (click)="copyLink(dataValue, 'playlist')" *ngIf="dataValue && popupTypeDev" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Copy Playlist URL')"></button>
+        <button (click)="copyEmbed(dataValue, 'playlist')" *ngIf="dataValue && popupTypeDev" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Copy Playlist Embed')"></button>
         <button (click)="navigateToPlaylist()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
             [innerHTML]="scanForBreak('Go To Playlist Page')"></button>
         <div *ngIf="extraMenu == 1" class="menu-popup menu-popup-element" [ngStyle]="extraMenuStyle">
             <button *ngFor="let playlist of myPlaylists" class=" menu-popup-element" (click)="addToPlaylistButton()"
                 [innerHTML]="scanForBreak(playlist.name)"></button>
         </div>
-        <button class="menu-popup-element" (click)="handleButtonClick('This can only be clicked by dev')"
-            *ngIf="popupTypeDev" [innerHTML]="scanForBreak('Button 3')"></button>
+        <button class="menu-popup-element" *ngIf="popupTypeDev" [innerHTML]="scanForBreak('Button 3')"></button>
         <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="copyElement()"
             [innerHTML]="scanForBreak('Copy')"></button>
+        <button *ngIf="popupTypeDefault" class="menu-popup-element" (click)="SearchElement()"
+            [innerHTML]="scanForBreak('Search')"></button>
+        <button (click)="visitOnSpotify()" *ngIf="dataValue && popupTypeDefault" class="menu-popup-element"
+            [innerHTML]="scanForBreak('Visit on Spotify.com')"></button>
     </div>
 </div>

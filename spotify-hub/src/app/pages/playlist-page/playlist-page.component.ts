@@ -55,12 +55,10 @@ export class PlaylistPageComponent implements OnDestroy {
             localStorage.setItem('pageVariation', currentParams)
             this.spotifyDataHandlerService.getPlaylistData(currentParams).subscribe(
                 (response) => {
-                    this.globalFunctionsService.log(response);
                     this.playlistData = response;
                     this.playlistsSubscription = this.spotifyDataHandlerService.ownPlaylists$.subscribe((newPlaylists) => {
                         newPlaylists.forEach(element => {
                             if (element.id == currentParams) {
-                                this.globalFunctionsService.log(this.playlistData)
                                 if (!element['tracks'].hasOwnProperty('items') && this.playlistData['tracks'].hasOwnProperty('items')) {
                                     Object.keys(element).forEach(element2 => {
                                         if (element2 != 'tracks') {
@@ -71,7 +69,6 @@ export class PlaylistPageComponent implements OnDestroy {
                                     this.playlistData = { ...element };
                                 }
 
-                                this.globalFunctionsService.log(this.playlistData)
                             }
                         });
                     });

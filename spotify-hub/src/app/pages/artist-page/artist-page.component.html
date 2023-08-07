@@ -16,8 +16,8 @@
     <div class="itemBar">
         <h2 class="itemBar-title">Genres</h2>
         <div class="item-container">
-            <div class="item menu-item menu-type-genre" *ngFor="let genre of artistData['genres']"
-                [attr.data-value]="genre" (click)="navigate('genre', genre )" style="cursor: pointer;">
+            <div class="item menu-item menu-type-genreName" *ngFor="let genre of artistData['genres']"
+                [attr.data-value]="genre">
                 <h3 class="item-display-name">{{ genre }}</h3>
             </div>
         </div>
