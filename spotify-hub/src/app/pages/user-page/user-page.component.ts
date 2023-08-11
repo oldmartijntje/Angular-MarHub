@@ -6,6 +6,7 @@ import { SpotifyDataHandlerService } from 'src/app/services/spotify-data-handler
 import { Subscribable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Image } from '../../interfaces/image.interface';
+import { MarhubApiServiceService } from 'src/app/services/marhub-api-service.service';
 
 @Component({
     selector: 'app-user-page',
@@ -29,7 +30,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
     profileImage = '';
 
     constructor(private router: Router, private spotifyDataHandlerService: SpotifyDataHandlerService,
-        public globalFunctionsService: GlobalFunctionsService, private activatedRoute: ActivatedRoute) { }
+        public globalFunctionsService: GlobalFunctionsService, private activatedRoute: ActivatedRoute,
+        private marhumApiService: MarhubApiServiceService) { }
 
     ngOnDestroy(): void {
         if (this.playlistsSubscription != null) {
@@ -53,6 +55,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
         this.waitTimeForImage(10000)
         this.routeSub = this.activatedRoute.params.subscribe((params: Params) => {
             if (params['uid'] == undefined) {
+                this.getNotes()
                 localStorage.setItem('pageVariation', '')
                 this.self = true;
                 this.spotifyDataHandlerService.getUserProfile().then((result) => {
@@ -109,6 +112,16 @@ export class UserPageComponent implements OnInit, OnDestroy {
             }
         });
 
+    }
+
+    getNotes() {
+        this.marhumApiService.getAllNotes()
+            .then((data: any) => {
+                console.log(data);
+            })
+            .catch((error) => {
+                console.error('Error fetching notes:', error);
+            });
     }
 
     getCorrectPicture(pictures: Array<Image>): string {
