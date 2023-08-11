@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "IbIykAaHsA4XfkQOKNhvHs9aDvVXybOKJDKz6bgxRlpEESUIVuyR5G947QyH/iV0/Sj97SDzomHI2LjNTpUl4w==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubAPI\\MarhubAPI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\oldma\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\oldma\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\oldma\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\oldma\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\oldma\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\oldma\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}
