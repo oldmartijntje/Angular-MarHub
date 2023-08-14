@@ -176,4 +176,12 @@ export class SpotifyApiService {
         return this.http.get<any>(`${this.apiUrl}/artists/${artistId}/albums`, { headers, params }).toPromise();
     }
 
+    validateAccessToken(accessToken: string): Promise<any> {
+        const headers = {
+            Authorization: `Bearer ${accessToken}`,
+        };
+
+        return this.http.get('https://api.spotify.com/v1/me', { headers }).toPromise();
+    }
+
 }
