@@ -64,7 +64,7 @@ namespace MarhubAPI.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteNote(int id)
         {
             var query = new DeleteNoteCommand() { Id = id }; 
