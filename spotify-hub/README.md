@@ -9,6 +9,10 @@ export const environment = {
         clientId: 'YOUR_CLIENT_ID',
         clientSecret: 'YOUR_CLIENT_SECRET',
         redirectUri: 'http://yourURL'
+    },
+    marhub: {
+        production: false,
+        apiUrl: "https://localhost:7298/api"
     }
 };
 ```

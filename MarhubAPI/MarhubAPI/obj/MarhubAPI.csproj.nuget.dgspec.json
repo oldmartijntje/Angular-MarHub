@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubApi\\MarhubAPI.csproj": {}
+    "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubAPI\\MarhubAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubApi\\MarhubAPI.csproj": {
+    "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubAPI\\MarhubAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubApi\\MarhubAPI.csproj",
+        "projectUniqueName": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubAPI\\MarhubAPI.csproj",
         "projectName": "MarhubAPI",
-        "projectPath": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubApi\\MarhubAPI.csproj",
+        "projectPath": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubAPI\\MarhubAPI.csproj",
         "packagesPath": "C:\\Users\\oldma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubApi\\obj\\",
+        "outputPath": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubAPI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

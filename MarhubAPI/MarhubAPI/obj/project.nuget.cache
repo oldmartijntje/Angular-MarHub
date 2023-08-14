@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "aNqLR5juxgSUJ6Cso79mZ0k+FOEkErMrVTBZf3z23+FKR++jv2yNYrOl+nQzxBH/t6pw40W4emOVibbD0fxaBg==",
+  "dgSpecHash": "lA3uPJiZrkY7bba/qLw1oo8eyebgBr1zJqFmXU0Umem3bnvqq7OB0SmivN7Fa6AOZzxx0bqQjE3NLvo44Hi8fg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubApi\\MarhubAPI.csproj",
+  "projectFilePath": "C:\\Users\\oldma\\Desktop\\scripts\\Repos\\Angular-spotify-hub\\MarhubAPI\\MarhubAPI\\MarhubAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\oldma\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\oldma\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
