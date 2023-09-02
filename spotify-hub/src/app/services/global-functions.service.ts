@@ -16,6 +16,17 @@ export class GlobalFunctionsService {
         return `${roundedNumber}${suffixes[suffixIndex]}`;
     }
 
+    fetchStickyNotes(id: string, elementType: string, data: Array<any>): Array<any> {
+        var returnData: Array<any> = [];
+        data.forEach(element => {
+            if (id == element["elementId"] && elementType == element["elementType"]) {
+                returnData.push({ ...element })
+            }
+
+        });
+        return returnData;
+    }
+
     log(variable: any, from: string = "Unsigned", type: string = 'log') {
         if (type == "log") {
             console.log(`from: ${from}:`, variable)

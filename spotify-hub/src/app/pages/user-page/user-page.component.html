@@ -1,29 +1,41 @@
 <div *ngIf="!isOwnUserProfileEmpty()" class="page">
-    <div class="profile menu-item menu-type-user" [attr.data-value]="user.id">
-        <div class="container">
-            <img *ngIf="user.images.length > 0" class="profile-image" src="{{getCorrectPicture(user.images)}}"
-                alt="Profile Image">
-            <img *ngIf="user.images.length == 0" class="profile-image"
-                src="../../../assets/images/defaultProfileImage.png" alt="Profile Image">
-            <div *ngIf="user.product == 'premium' && skin == ''" class="overlay premium">
-                <img src="assets/icons/crown.png" alt="Foreground Image">
+    <div class="profile menu-item menu-type-user pageContainer" [attr.data-value]="user.id">
+        <div class="halfPage">
+            <div class="container">
+                <img *ngIf="user.images.length > 0" class="profile-image" src="{{getCorrectPicture(user.images)}}"
+                    alt="Profile Image">
+                <img *ngIf="user.images.length == 0" class="profile-image"
+                    src="../../../assets/images/defaultProfileImage.png" alt="Profile Image">
+                <div *ngIf="user.product == 'premium' && skin == ''" class="overlay premium">
+                    <img src="assets/icons/crown.png" alt="Foreground Image">
+                </div>
+                <div *ngIf="user.product == 'premium' && skin == 'heart'" class="overlay premiumFlip">
+                    <img src="assets/icons/crown.png" alt="Foreground Image">
+                </div>
+                <div *ngIf="user.product == 'free'" class="overlay free">
+                    <img src="assets/icons/koter.png" alt="Foreground Image">
+                </div>
+                <div *ngIf="skin != ''" class="overlay skinItem">
+                    <img src="assets/images/skins/{{skin}}.png" alt="Foreground Image">
+                </div>
             </div>
-            <div *ngIf="user.product == 'premium' && skin == 'heart'" class="overlay premiumFlip">
-                <img src="assets/icons/crown.png" alt="Foreground Image">
-            </div>
-            <div *ngIf="user.product == 'free'" class="overlay free">
-                <img src="assets/icons/koter.png" alt="Foreground Image">
-            </div>
-            <div *ngIf="skin != ''" class="overlay skinItem">
-                <img src="assets/images/skins/{{skin}}.png" alt="Foreground Image">
+            <h1 class="display-name">{{user.display_name}}</h1>
+            <p class="country" *ngIf="user.country">Country: {{user.country}}</p>
+            <p class="followers">Followers: {{user.followers.total}}</p>
+            <p class="product" *ngIf="user.product">Product: {{user.product}}</p>
+            <p class="item-stats">User Id: {{user.id}}</p>
+            <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
+        </div>
+        <div class="halfPage">
+            <div class="stickyNotesContainer">
+                <div class="stickyNoteContainer"
+                    *ngFor="let note of globalFunctionsService.fetchStickyNotes(user.id, 'userElement', stickyNotes)">
+                    <div class="stickyNote">
+                        <p class="stickyNoteText">{{note.noteText}}</p>
+                    </div>
+                </div>
             </div>
         </div>
-        <h1 class="display-name">{{user.display_name}}</h1>
-        <p class="country" *ngIf="user.country">Country: {{user.country}}</p>
-        <p class="followers">Followers: {{user.followers.total}}</p>
-        <p class="product" *ngIf="user.product">Product: {{user.product}}</p>
-        <p class="item-stats">User Id: {{user.id}}</p>
-        <a class="spotify-link" href="{{user.external_urls.spotify}}" target="_blank">Visit on Spotify.com</a>
     </div>
     <div class="itemBar" id="artistsFollowed" *ngIf="followingArtists.length != 0">
         <h1 class="itemBar-title">Artists followed.</h1>

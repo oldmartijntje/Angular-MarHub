@@ -28,6 +28,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     self = false;
     skin = '';
     profileImage = '';
+    stickyNotes: Array<any> = [];
 
     constructor(private router: Router, private spotifyDataHandlerService: SpotifyDataHandlerService,
         public globalFunctionsService: GlobalFunctionsService, private activatedRoute: ActivatedRoute,
@@ -100,6 +101,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
                     }
                 );
             } else {
+                this.getNotes()
                 localStorage.setItem('pageVariation', params['uid'])
                 this.self = false;
                 this.spotifyDataHandlerService.getUserProfile(params['uid']).then((result) => {
@@ -117,7 +119,8 @@ export class UserPageComponent implements OnInit, OnDestroy {
     getNotes() {
         this.marhumApiService.getAllNotes()
             .then((data: any) => {
-                console.log(data);
+                this.stickyNotes = data;
+                console.log(data)
             })
             .catch((error) => {
                 console.error('Error fetching notes:', error);
