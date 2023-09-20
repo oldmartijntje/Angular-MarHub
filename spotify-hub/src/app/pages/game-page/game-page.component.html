@@ -1,1 +1,7 @@
-<p>game-page works!</p>
+<div *ngIf="gameActive" class="gameFrame">
+
+</div>
+<div *ngIf="!gameActive" class="gameFrame">
+    <h1 class="gameTitle">Wanna play a game?</h1>
+    <button class="gameButton" (click)="startNewGame()">Start</button>
+</div>
