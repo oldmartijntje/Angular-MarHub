@@ -13,11 +13,13 @@ import { AlbumPageComponent } from './pages/album-page/album-page.component';
 import { SongPageComponent } from './pages/song-page/song-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { ArtistPageComponent } from './pages/artist-page/artist-page.component';
+import { GamePageComponent } from './pages/game-page/game-page.component';
 
 const routes: Routes = [
     { path: 'home', component: HomePageComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     { path: 'docs', component: DocumantationPageComponent },
+    { path: 'game', component: GamePageComponent },
     { path: 'callback', component: CallbackPageComponent },
     { path: 'info', component: InfoPageComponent },
     { path: 'user', component: UserPageComponent },

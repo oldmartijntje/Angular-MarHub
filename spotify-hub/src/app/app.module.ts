@@ -23,6 +23,7 @@ import { SongPageComponent } from './pages/song-page/song-page.component';
 import { AlbumPageComponent } from './pages/album-page/album-page.component';
 import { ErrorPageComponent } from './pages/error-page/error-page.component';
 import { ArtistPageComponent } from './pages/artist-page/artist-page.component';
+import { GamePageComponent } from './pages/game-page/game-page.component';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { ArtistPageComponent } from './pages/artist-page/artist-page.component';
         SongPageComponent,
         AlbumPageComponent,
         ErrorPageComponent,
-        ArtistPageComponent
+        ArtistPageComponent,
+        GamePageComponent
     ],
     imports: [
         BrowserModule,
