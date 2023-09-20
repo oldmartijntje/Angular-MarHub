@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject, first } from 'rxjs';
+import { RandomNumberService } from './random-number.service';
+import { ClipboardServiceService } from './clipboard-service.service';
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +12,7 @@ export class GameService {
     gameState$!: Observable<boolean>;
     gameStateValue: boolean = false;
 
-    constructor() {
+    constructor(private randomNumberService: RandomNumberService, private clipboardServiceService: ClipboardServiceService) {
         this.gameStateSubject = new Subject<boolean>();
         this.gameState$ = this.gameStateSubject.asObservable();
     }
@@ -24,6 +26,13 @@ export class GameService {
 
     startNewGame() {
         this.game = {};
-        this.setGameState(true)
+        this.setGameState(true);
+        console.log(this.randomNumberService.getRandomNumber(undefined, undefined, 1));
+        console.log(this.randomNumberService.getRandomNumber());
+        console.log(this.randomNumberService.getRandomNumber());
+    }
+
+    generateRoom() {
+
     }
 }
