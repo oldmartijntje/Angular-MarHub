@@ -1,0 +1,16 @@
+{
+    "key": {
+        "doorAttachable": false,
+        "sizeRange": [
+            0.1,
+            0.5
+        ],
+        "weightModifier": 1,
+        "features": [
+            "magnetic",
+            "meltable",
+            "sharp"
+        ],
+        "dexterity": 2
+    }
+}

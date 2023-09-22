@@ -1,0 +1,45 @@
+{
+    "desk": {
+        "doorAttachable": false,
+        "preposition": "on",
+        "capacity": 80,
+        "sizeRange": [
+            150,
+            250
+        ],
+        "weightModifier": 1,
+        "features": [
+            "burnable"
+        ],
+        "dexterity": 0.6
+    },
+    "closet": {
+        "doorAttachable": false,
+        "preposition": "in",
+        "capacity": 90,
+        "sizeRange": [
+            0.5,
+            2
+        ],
+        "weightModifier": 1,
+        "features": [
+            "burnable"
+        ],
+        "dexterity": 0.8
+    },
+    "lock": {
+        "doorAttachable": true,
+        "preposition": "in",
+        "capacity": 25,
+        "sizeRange": [
+            0.5,
+            2
+        ],
+        "weightModifier": 0.25,
+        "features": [
+            "meltable",
+            "magnetic"
+        ],
+        "dexterity": 3
+    }
+}

@@ -24,6 +24,10 @@ export class RandomNumberService {
 
     getRandomNumber(min: number = 0, max: number = 10, providedSeed: string | number = ''): number {
         // Calculate a seed based on the provided string
+        if (providedSeed == '') {
+            providedSeed = Math.floor(Math.random() * 10000000);
+            // console.log(providedSeed);
+        }
         const seed = this.hashStringToNumber(this.stringifySeed(providedSeed));
 
         // Custom pseudo-random number generator using the seed

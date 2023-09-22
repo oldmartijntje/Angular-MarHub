@@ -25,14 +25,12 @@ export class GameService {
     }
 
     startNewGame() {
-        this.game = {};
+        this.game = { "rooms": [], "player": { "inventory": [], "roomId": 0 } };
         this.setGameState(true);
-        console.log(this.randomNumberService.getRandomNumber(undefined, undefined, 1));
-        console.log(this.randomNumberService.getRandomNumber());
-        console.log(this.randomNumberService.getRandomNumber());
+        this.generateRoom(69)
     }
 
-    generateRoom() {
-
+    generateRoom(seed: number | string) {
+        var room: any = { "walls": [], "floor": [], "triggers": [] }
     }
 }
