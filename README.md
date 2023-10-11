@@ -6,7 +6,7 @@ meow
 
 How to update the slide:
 
-- `ng build --configuration "production" --base-href "https://oldmartijntje.github.io/Angular-spotify-hub/"`
+- `ng build --configuration "production" --base-href "https://oldmartijntje.github.io/Angular-MarHub/"`
 - `npx angular-cli-ghpages --dir=dist/spotify-hub`
 
 by error:
